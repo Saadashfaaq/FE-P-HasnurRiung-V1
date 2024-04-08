@@ -30,7 +30,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/tailwind.scss"
             ],
             "scripts": []
           },
@@ -93,12 +94,22 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/tailwind.scss",
+              "node_modules/slick-carousel/slick/slick.css",
+              "node_modules/slick-carousel/slick/slick-theme.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.min.js"
+            ]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "dd4123c4-f0e0-469a-9090-ff3277a62076"
   }
 }
