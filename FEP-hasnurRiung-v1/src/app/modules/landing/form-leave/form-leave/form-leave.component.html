@@ -1,3 +1,666 @@
-<div>
+<div class="flex flex-col justify-items-center align-center items-center text-center ">
+    <h2>Formulir Permohonan</h2>
+
+    <!--Page Container -->
+    <div class="flex flex-col justify-items-center align-center items-left">
+        <!-- Leave Form Section 1 -->
+        <div *ngIf="openSection1">
+            <form [formGroup]="formLeaveSection1" class="flex flex-col justify-between h-full customBorder">
+                <!-- Form Section -->
+                <div class="flex flex-row">
+                    <div class="mr-5">
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Jenis Cuti*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <mat-select [formControlName]="'application_type'">
+                                        <mat-option *ngFor="let item of categoryList" [value]="item.value">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Waktu Matang Cuti</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline">
+                                        <input class="w-full" matInput [formControlName]="'name'" [disabled]="true" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Nama</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline">
+                                        <input class="w-full" matInput [formControlName]="'name'" [disabled]="true" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>NRP</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'employee_number'" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Status Keluarga</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'family_status'" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Tanggal Diterima Kerja</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'date_of_registration'" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Alamat Cuti*</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'leave_address'">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Tlp Rumah / HP*</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'phone_number'">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Bantuan Tiket*</span>
+                                </div>
+                                <div>
+                                    <mat-radio-group [formControlName]="'is_ticket_supported'" aria-label="Select an option">
+                                        <mat-radio-button value="true">Ada</mat-radio-button>
+                                        <mat-radio-button value="false">Tidak</mat-radio-button>
+                                      </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Status Penerimaan POH</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'poh_status'" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Jabatan</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'position'" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Status Penempatan</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'placement_status'" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Membawa Keluarga*</span>
+                                </div>
+                                <div>
+                                    <mat-radio-group [formControlName]="'is_with_family'" aria-label="Select an option">
+                                        <mat-radio-button value="true">Ya</mat-radio-button>
+                                        <mat-radio-button value="false">Tidak</mat-radio-button>
+                                      </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>ST Dinas Rutin</span>
+                                </div>
+                                <div>
+                                    <mat-radio-group [formControlName]="'is_routine_official_letter'" aria-label="Select an option">
+                                        <mat-radio-button value="true">Ada</mat-radio-button>
+                                        <mat-radio-button value="false">Tidak</mat-radio-button>
+                                      </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Tempat Tujuan Cuti</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'leave_location'">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Bantuan Biaya Cuti (Lump Sump)</span>
+                                </div>
+                                <div>
+                                    <mat-form-field appearance="outline" class="w-full">
+                                        <input matInput [formControlName]="'is_lump_sump'">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Bantuan Biaya Tiket*</span>
+                                </div>
+                                <div>
+                                    <mat-radio-group [formControlName]="'lump_sump_amount'" aria-label="Select an option">
+                                        <mat-radio-button value="true">Ada</mat-radio-button>
+                                        <mat-radio-button value="false">Tidak</mat-radio-button>
+                                      </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     
+                <!-- Button Group -->
+                <div class="self-end">
+                    <button mat-raised-button color="warn">Batalkan</button>
+                    <button (click)="SaveSection1()" class="ml-2" mat-raised-button color="primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Leave Form Section 2 -->
+        <div *ngIf="openSection2">
+            <form  [formGroup]="formLeaveSection2" class="flex flex-col justify-between h-full customBorder">
+
+                <div class="ml-1 self-start mb-3">
+                    <button (click)="OpenSection1()" color="accent" mat-raised-button>
+                        Kembali
+                    </button>
+                </div>
+    
+                <!-- Form Section -->
+                    <div class="mr-5">
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Kategori Cuti*</span>
+                            </div>
+                            <div >
+                                <mat-radio-group [formControlName]="'leave_category'" aria-label="Select an option">
+                                    <mat-radio-button value="lapangan">Lapangan</mat-radio-button>
+                                    <mat-radio-button value="tahunan">Tahunan</mat-radio-button>
+                                  </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tanggal Berangkat (hari off)*</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'departure_off_day'" [matDatepicker]="pickerdeparture_off_day" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="pickerdeparture_off_day"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerdeparture_off_day></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Perjalanan*</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'travel_date'" [matDatepicker]="pickertravel_date" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="pickertravel_date"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickertravel_date></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Jumlah Hari Cuti Lapangan</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input matInput [formControlName]="'duration'">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 pr-1 text-left">
+                                <span>Tanggal Cuti (Waktu Cuti Aktif)*</span>
+                            </div>
+                            <div class="flex flex-row items-baseline">
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'start_date'" [matDatepicker]="picker_leave_date_start" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_leave_date_start"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_leave_date_start></mat-datepicker>
+                                </mat-form-field>
+                                <span class="mx-1">s/d</span>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'end_date'" [matDatepicker]="picker_leave_date_end" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_leave_date_end"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_leave_date_end></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tambah Cuti Tahunan*</span>
+                            </div>
+                            <div>
+                                <mat-radio-group [formControlName]="'is_yearly_leave'" aria-label="Select an option">
+                                    <mat-radio-button [value]="true">Ya</mat-radio-button>
+                                    <mat-radio-button [value]="false">Tidak</mat-radio-button>
+                                    </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Jumlah Cuti Tahunan*</span>
+                            </div>
+                            <div class="flex flex-row items-baseline">
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input matInput [formControlName]="'yearly_leave_duration'">
+                                </mat-form-field>
+                                <div class="rounded py-2 px-1 ml-2 primary w-full"> Sisa Cuti Tahunan: 1</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tanggal Cuti Tahunan*</span>
+                            </div>
+                            <div class="flex flex-row items-baseline">
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'yearly_leave_start_date'" [matDatepicker]="picker_leave_yearly_start" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_leave_yearly_start"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_leave_yearly_start></mat-datepicker>
+                                </mat-form-field>
+                                <span class="mx-1">s/d</span>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'yearly_leave_end_date'" [matDatepicker]="picker_leave_yearly_end" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_leave_yearly_end"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_leave_yearly_end></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tambah Izin*</span>
+                            </div>
+                            <div>
+                                <mat-radio-group [formControlName]="'is_permission'" aria-label="Select an option">
+                                    <mat-radio-button [value]="true">Ya</mat-radio-button>
+                                    <mat-radio-button [value]="false">Tidak</mat-radio-button>
+                                    </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Kategori Izin*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <mat-select [formControlName]="'permission_category'">
+                                        <mat-option *ngFor="let item of categoryList" [value]="item.value">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Jumlah Hari Izin*</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input matInput [formControlName]="'permission_duration'" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tanggal Ijin*</span>
+                            </div>
+                            <div class="flex flex-row items-baseline">
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'permission_start_date'" [matDatepicker]="picker_permission_start" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_permission_start"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_permission_start></mat-datepicker>
+                                </mat-form-field>
+                                <span class="mx-1">s/d</span>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'permission_end_date'" [matDatepicker]="picker_permission_end" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_permission_end"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_permission_end></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tambah Konpensasi*</span>
+                            </div>
+                            <div>
+                                <mat-radio-group [formControlName]="'is_compensation'" aria-label="Select an option">
+                                    <mat-radio-button [value]="true">Ya</mat-radio-button>
+                                    <mat-radio-button [value]="false">Tidak</mat-radio-button>
+                                    </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Jumlah Hari Kompensasi*</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input matInput [formControlName]="'compensation_duration'" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tanggal Cuti Tahunan*</span>
+                            </div>
+                            <div class="flex flex-row items-baseline">
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'compensation_start_date'" [matDatepicker]="picker_compensation_start" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_compensation_start"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_compensation_start></mat-datepicker>
+                                </mat-form-field>
+                                <span class="mx-1">s/d</span>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'compensation_end_date'" [matDatepicker]="picker_compensation_end" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_compensation_end"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_compensation_end></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+    
+                <!-- Button Group -->
+                <div class="self-end">
+                    <button mat-raised-button color="warn">Batalkan</button>
+                    <button (click)="SaveSection2()" class="ml-2" mat-raised-button color="primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Leave Form Section 3 -->
+        <div *ngIf="openSection3">
+            <form  [formGroup]="formLeaveSection3" class="flex flex-col justify-between h-full customBorder">
+
+                <div class="ml-1 self-start mb-3">
+                    <button (click)="OpenSection2()" color="accent" mat-raised-button>
+                        Kembali
+                    </button>
+                </div>
+    
+                <!-- Form Section -->
+                    <div class="mr-5">
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tanggal Cuti Total*</span>
+                            </div>
+                            <div class="flex flex-row items-baseline">
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'leave_date_start_section3'" [matDatepicker]="picker_leave_date_start_section3" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_leave_date_start_section3"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_leave_date_start_section3></mat-datepicker>
+                                </mat-form-field>
+                                <span class="mx-1">s/d</span>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'leave_date_end_section3'" [matDatepicker]="picker_leave_date_end_section3" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_leave_date_end_section3"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_leave_date_end_section3></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Total (Hari)*</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input matInput [formControlName]="'total_leave_amount'" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Keterangan*</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input matInput [formControlName]="'leave_comment'" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <!-- FORM ARRAY TICKET TRAVEL SECTION -->
+                        <div  formArrayName="tickets_travel">
+                            <h3 class="mb-1 text-left">Pemesanan Tiket Pesawat/Travel</h3>
+                            <h5 class="mt-1 mb-5 text-left">*mohon diisi apabila ingin memesan tiket pesawat</h5>
+                            <div class="flex flex-col mb-5 w-max" *ngFor="let ticket of ticketsTravel.controls; let i = index" [formGroupName]="i">
+                                <div class="flex flex-row h-10 mb-5 items-baseline">
+                                    <div class="flex flex-row h-10 mr-5 items-baseline">
+                                        <div class="w-20 text-left">
+                                            <span>{{(i + 1) + '. Name'}}</span>
+                                        </div>
+                                        <div>
+                                            <mat-form-field class="w-50" appearance="outline">
+                                                <input class="w-full" matInput formControlName="name">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row h-10 items-baseline">
+                                        <div class="w-15 text-left">
+                                            <span>Usia</span>
+                                        </div>
+                                        <div>
+                                            <mat-form-field class="w-30" appearance="outline">
+                                                <input class="w-full" matInput formControlName="age" >
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row h-10 mb-5 items-baseline">
+                                    <div class="w-30 text-left">
+                                        <span>Berangkat*</span>
+                                    </div>
+                                    <div class="flex flex-row h-10 mb-3 mr-3 items-baseline">
+                                        <div class="w-11 text-left">
+                                            <span>Dari</span>
+                                        </div>
+                                        <div>
+                                            <mat-form-field class="w-30"  appearance="outline">
+                                                <input class="w-full" matInput formControlName="departure_from" >
+                                            </mat-form-field>                                       
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row h-10 mb-5 items-baseline">
+                                        <div class="w-10 mr-6 text-left">
+                                            <span>Menuju</span>
+                                        </div>
+                                        <div>
+                                            <mat-form-field class="w-30" appearance="outline">
+                                                <input class="w-full" matInput formControlName="departure_to" >
+                                            </mat-form-field>                                       
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row h-10 mb-5 items-baseline">
+                                    <div class="w-30 text-left">
+                                        <span>Kembali*</span>
+                                    </div>
+                                    <div class="flex flex-row h-10 mb-3 mr-3 items-baseline">
+                                        <div class="w-11 text-left">
+                                            <span>Dari</span>
+                                        </div>
+                                        <div>
+                                            <mat-form-field class="w-30"  appearance="outline">
+                                                <input class="w-full" matInput formControlName="return_from" >
+                                            </mat-form-field>                                       
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row h-10 mb-5 items-baseline">
+                                        <div class="w-10 mr-6 text-left">
+                                            <span>Menuju</span>
+                                        </div>
+                                        <div>
+                                            <mat-form-field class="w-30" appearance="outline">
+                                                <input class="w-full" matInput formControlName="return_to" >
+                                            </mat-form-field>                                       
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="ticketsTravel.length === i + 1" class="self-end">
+                                    <button *ngIf="i > 0" (click)="RemoveTicket(i)" class="py-1 px-2 text-xs" mat-raised-button color="warn">
+                                        hapus
+                                    </button>
+                                    <button *ngIf="i <= 3" (click)="CreateTicketTravelArray()" class="ml-2 py-1 px-2 text-xs" mat-raised-button color="primary">
+                                        tambah
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END FORM ARRAY TICKET TRAVEL -->
+    
+                        <!-- START PEJABAT PENGGANTI SECTION -->
+                        <h3 class="text-left my-2">Pejabat Pengganti</h3>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Pejabat Sementara Selama Cuti*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <mat-select [formControlName]="'substitute_officer'">
+                                        <mat-option *ngFor="let item of categoryList" [value]="item.value">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Daftar Job Pending*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline">
+                                    <input class="w-full" matInput [formControlName]="'pending_job'" [disabled]="true" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- END PEJABAT PENGGANTI  -->
+    
+                        <!-- START PERSETUJUAN CUTI -->
+                        <h3 class="text-left my-2">Persetujuan Cuti</h3>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Persetujuan 1*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline">
+                                    <input class="w-full" matInput [formControlName]="'approval_id_1'" [disabled]="true" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Persetujuan 2*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline">
+                                    <input class="w-full" matInput [formControlName]="'approval_id_2'" [disabled]="true" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Persetujuan 3*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline">
+                                    <input class="w-full" matInput [formControlName]="'approval_id_3'" [disabled]="true" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- END PERSETUJUAN CUTI -->
+                    </div>
+    
+                <!-- Button Group -->
+                <div class="self-end">
+                    <button mat-raised-button color="warn">Batalkan</button>
+                    <button class="ml-2" mat-raised-button color="primary"
+                    (click)="consoleLOG();SaveSection3()"
+                    >Ajukan Permohonan Cuti</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
 </div>

@@ -1,1 +1,100 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+@font-face {
+    font-family: 'Catamaran';
+    src: url('../assets/fonts/Catamaran-Regular.woff2') format('woff2');
+    /* Tambahkan format-font lain jika diperlukan */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: 'Catamaran-Regular', sans-serif; /* Gunakan font Catamaran secara default */
+  }
+
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+    padding-top: 0px; 
+    /* padding-bottom: 8px; */
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+     background-color: white !important; 
+}
+.mdc-text-field--filled:not(.mdc-text-field--disabled):hover {
+     background-color: white !important; 
+}
+
+.mat-mdc-form-field-infix {
+    min-height: 20px !important;
+}
+
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+     padding-top: 0px !important; 
+     padding-bottom: 0px !important; 
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    border-radius: 6px;
+    padding: 0 16px;
+}
+
+.mat-mdc-form-field-flex {
+    display: inline-flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.mat-mdc-text-field {
+    border-top-left-radius: var(--mdc-shape-small, 4px);
+    border-top-right-radius: var(--mdc-shape-small, 4px);
+    border-bottom-right-radius: var(--mdc-shape-small, 4px);;
+    border-bottom-left-radius: var(--mdc-shape-small, 4px);;
+    display: inline-flex;
+    align-items: baseline;
+    padding: 0px !important;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    will-change: opacity, transform, color;
+    box-sizing: border-box;
+}
+
+.mat-mdc-text-field-wrapper {
+    width: 100%;
+    height: 45px !important;
+}
+
+.textArea{
+    width: 100%;
+    height: 60px !important;
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+    padding-top: 12px !important;
+    padding-bottom: 2px !important;
+}
+
+
+// Radio Button
+
+.mat-mdc-radio-button.mat-accent {
+    --mdc-radio-disabled-selected-icon-color: #000;
+    --mdc-radio-disabled-unselected-icon-color: #000;
+    --mdc-radio-unselected-hover-icon-color: #212121;
+    --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+    --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+    // --mdc-radio-selected-focus-icon-color: #ff4081;
+    --mdc-radio-selected-hover-icon-color: #ff4081;
+    --mdc-radio-selected-icon-color: #ff4081;
+    --mdc-radio-selected-pressed-icon-color: #ff4081;
+    --mat-radio-ripple-color: #000;
+    --mat-radio-checked-ripple-color: #ff4081;
+    --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+}
+
+
+
