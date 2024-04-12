@@ -16,7 +16,7 @@
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
                                     <mat-select [formControlName]="'application_type'">
-                                        <mat-option *ngFor="let item of categoryList" [value]="item.value">
+                                        <mat-option (click)="ChangeAplication()" *ngFor="let item of categoryList" [value]="item.value">
                                             {{ item.name }}
                                         </mat-option>
                                     </mat-select>
@@ -146,9 +146,48 @@
                                 </div>
                             </div>
                         </div>
+                        <div *ngIf="IsTypeIsLeave() === false">
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Kategori Izin*</span>
+                                </div>
+                                <div >
+                                    <mat-radio-group 
+                                    [formControlName]="'permission_category'"
+                                    aria-label="Select an option"
+                                    (change)="PermissionTypeCondition()">
+                                        <mat-radio-button value="pp">PP</mat-radio-button>
+                                        <mat-radio-button value="non_pp">Luar PP</mat-radio-button>
+                                        </mat-radio-group>
+                                        <mat-error
+                                        *ngIf="formLeaveIdentity.get('permission_category').hasError('required') && isSection1Submited" 
+                                        >
+                                        Kolom ini wajib diisi
+                                        </mat-error>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="IsTypeIsLeave() === false && permissionType">
+                            <div class="flex flex-row h-10 mb-5 items-baseline">
+                                <div class="w-50 text-left">
+                                    <span>Bantuan Tiket*</span>
+                                </div>
+                                <div>
+                                    <mat-radio-group [formControlName]="'is_ticket_supported'" aria-label="Select an option">
+                                        <mat-radio-button [value]="true">Ada</mat-radio-button>
+                                        <mat-radio-button [value]="false">Tidak</mat-radio-button>
+                                      </mat-radio-group>
+                                      <mat-error
+                                      *ngIf="formLeaveIdentity.get('is_ticket_supported').hasError('required') && isSection1Submited"
+                                      >
+                                      Kolom ini wajib diisi
+                                      </mat-error>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div>
-                        <div>
+                        <div *ngIf="IsTypeIsLeave()">
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
                                     <span>Bantuan Tiket*</span>
@@ -283,6 +322,7 @@
 
         <!-- Leave Form Section 2 -->
         <div *ngIf="openDetailRequest">
+            <!-- FORM IZIN START -->
             <form  [formGroup]="formLeaveDetailRequest" class="flex flex-col justify-between h-full customBorder">
 
                 <div class="ml-1 self-start mb-3">
@@ -293,14 +333,13 @@
     
                 <!-- Form Section -->
                     <div class="mr-5">
-                        <div *ngIf="!IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="(IsTypeIsLeave() && !IsLeaveCategoryIsYearly()) || permissionType === 'pp'" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Tanggal Berangkat (hari off)*</span>
                             </div>
                             <div>
                                 <mat-form-field appearance="outline" class="testing"> 
                                     <input 
-                                    [value]="formatDate(formLeaveDetailRequest.get('departure_off_day').value)"
                                     (dateInput)="ResetTravelDate()"
                                      matInput [formControlName]="'departure_off_day'" 
                                      [matDatepicker]="pickerdeparture_off_day" 
@@ -315,7 +354,88 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() === false && permissionType === 'pp'" class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Kategori Izin*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input 
+                                    matInput
+                                    formControlName="permission_category"
+                                    [matAutocomplete]="permissionList"
+                                    >
+                                    <mat-autocomplete #permissionList="matAutocomplete">
+                                        <mat-option 
+                                        *ngFor="let item of filteredPermission | async" [value]="item.name">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-error
+                                    *ngIf="formLeaveDetailRequest.get('permission_category').hasError('required')"
+                                    >
+                                    Kolom ini wajib diisi
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'" class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Kategori Izin*</span>
+                            </div>
+                            <div >
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input 
+                                    matInput
+                                    formControlName="permission_category"
+                                    >
+                                    <mat-error
+                                    *ngIf="formLeaveDetailRequest.get('permission_category').hasError('required')"
+                                    >
+                                    Kolom ini wajib diisi
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div *ngIf="IsTypeIsLeave() === false" class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Jumlah Hari Izin*</span>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="w-full">
+                                    <input 
+                                    (keypress)="preventNonNumericalInput($event)"
+                                    (focusout)="CalculatePermissionLeaveDate()"
+                                    matInput [formControlName]="'permission_duration'" >
+                                    <mat-error
+                                    *ngIf="formLeaveDetailRequest.get('permission_duration').hasError('required')"
+                                    >
+                                    Kolom ini wajib diisi
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div *ngIf="IsTypeIsLeave() === false" class="flex flex-row h-10 mb-5 items-baseline">
+                            <div class="w-50 text-left">
+                                <span>Tanggal Ijin</span>
+                            </div>
+                            <div class="flex flex-row items-baseline">
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input 
+                                    (dateInput)="CalculatePermissionLeaveDate()"
+                                    matInput [formControlName]="'permission_start_date'" [matDatepicker]="picker_permission_start" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_permission_start"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_permission_start></mat-datepicker>
+                                </mat-form-field>
+                                <span class="mx-1">s/d</span>
+                                <mat-form-field appearance="outline" class="testing"> 
+                                    <input matInput [formControlName]="'permission_end_date'" [matDatepicker]="picker_permission_end" [readonly]="true">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker_permission_end"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker_permission_end></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Perjalanan*</span>
                             </div>
@@ -334,7 +454,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Jumlah Hari Cuti Lapangan*</span>
                             </div>
@@ -352,7 +472,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 pr-1 text-left">
                                 <span>Tanggal Cuti (Waktu Cuti Aktif)*</span>
                             </div>
@@ -370,7 +490,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="(IsTypeIsLeave() && !IsLeaveCategoryIsYearly()) || permissionType === 'pp'" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Tambah Cuti Tahunan*</span>
                             </div>
@@ -433,7 +553,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Tambah Izin*</span>
                             </div>
@@ -451,7 +571,7 @@
                                     </mat-error>
                             </div>
                         </div>
-                        <div *ngIf="IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Kategori Izin*</span>
                             </div>
@@ -476,7 +596,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Jumlah Hari Izin*</span>
                             </div>
@@ -494,7 +614,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Tanggal Ijin</span>
                             </div>
@@ -512,7 +632,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Tambah Konpensasi*</span>
                             </div>
@@ -530,7 +650,7 @@
                                     </mat-error>
                             </div>
                         </div>
-                        <div *ngIf="!IsLeaveCategoryIsYearly() && IsCompensationSelected()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly() && IsCompensationSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Jumlah Hari Kompensasi*</span>
                             </div>
@@ -549,7 +669,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!IsLeaveCategoryIsYearly() && IsCompensationSelected()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly() && IsCompensationSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Tanggal Kompensasi*</span>
                             </div>
@@ -575,6 +695,8 @@
                     <button (click)="SaveDetailRequest()" class="ml-2" mat-raised-button color="primary">Simpan</button>
                 </div>
             </form>
+            <!-- FORM IZIN END -->
+
         </div>
 
         <!-- Leave Form Section 3 -->
@@ -635,121 +757,123 @@
     
                         <!-- FORM ARRAY TICKET TRAVEL SECTION -->
                         <div  formArrayName="tickets_travel">
-                            <h3 class="mb-1 text-left">Pemesanan Tiket Pesawat/Travel</h3>
-                            <h5 class="mt-1 mb-5 text-left">*mohon diisi apabila ingin memesan tiket pesawat</h5>
-                            <div class="flex flex-col mb-5 w-max" *ngFor="let ticket of ticketsTravel.controls; let i = index" [formGroupName]="i">
-                                <div class="flex flex-row h-10 mb-5 items-baseline">
-                                    <div class="flex flex-row h-10 mr-5 items-baseline">
-                                        <div class="w-20 text-left">
-                                            <span>{{(i + 1) + '. Name'}}</span>
+                            <div *ngIf="formLeaveIdentity.get('is_ticket_supported').value">
+                                <h3 class="mb-1 text-left">Pemesanan Tiket Pesawat/Travel</h3>
+                                <h5 class="mt-1 mb-5 text-left">*mohon diisi apabila ingin memesan tiket pesawat</h5>
+                                <div class="flex flex-col mb-5 w-max" *ngFor="let ticket of ticketsTravel.controls; let i = index" [formGroupName]="i">
+                                    <div class="flex flex-row h-10 mb-5 items-baseline">
+                                        <div class="flex flex-row h-10 mr-5 items-baseline">
+                                            <div class="w-20 text-left">
+                                                <span>{{(i + 1) + '. Name'}}</span>
+                                            </div>
+                                            <div>
+                                                <mat-form-field class="w-50" appearance="outline">
+                                                    <input class="w-full" matInput formControlName="name">
+                                                </mat-form-field>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <mat-form-field class="w-50" appearance="outline">
-                                                <input class="w-full" matInput formControlName="name">
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-row h-10 items-baseline">
-                                        <div class="w-15 text-left">
-                                            <span>Usia</span>
-                                        </div>
-                                        <div>
-                                            <mat-form-field class="w-30" appearance="outline">
-                                                <input class="w-full" matInput formControlName="age" >
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-row h-10 mb-5 items-baseline">
-                                    <div class="w-30 text-left">
-                                        <span>Berangkat</span>
-                                    </div>
-                                    <div class="flex flex-row h-10 mb-3 mr-3 items-baseline">
-                                        <div class="w-11 text-left">
-                                            <span>Dari</span>
-                                        </div>
-                                        <div>
-                                            <mat-form-field class="w-30"  appearance="outline">
-                                                <input [disabled]="true" [readonly]="true" class="w-full" matInput formControlName="departure_from" >
-                                            </mat-form-field>                                       
+                                        <div class="flex flex-row h-10 items-baseline">
+                                            <div class="w-15 text-left">
+                                                <span>Usia</span>
+                                            </div>
+                                            <div>
+                                                <mat-form-field class="w-30" appearance="outline">
+                                                    <input class="w-full" matInput formControlName="age" >
+                                                </mat-form-field>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex flex-row h-10 mb-5 items-baseline">
-                                        <div class="w-10 mr-6 text-left">
-                                            <span>Menuju*</span>
+                                        <div class="w-30 text-left">
+                                            <span>Berangkat</span>
                                         </div>
-                                        <div>
-                                            <mat-form-field class="w-30" appearance="outline">
-                                                <input 
-                                                (focusout)="UpdateAirPortFormArrTo()"
-                                                matInput
-                                                formControlName="departure_to"
-                                                [matAutocomplete]="airportTo"
-                                                >
-                                                <mat-autocomplete #airportTo="matAutocomplete">
-                                                    <mat-option 
-                                                    (click)="UpdateAirPortFormArrTo()"
-                                                    *ngFor="let item of filteredAirPortTo | async" [value]="item.value">
-                                                        {{ item.city }} {{ item.value }}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                                <mat-error
-                                                *ngIf="ticketsTravel.at(i).get('departure_to').hasError('required')"
-                                                >
-                                                Kolom ini wajib diisi
-                                                </mat-error>
-                                            </mat-form-field>                                       
+                                        <div class="flex flex-row h-10 mb-3 mr-3 items-baseline">
+                                            <div class="w-11 text-left">
+                                                <span>Dari</span>
+                                            </div>
+                                            <div>
+                                                <mat-form-field class="w-30"  appearance="outline">
+                                                    <input [disabled]="true" [readonly]="true" class="w-full" matInput formControlName="departure_from" >
+                                                </mat-form-field>                                       
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-row h-10 mb-5 items-baseline">
-                                    <div class="w-30 text-left">
-                                        <span>Kembali</span>
-                                    </div>
-                                    <div class="flex flex-row h-10 mb-3 mr-3 items-baseline">
-                                        <div class="w-11 text-left">
-                                            <span>Dari*</span>
-                                        </div>
-                                        <div>
-                                            <mat-form-field class="w-30" appearance="outline">
-                                                <input 
-                                                (focusout)="UpdateAirPortFormArrFrom()"
-                                                matInput
-                                                formControlName="return_from"
-                                                [matAutocomplete]="airportFrom"
-                                                >
-                                                <mat-autocomplete #airportFrom="matAutocomplete">
-                                                    <mat-option (click)="UpdateAirPortFormArrFrom()" *ngFor="let item of filteredAirPortFrom | async" [value]="item.value">
-                                                        {{ item.city }} {{ item.value }}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                                <mat-error
-                                                *ngIf="ticketsTravel.at(i).get('return_from').hasError('required')"
-                                                >
-                                                Kolom ini wajib diisi
-                                                </mat-error>
-                                            </mat-form-field>                                       
+                                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                                            <div class="w-10 mr-6 text-left">
+                                                <span>Menuju*</span>
+                                            </div>
+                                            <div>
+                                                <mat-form-field class="w-30" appearance="outline">
+                                                    <input 
+                                                    (focusout)="UpdateAirPortFormArrTo()"
+                                                    matInput
+                                                    formControlName="departure_to"
+                                                    [matAutocomplete]="airportTo"
+                                                    >
+                                                    <mat-autocomplete #airportTo="matAutocomplete">
+                                                        <mat-option 
+                                                        (click)="UpdateAirPortFormArrTo()"
+                                                        *ngFor="let item of filteredAirPortTo | async" [value]="item.value">
+                                                            {{ item.city }} {{ item.value }}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <mat-error
+                                                    *ngIf="ticketsTravel.at(i).get('departure_to').hasError('required')"
+                                                    >
+                                                    Kolom ini wajib diisi
+                                                    </mat-error>
+                                                </mat-form-field>                                       
+                                            </div>
                                         </div>
                                     </div>
-                                    
                                     <div class="flex flex-row h-10 mb-5 items-baseline">
-                                        <div class="w-10 mr-6 text-left">
-                                            <span>Menuju</span>
+                                        <div class="w-30 text-left">
+                                            <span>Kembali</span>
                                         </div>
-                                        <div>
-                                            <mat-form-field class="w-30" appearance="outline">
-                                                <input [disabled]="true" [readonly]="true" class="w-full" matInput formControlName="return_to" >
-                                            </mat-form-field>                                       
+                                        <div class="flex flex-row h-10 mb-3 mr-3 items-baseline">
+                                            <div class="w-11 text-left">
+                                                <span>Dari*</span>
+                                            </div>
+                                            <div>
+                                                <mat-form-field class="w-30" appearance="outline">
+                                                    <input 
+                                                    (focusout)="UpdateAirPortFormArrFrom()"
+                                                    matInput
+                                                    formControlName="return_from"
+                                                    [matAutocomplete]="airportFrom"
+                                                    >
+                                                    <mat-autocomplete #airportFrom="matAutocomplete">
+                                                        <mat-option (click)="UpdateAirPortFormArrFrom()" *ngFor="let item of filteredAirPortFrom | async" [value]="item.value">
+                                                            {{ item.city }} {{ item.value }}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <mat-error
+                                                    *ngIf="ticketsTravel.at(i).get('return_from').hasError('required')"
+                                                    >
+                                                    Kolom ini wajib diisi
+                                                    </mat-error>
+                                                </mat-form-field>                                       
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex flex-row h-10 mb-5 items-baseline">
+                                            <div class="w-10 mr-6 text-left">
+                                                <span>Menuju</span>
+                                            </div>
+                                            <div>
+                                                <mat-form-field class="w-30" appearance="outline">
+                                                    <input [disabled]="true" [readonly]="true" class="w-full" matInput formControlName="return_to" >
+                                                </mat-form-field>                                       
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div *ngIf="IsPohNonLocalPerumahan() && ticketsTravel.length === i + 1" class="self-end">
-                                    <button *ngIf="i > 0" (click)="RemoveTicket(i)" class="py-1 px-2 text-xs" mat-raised-button color="warn">
-                                        hapus
-                                    </button>
-                                    <button *ngIf="i <= 3" (click)="CreateTicketTravelArray()" class="ml-2 py-1 px-2 text-xs" mat-raised-button color="primary">
-                                        tambah
-                                    </button>
+                                    <div *ngIf="IsPohNonLocalPerumahan() && ticketsTravel.length === i + 1 && formLeaveIdentity.get('is_with_family').value" class="self-end">
+                                        <button *ngIf="i > 0" (click)="RemoveTicket(i)" class="py-1 px-2 text-xs" mat-raised-button color="warn">
+                                            hapus
+                                        </button>
+                                        <button *ngIf="i <= 3" (click)="CreateTicketTravelArray()" class="ml-2 py-1 px-2 text-xs" mat-raised-button color="primary">
+                                            tambah
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
