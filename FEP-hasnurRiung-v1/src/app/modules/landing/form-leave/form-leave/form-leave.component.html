@@ -284,7 +284,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div *ngIf="IsTypeIsLeave()">
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
                                     <span>Bantuan Biaya Cuti (Lump Sump)</span>
@@ -297,7 +297,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div *ngIf="IsTypeIsLeave()">
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
                                     <span>Besarnya bantuan Biaya Cuti</span>
