@@ -248,8 +248,8 @@
                                 </div>
                                 <div>
                                     <mat-radio-group [formControlName]="'is_with_family'" aria-label="Select an option">
-                                        <mat-radio-button value="true">Ya</mat-radio-button>
-                                        <mat-radio-button value="false">Tidak</mat-radio-button>
+                                        <mat-radio-button [value]="true">Ya</mat-radio-button>
+                                        <mat-radio-button [value]="false">Tidak</mat-radio-button>
                                       </mat-radio-group>
                                       <mat-error
                                       *ngIf="formLeaveIdentity.get('is_with_family').hasError('required')"
@@ -266,8 +266,8 @@
                                 </div>
                                 <div>
                                     <mat-radio-group [formControlName]="'is_routine_official_letter'" aria-label="Select an option">
-                                        <mat-radio-button value="true">Ada</mat-radio-button>
-                                        <mat-radio-button value="false">Tidak</mat-radio-button>
+                                        <mat-radio-button [value]="true">Ada</mat-radio-button>
+                                        <mat-radio-button [value]="false">Tidak</mat-radio-button>
                                       </mat-radio-group>
                                 </div>
                             </div>
@@ -291,8 +291,8 @@
                                 </div>
                                 <div>
                                     <mat-radio-group [formControlName]="'is_lump_sump'" aria-label="Select an option">
-                                        <mat-radio-button value="true">Ada</mat-radio-button>
-                                        <mat-radio-button value="false">Tidak</mat-radio-button>
+                                        <mat-radio-button [value]="true">Ada</mat-radio-button>
+                                        <mat-radio-button [value]="false">Tidak</mat-radio-button>
                                       </mat-radio-group>
                                 </div>
                             </div>
@@ -463,9 +463,9 @@
                                     <input 
                                     (focusout)="CalculateLeaveDate()"
                                     (keypress)="preventNonNumericalInput($event)"
-                                    matInput [formControlName]="'duration'">
+                                    matInput [formControlName]="'field_leave_duration'">
                                     <mat-error
-                                    *ngIf="formLeaveDetailRequest.get('duration').hasError('required')"
+                                    *ngIf="formLeaveDetailRequest.get('field_leave_duration').hasError('required')"
                                     >
                                     Kolom ini wajib diisi
                                     </mat-error>
@@ -478,13 +478,13 @@
                             </div>
                             <div class="flex flex-row items-baseline">
                                 <mat-form-field appearance="outline" class="testing"> 
-                                    <input matInput [formControlName]="'start_date'" [matDatepicker]="picker_leave_date_start" [readonly]="true">
+                                    <input matInput [formControlName]="'field_leave_start_date'" [matDatepicker]="picker_leave_date_start" [readonly]="true">
                                     <mat-datepicker-toggle matIconSuffix [for]="picker_leave_date_start"></mat-datepicker-toggle>
                                     <mat-datepicker #picker_leave_date_start></mat-datepicker>
                                 </mat-form-field>
                                 <span class="mx-1">s/d</span>
                                 <mat-form-field appearance="outline" class="testing"> 
-                                    <input matInput [formControlName]="'end_date'" [matDatepicker]="picker_leave_date_end" [readonly]="true">
+                                    <input matInput [formControlName]="'field_leave_end_date'" [matDatepicker]="picker_leave_date_end" [readonly]="true">
                                     <mat-datepicker-toggle matIconSuffix [for]="picker_leave_date_end"></mat-datepicker-toggle>
                                     <mat-datepicker #picker_leave_date_end></mat-datepicker>
                                 </mat-form-field>
@@ -756,7 +756,7 @@
                         </div>
     
                         <!-- FORM ARRAY TICKET TRAVEL SECTION -->
-                        <div  formArrayName="tickets_travel">
+                        <div  formArrayName="travel_tickets">
                             <div *ngIf="formLeaveIdentity.get('is_ticket_supported').value">
                                 <h3 class="mb-1 text-left">Pemesanan Tiket Pesawat/Travel</h3>
                                 <h5 class="mt-1 mb-5 text-left">*mohon diisi apabila ingin memesan tiket pesawat</h5>
@@ -838,7 +838,7 @@
                                                     <input 
                                                     (focusout)="UpdateAirPortFormArrFrom()"
                                                     matInput
-                                                    formControlName="return_from"
+                                                    formControlName="arrival_from"
                                                     [matAutocomplete]="airportFrom"
                                                     >
                                                     <mat-autocomplete #airportFrom="matAutocomplete">
@@ -847,7 +847,7 @@
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                     <mat-error
-                                                    *ngIf="ticketsTravel.at(i).get('return_from').hasError('required')"
+                                                    *ngIf="ticketsTravel.at(i).get('arrival_from').hasError('required')"
                                                     >
                                                     Kolom ini wajib diisi
                                                     </mat-error>
@@ -861,7 +861,7 @@
                                             </div>
                                             <div>
                                                 <mat-form-field class="w-30" appearance="outline">
-                                                    <input [disabled]="true" [readonly]="true" class="w-full" matInput formControlName="return_to" >
+                                                    <input [disabled]="true" [readonly]="true" class="w-full" matInput formControlName="arrival_to" >
                                                 </mat-form-field>                                       
                                             </div>
                                         </div>
