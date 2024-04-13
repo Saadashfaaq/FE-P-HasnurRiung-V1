@@ -45,10 +45,27 @@ export class FormLeaveComponent implements OnInit {
   isPermissionPP : boolean = null
   permissionType : string
 
+  formType :  string
+
   ChangeAplication(){
     const applicationType = this.formLeaveIdentity.get('application_type').value
     if(applicationType === 'cuti'){
       this.isAplicationTypeLeave = true
+      // this.formLeaveIdentity.reset()
+      // this.formLeaveDetailRequest.reset()
+      // this.formLeaveTicektApproval.reset()
+      this.formLeaveIdentity.get('application_type').setValue('cuti')
+      this.formType = 'Cuti'
+    } else if(applicationType === 'Ijin'){
+      this.isAplicationTypeLeave = false
+      this.formType = 'Ijin'
+      // this.formLeaveIdentity.reset()
+      // this.formLeaveDetailRequest.reset()
+      // this.formLeaveTicektApproval.reset()
+      this.formLeaveIdentity.get('application_type').setValue('ijin')
+    } else {
+      this.isAplicationTypeLeave = false
+      this.formType = ''
     }
   }
 
@@ -172,7 +189,7 @@ export class FormLeaveComponent implements OnInit {
   }
 
   SetDatePickerFormat(){
-    this._locale = 'en-US';
+    this._locale = 'en-GB';
     this._adapter.setLocale(this._locale);
   }
 
@@ -189,8 +206,8 @@ export class FormLeaveComponent implements OnInit {
       is_ticket_supported: [null ,[Validators.required]],
       position: {value: 'FDGP HRGS', disabled: true},
       poh_status: {value: 'non_local_perumahan', disabled: true},
-      is_with_family: [null],
-      is_routine_official_letter: [null],
+      is_with_family: [null, [Validators.required]],
+      is_routine_official_letter: [{value: true , disabled: true}],
       leave_address: [null,[Validators.required]],
       is_lump_sump: [null],
       lump_sump_amount: {value: this.formatToRupiah('250000') , disabled: true},
@@ -448,7 +465,9 @@ export class FormLeaveComponent implements OnInit {
       this.openTicektApproval = true
       this.CalculateTotalLeaveAmount()
       if(this.formLeaveIdentity.get('is_ticket_supported').value){
-        this.InisiateFirstIndexFormArray()
+        if(this.ticketsTravel.length === 0){
+          this.InisiateFirstIndexFormArray()
+        }
         this.FilterAirPortTo()
         this.FilterAirPortFrom()
       }
@@ -589,6 +608,8 @@ export class FormLeaveComponent implements OnInit {
       this.formLeaveDetailRequest.get('permission_end_date').disable()
       this.formLeaveTicektApproval.get('leave_date_start_TicektApproval').disable()
       this.formLeaveTicektApproval.get('leave_date_end_TicektApproval').disable()
+      this.formLeaveDetailRequest.get('yearly_leave_start_date').disable()
+      this.formLeaveDetailRequest.get('yearly_leave_end_date').disable()
     } else if(permissionType === 'non_pp') {
       this.permissionType = 'non_pp'
       this.formLeaveIdentity.get('is_ticket_supported').setValue(false)
@@ -607,9 +628,13 @@ export class FormLeaveComponent implements OnInit {
         this.formLeaveIdentity.get('is_ticket_supported').setValue(false)
         this.formLeaveIdentity.get('is_ticket_supported').disable()
         this.formLeaveDetailRequest.get('yearly_leave_start_date').enable()
+        this.formLeaveDetailRequest.get('yearly_leave_end_date').disable()
         this.formLeaveTicektApproval.get('leave_date_start_TicektApproval').disable()
         this.formLeaveTicektApproval.get('leave_date_end_TicektApproval').disable()
         this.formLeaveTicektApproval.get('total_leave_amount').disable()
+        this.formLeaveDetailRequest.get('travel_date').clearValidators()
+        this.formLeaveDetailRequest.get('departure_off_day').clearValidators()
+        this.formLeaveDetailRequest.get('field_leave_duration').clearValidators()
       } else {
         this.formLeaveIdentity.get('is_ticket_supported').reset()
         this.formLeaveIdentity.get('is_ticket_supported').enable()
@@ -626,6 +651,9 @@ export class FormLeaveComponent implements OnInit {
         this.formLeaveTicektApproval.get('leave_date_end_TicektApproval').disable()
         this.formLeaveTicektApproval.get('total_leave_amount').disable()
         this.formLeaveDetailRequest.get('is_yearly_leave').reset()
+        this.formLeaveDetailRequest.get('travel_date').setValidators([Validators.required])
+        this.formLeaveDetailRequest.get('departure_off_day').setValidators([Validators.required, this.travelDateValidator('departure_off_day')])
+        this.formLeaveDetailRequest.get('field_leave_duration').setValidators([Validators.required])
       }
     }
   }

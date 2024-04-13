@@ -11,7 +11,7 @@
                     <div class="mr-5">
                         <div class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Jenis Cuti*</span>
+                                <span>Jenis Permohonan*</span>
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
@@ -91,7 +91,7 @@
                         <div>
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
-                                    <span>Alamat Cuti*</span>
+                                    <span>Alamat {{formType}}*</span>
                                 </div>
                                 <div>
                                     <mat-form-field appearance="outline" class="w-full">
@@ -252,7 +252,7 @@
                                         <mat-radio-button [value]="false">Tidak</mat-radio-button>
                                       </mat-radio-group>
                                       <mat-error
-                                      *ngIf="formLeaveIdentity.get('is_with_family').hasError('required')"
+                                      *ngIf="formLeaveIdentity.get('is_with_family').hasError('required') && isSection1Submited"
                                       >
                                       Kolom ini wajib diisi
                                       </mat-error>
@@ -275,7 +275,7 @@
                         <div>
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
-                                    <span>Tempat Tujuan Cuti</span>
+                                    <span>Tempat Tujuan {{formType}}*</span>
                                 </div>
                                 <div>
                                     <mat-form-field appearance="outline" class="w-full">
@@ -287,7 +287,7 @@
                         <div>
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
-                                    <span>Bantuan Biaya Tiket (Lump Sump)</span>
+                                    <span>Bantuan Biaya Cuti (Lump Sump)</span>
                                 </div>
                                 <div>
                                     <mat-radio-group [formControlName]="'is_lump_sump'" aria-label="Select an option">
@@ -356,7 +356,7 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() === false && permissionType === 'pp'" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Kategori Izin*</span>
+                                <span>Alasan Izin*</span>
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
@@ -381,7 +381,7 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Kategori Izin*</span>
+                                <span>Alasan Izin*</span>
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
@@ -573,7 +573,7 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() && IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Kategori Izin*</span>
+                                <span>Alasan Izin*</span>
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
@@ -634,7 +634,7 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Tambah Konpensasi*</span>
+                                <span>Tambah Kompensasi*</span>
                             </div>
                             <div>
                                 <mat-radio-group 
