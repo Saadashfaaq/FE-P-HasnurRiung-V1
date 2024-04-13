@@ -56,7 +56,7 @@ export class FormLeaveComponent implements OnInit {
       // this.formLeaveTicektApproval.reset()
       this.formLeaveIdentity.get('application_type').setValue('cuti')
       this.formType = 'Cuti'
-    } else if(applicationType === 'Ijin'){
+    } else if(applicationType === 'ijin'){
       this.isAplicationTypeLeave = false
       this.formType = 'Ijin'
       // this.formLeaveIdentity.reset()
