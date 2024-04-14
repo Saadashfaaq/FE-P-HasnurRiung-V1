@@ -40,6 +40,7 @@ export class FormLeaveComponent implements OnInit {
   ){}
 
   formID : string
+  formData
 
   isAplicationTypeLeave : boolean = null
   isPermissionPP : boolean = null
@@ -56,6 +57,7 @@ export class FormLeaveComponent implements OnInit {
       // this.formLeaveTicektApproval.reset()
       this.formLeaveIdentity.get('application_type').setValue('cuti')
       this.formType = 'Cuti'
+      this.formLeaveIdentity.get('date_of_eligible_for_leave').setValue(this.formData?.date_of_eligible_for_leave?.date)
     } else if(applicationType === 'ijin'){
       this.isAplicationTypeLeave = false
       this.formType = 'Ijin'
@@ -63,6 +65,7 @@ export class FormLeaveComponent implements OnInit {
       // this.formLeaveDetailRequest.reset()
       // this.formLeaveTicektApproval.reset()
       this.formLeaveIdentity.get('application_type').setValue('ijin')
+      this.formLeaveIdentity.get('date_of_eligible_for_leave').setValue(null)
     } else {
       this.isAplicationTypeLeave = false
       this.formType = ''
@@ -79,6 +82,7 @@ export class FormLeaveComponent implements OnInit {
   filteredAirPortTo: Observable<any>
   filteredAirPortFrom: Observable<any>
   filteredPermission: Observable<any>
+  filteredSubtituteOfficer: Observable<any>
 
   //Boolena for open section
   openIdentity : boolean = false
@@ -158,18 +162,18 @@ export class FormLeaveComponent implements OnInit {
 
   airPortList = airPortList
   substituteOfficerList = [
-    {
-      name:'Angelo',
-      _id:'1221312'
-    },
-    {
-      name:'Jansen',
-      _id:'1edawdad'
-    },
-    {
-      name:'Albatros',
-      _id:'12213dad12'
-    }
+    // {
+    //   name:'Angelo',
+    //   _id:'1221312'
+    // },
+    // {
+    //   name:'Jansen',
+    //   _id:'1edawdad'
+    // },
+    // {
+    //   name:'Albatros',
+    //   _id:'12213dad12'
+    // }
   ]
 
   isSection1Submited : boolean = false
@@ -179,13 +183,8 @@ export class FormLeaveComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getParamsId()
-    this.OpenIdentity()
-    this.InitFormLeaveIdentity()
-    this.InitFormLeaveDetailRequest()
-    this.InitFormLeaveTicektApproval()
+    this.GetOneUserLoginForm()
     this.SetDatePickerFormat()
-    this.FilterPermission()
   }
 
   SetDatePickerFormat(){
@@ -196,22 +195,22 @@ export class FormLeaveComponent implements OnInit {
   InitFormLeaveIdentity(){
     this.formLeaveIdentity = this._formBuilder.group({
       application_type: [null,[Validators.required]],
-      date_eligible_for_leave:{value: '23 Desember 2024', disabled: true},
-      name: {value: 'Albatros', disabled: true},
-      employee_number: {value: '53jk4b53jk4b', disabled: true},
-      family_status: {value: 'Complicated', disabled: true},
-      date_of_registration: {value: '23 Desember 2024', disabled: true},
+      date_of_eligible_for_leave:{value: this.formData?.date_of_eligible_for_leave?.date, disabled: true},
+      name: {value: this.formData?.name, disabled: true},
+      employee_number: {value: this.formData?.employee_number, disabled: true},
+      family_status: {value: this.formData?.family_status, disabled: true},
+      date_of_registration: {value: this.formData?.date_of_registration?.date, disabled: true},
       leave_location : [null ,[Validators.required]],
       phone_number: [null ,[Validators.required]],
       is_ticket_supported: [null ,[Validators.required]],
-      position: {value: 'FDGP HRGS', disabled: true},
-      poh_status: {value: 'non_local_perumahan', disabled: true},
+      position: {value: this.formData?.position?.name, disabled: true},
+      poh_status: {value: this.formData?.poh_status, disabled: true},
       is_with_family: [null, [Validators.required]],
       is_routine_official_letter: [{value: true , disabled: true}],
       leave_address: [null,[Validators.required]],
-      is_lump_sump: [null],
-      lump_sump_amount: {value: this.formatToRupiah('250000') , disabled: true},
-      placement_status:{value: 'Site EBL', disabled: true},
+      is_lump_sump: [{value: this.formData?.is_lump_sump , disabled: true}],
+      lump_sump_amount: {value: this.formatToRupiah(String(this.formData?.lump_sump_amount)) , disabled: true},
+      placement_status:{value: this.formData?.placement_status, disabled: true},
 
       leave_category:[null,[Validators.required]],
       permission_category:[null,[Validators.required]]
@@ -330,8 +329,8 @@ export class FormLeaveComponent implements OnInit {
       substitute_officer:[null,[Validators.required]],
       pending_job:[null,[Validators.required]],
       approval_id_1: {value: '', disabled: true},
-      approval_id_2: {value: 'Jansen', disabled: true},
-      approval_id_3: {value: 'Angelo', disabled: true}
+      approval_id_2: {value: null, disabled: true},
+      approval_id_3: {value: null, disabled: true}
     })
   }
 
@@ -388,9 +387,6 @@ export class FormLeaveComponent implements OnInit {
   }
 
   UpdateAirPortFormArrFrom() {
-    console.log("Nyampe");
-    console.log(this.ticketsTravel);
-    console.log("Panjang ticketsTravel:", this.ticketsTravel.length);
     if (this.ticketsTravel.length > 1) {
       while (this.ticketsTravel.length > 1) {
         this.ticketsTravel.removeAt(1); // Hapus elemen dari indeks 1 ke atas
@@ -399,9 +395,6 @@ export class FormLeaveComponent implements OnInit {
   }
   
   UpdateAirPortFormArrTo() {
-    console.log("Nyampe");
-    console.log(this.ticketsTravel);
-    console.log("Panjang ticketsTravel:", this.ticketsTravel.length);
     if (this.ticketsTravel.length > 1) {
       while (this.ticketsTravel.length > 1) {
         this.ticketsTravel.removeAt(1); // Hapus elemen dari indeks 1 ke atas
@@ -434,21 +427,16 @@ export class FormLeaveComponent implements OnInit {
   SaveIdentity(){
     this.isSection1Submited = true
     if(this.formLeaveIdentity.invalid){
-      console.log("TESTING", this.formLeaveIdentity)
       this.InvalidSwal()
     } else {
       this.openIdentity = false
       this.openDetailRequest = true
       this.openTicektApproval = false
-      console.log("this.formLeaveIdentity.get('application_type').value ",this.formLeaveIdentity.get('application_type').value )
-      console.log("this.formLeaveIdentity.get('application_type').value ", this.formLeaveIdentity.get('permission_category').value )
       if(this.formLeaveIdentity.get('application_type').value === 'ijin'){
         if(this.formLeaveIdentity.get('permission_category').value === 'pp'){
           this.removeValidatorsForPermissionLeave();
-          console.log("pp")
         } else if(this.formLeaveIdentity.get('permission_category').value === 'non_pp'){
           this.removeValidatorsForNonPermissionLeave();
-          console.log("non_pp")
         }
       }
     }
@@ -457,7 +445,6 @@ export class FormLeaveComponent implements OnInit {
   SaveDetailRequest(){
     this.isSection2Submited = true
     if(this.formLeaveDetailRequest.invalid){
-      console.log("this.formLeaveDetailRequest:", this.formLeaveDetailRequest)
       this.InvalidSwal()
     } else {
       this.openIdentity = false
@@ -528,6 +515,14 @@ export class FormLeaveComponent implements OnInit {
   }
 
   CreatePayloadForTicketApproval() {
+   const substituteOfficerName =  this.formLeaveTicektApproval.get('substitute_officer').value
+   let substituteOfficerId : string 
+   this.substituteOfficerList.forEach((approval)=>{
+    if(approval.name === substituteOfficerName){
+      substituteOfficerId = approval._id
+    }
+   })
+
     const payload = {
       // leave_date_start_TicektApproval:this.formLeaveTicektApproval.get('leave_date_start_TicektApproval').value,
       // leave_date_end_TicektApproval: this.formLeaveTicektApproval.get('leave_date_end_TicektApproval').value,
@@ -535,6 +530,12 @@ export class FormLeaveComponent implements OnInit {
       travel_tickets: this.formLeaveTicektApproval.get('travel_tickets').value,
       // substitute_officer:[null,[Validators.required]],
       pending_job:this.formLeaveTicektApproval.get('pending_job').value,
+      approval:[
+        {
+          approver_id:substituteOfficerId
+
+        }
+      ]
       // approval_id_1: {value: '', disabled: true},
       // approval_id_2: {value: 'Jansen', disabled: true},
       // approval_id_3: {value: 'Angelo', disabled: true}
@@ -587,6 +588,7 @@ export class FormLeaveComponent implements OnInit {
   IsTypeIsLeave(): boolean{
     if(this.formLeaveIdentity.get('application_type').value){
       if(this.formLeaveIdentity.get('application_type').value === 'cuti'){
+        
         return true
       } else {
         return false
@@ -1086,7 +1088,6 @@ updateValidators() {
 
   private _filterAirPortTo(value : string) {
     const filerValue = value.toLowerCase()
-    console.log("ini loh Value",value)
     return this.airPortList.filter(option => option.city.toLowerCase().includes(filerValue));
   }
 
@@ -1098,6 +1099,21 @@ updateValidators() {
   private _filterReasonPermission(value : string){
     const filterValue = value.toLowerCase()
     return this.permissionList.filter(option => option.name.toLowerCase().toLowerCase().includes(filterValue))
+  }
+
+  private _filteredSubtituteOfficer(value: string){
+    const filterValue = value.toLowerCase()
+    return this.substituteOfficerList.filter(option => option.name.toLowerCase().toLowerCase().includes(filterValue))
+  }
+
+  filterSubituteOfficer(){
+    this.filteredSubtituteOfficer = this.formLeaveTicektApproval.get('substitute_officer').valueChanges.pipe(
+      startWith(''),
+      map(value=>{
+        const name = typeof value === 'string' ? value : value?.name
+        return name ? this._filteredSubtituteOfficer(name as string) : this.substituteOfficerList.slice()
+      })
+    )
   }
 
   FilterPermission(){
@@ -1131,9 +1147,10 @@ updateValidators() {
   }
 
   selectSubtituteOfficer(){
+   
    const subtituteOfficer = this.formLeaveTicektApproval.get('substitute_officer').value
    this.substituteOfficerList.forEach((officer)=>{
-    if(officer._id === subtituteOfficer){
+    if(officer.name === subtituteOfficer){
       this.formLeaveTicektApproval.get('approval_id_1').setValue(officer.name)
     }
    })
@@ -1168,7 +1185,6 @@ updateValidators() {
 
   getParamsId(){
     const getParams = this.route.snapshot.params['id'];
-    console.log("getParams", getParams)
     if(getParams){
       this.subs.sink = this._formLeaveService.GetOneApplicationForm(getParams).subscribe(
         (resp)=>{
@@ -1263,6 +1279,60 @@ patchFormLeaveIdentity(data: any) {
       arrival_from: ticket.arrival_from || null,
       arrival_to: ticket.arrival_to || null,
     });
+  }
+
+
+  GetOneUserLoginForm(){
+    this.subs.sink = this._formLeaveService.GetOneEmployee('').subscribe(
+      (resp)=>{
+        if(resp){
+          this.formData = resp
+          this.getParamsId()
+          this.OpenIdentity()
+          this.InitFormLeaveIdentity()
+          this.InitFormLeaveDetailRequest()
+          this.InitFormLeaveTicektApproval()
+          this.GetAllUserForDropdown()
+          this.GetAllApprovalGroups()
+          this.FilterPermission()
+          this.filterSubituteOfficer()
+        }
+      },
+    (err)=>{
+      console.log("err", err)
+    })
+  }
+
+  GetAllUserForDropdown(){
+    this.subs.sink = this._formLeaveService.GetAllEmployees().subscribe(
+      (resp)=>{
+        if(resp){
+          this.substituteOfficerList = resp
+        }
+      },
+      (err)=>{
+        console.log("err", err)
+      }
+    )
+  }
+
+  GetAllApprovalGroups(){
+    this.subs.sink = this._formLeaveService.GetAllApprovalGroups().subscribe(
+      (resp)=>{
+        if(resp){
+          resp.forEach((approval)=>{
+            if(approval.approval_index === 1){
+              this.formLeaveTicektApproval.get('approval_id_2').setValue(approval?.name)
+            } else if(approval.approval_index === 2){
+              this.formLeaveTicektApproval.get('approval_id_3').setValue(approval?.name)
+            }
+          })
+        }
+      },
+      (err)=>{
+        console.log("err", err)
+      }
+    )
   }
 
 }

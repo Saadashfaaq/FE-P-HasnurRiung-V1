@@ -35,7 +35,7 @@
                                 </div>
                                 <div>
                                     <mat-form-field appearance="outline">
-                                        <input class="w-full" matInput [formControlName]="'date_eligible_for_leave'" [disabled]="true" [readonly]="true">
+                                        <input class="w-full" matInput [formControlName]="'date_of_eligible_for_leave'" [disabled]="true" [readonly]="true">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -887,11 +887,24 @@
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
-                                    <mat-select [formControlName]="'substitute_officer'">
+                                    <!-- <mat-select [formControlName]="'substitute_officer'">
                                         <mat-option (click)="selectSubtituteOfficer()"  *ngFor="let item of substituteOfficerList" [value]="item._id">
                                             {{ item.name }}
                                         </mat-option>
-                                    </mat-select>
+                                    </mat-select> -->
+                                    <input 
+                                    matInput
+                                    formControlName="substitute_officer"
+                                    [matAutocomplete]="substitute_officer"
+                                    (focusout)="selectSubtituteOfficer()"
+                                    >
+                                    <mat-autocomplete #substitute_officer="matAutocomplete">
+                                        <mat-option 
+                                        (click)="selectSubtituteOfficer()"
+                                        *ngFor="let item of filteredSubtituteOfficer | async" [value]="item.name">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-autocomplete>
                                     <mat-error
                                     *ngIf="formLeaveTicektApproval.get('substitute_officer').hasError('required')"
                                     >

@@ -59,6 +59,7 @@ export class FormLeaveService {
       .pipe(map((resp) => resp?.data['UpdateApplicationForm']));
   }
 
+
   GetOneApplicationForm(payload){
     return this._apollo
     .query({
@@ -173,6 +174,72 @@ export class FormLeaveService {
   }
   
 
+  GetOneEmployee(payload) {
+    return this._apollo.query({
+      query: gql`
+        query GetOneEmployee($id: ID!) {
+          GetOneEmployee(_id: $id) {
+            name
+            employee_number
+            family_status
+            date_of_registration {
+              time
+              date
+            }
+            poh_status
+            position {
+              name
+            }
+            placement_status
+            is_routine_official_letter
+            is_lump_sump
+            lump_sump_amount
+            date_of_eligible_for_leave {
+              time
+              date
+            }
+            _id
+          }
+        }
+      `,
+      variables: {
+        id: "66181cac2d03e3e3187fa584"
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetOneEmployee']));
+  }
 
+  GetAllEmployees() {
+    return this._apollo.query({
+      query: gql`
+        query GetAllEmployees {
+          GetAllEmployees {
+            name
+            _id
+          }
+        }
+      `,
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllEmployees']));
+  }
 
+  GetAllApprovalGroups() {
+    return this._apollo.query({
+      query: gql`
+        query GetAllApprovalGroups($filter: ApprovalGroupFilter) {
+          GetAllApprovalGroups(filter: $filter)  {
+            _id
+            name
+            approval_index
+          }
+        }
+      `,
+      variables: {
+        filter: {
+          is_enabled: true
+        }
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllApprovalGroups']));
+  }
 }
