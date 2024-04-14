@@ -362,7 +362,7 @@
                                 <mat-form-field appearance="outline" class="w-full">
                                     <input 
                                     matInput
-                                    formControlName="permission_category"
+                                    formControlName="permission_type"
                                     [matAutocomplete]="permissionList"
                                     >
                                     <mat-autocomplete #permissionList="matAutocomplete">
@@ -372,7 +372,7 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                     <mat-error
-                                    *ngIf="formLeaveDetailRequest.get('permission_category').hasError('required')"
+                                    *ngIf="formLeaveDetailRequest.get('permission_type').hasError('required')"
                                     >
                                     Kolom ini wajib diisi
                                     </mat-error>
@@ -387,10 +387,10 @@
                                 <mat-form-field appearance="outline" class="w-full">
                                     <input 
                                     matInput
-                                    formControlName="permission_category"
+                                    formControlName="permission_type"
                                     >
                                     <mat-error
-                                    *ngIf="formLeaveDetailRequest.get('permission_category').hasError('required')"
+                                    *ngIf="formLeaveDetailRequest.get('permission_type').hasError('required')"
                                     >
                                     Kolom ini wajib diisi
                                     </mat-error>
@@ -579,7 +579,7 @@
                                 <mat-form-field appearance="outline" class="w-full">
                                     <input 
                                     matInput
-                                    formControlName="permission_category"
+                                    formControlName="permission_type"
                                     [matAutocomplete]="permissionList"
                                     >
                                     <mat-autocomplete #permissionList="matAutocomplete">
@@ -589,7 +589,7 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                     <mat-error
-                                    *ngIf="formLeaveDetailRequest.get('permission_category').hasError('required')"
+                                    *ngIf="formLeaveDetailRequest.get('permission_type').hasError('required')"
                                     >
                                     Kolom ini wajib diisi
                                     </mat-error>

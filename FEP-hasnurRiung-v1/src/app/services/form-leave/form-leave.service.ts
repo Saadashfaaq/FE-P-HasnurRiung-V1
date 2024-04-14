@@ -22,6 +22,7 @@ export class FormLeaveService {
               application_form_input: $application_form_input
             ){
               _id
+              pdf_application_form
             }
           }
         `,
