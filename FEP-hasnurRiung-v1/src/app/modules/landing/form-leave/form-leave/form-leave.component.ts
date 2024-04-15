@@ -956,7 +956,7 @@ updateValidators() {
       }
     }
 
-    const totalLeaveDays = ( permissionCategory == 'non_pp') || ( permissionCategory == 'pp' && !isYearlyLeave) ? Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) + 1 : Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) + 1;
+    const totalLeaveDays = ( permissionCategory == 'non_pp') || ( permissionCategory == 'pp' && !isYearlyLeave) ? Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) : Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) ;
 
     this.formLeaveTicektApproval.get('leave_date_start_TicektApproval').setValue(leaveStartDate);
     this.formLeaveTicektApproval.get('leave_date_end_TicektApproval').setValue(leaveEndDate);
