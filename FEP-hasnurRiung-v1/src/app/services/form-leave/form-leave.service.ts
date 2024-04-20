@@ -182,6 +182,7 @@ export class FormLeaveService {
           GetOneEmployee(_id: $id) {
             name
             age
+            remaining_yearly_leaves
             employee_number
             family_status
             date_of_registration {
@@ -205,7 +206,7 @@ export class FormLeaveService {
         }
       `,
       variables: {
-        id: "66181b5a2d03e3e3187f9c88"
+        id: "66238fcf96f3b99e9bd9c384"
       },
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetOneEmployee']));

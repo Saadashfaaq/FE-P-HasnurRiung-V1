@@ -93,7 +93,7 @@
 }
 
 .mat-mdc-raised-button.mat-primary {
-    --mdc-protected-button-container-color: #041929;
+    --mdc-protected-button-container-color: #015BAB;
     --mdc-protected-button-label-text-color: #fff;
     --mat-protected-button-state-layer-color: #fff;
     --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
@@ -102,6 +102,40 @@
 .mdc-button .mdc-button__label {
     font-size: 10px;
 }
+
+.mat-mdc-radio-button.mat-accent {
+    --mdc-radio-disabled-selected-icon-color: #000;
+    --mdc-radio-disabled-unselected-icon-color: #000;
+    --mdc-radio-unselected-hover-icon-color: #212121;
+    --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+    --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+    --mdc-radio-selected-focus-icon-color: #015BAB;
+    --mdc-radio-selected-hover-icon-color: #015BAB;
+    --mdc-radio-selected-icon-color: #015BAB;
+    --mdc-radio-selected-pressed-icon-color: #015BAB;
+    --mat-radio-ripple-color: #000;
+    --mat-radio-checked-ripple-color: #015BAB;
+    --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+}
+
+.mat-mdc-form-field-error{
+    font-size: 12px;
+}
+
+// .mat-mdc-form-field.disabled {
+//     opacity: 0.6; /* Contoh: mengurangi opacity saat disable */
+//     pointer-events: none; /* Menonaktifkan interaksi pengguna saat disable */
+//   }
+  
+//   /* Styling untuk input saat dalam keadaan disable */
+//   .mat-mdc-input-element:disabled {
+//     background-color: #f2f2f2; /* Contoh: warna latar belakang saat disable */
+//     color: #999; /* Contoh: warna teks saat disable */
+//   }
+
+//   .mat-form-field-disabled{
+//     background-color: #015BAB;
+//   }
 
 
   
