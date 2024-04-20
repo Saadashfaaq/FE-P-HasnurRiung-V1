@@ -2,10 +2,10 @@
     <h2>Formulir Permohonan</h2>
 
     <!--Page Container -->
-    <div class="flex flex-col justify-items-center align-center items-left">
+    <div class="flex flex-col justify-items-center align-center items-left customBorder">
         <!-- Leave Form Section 1 -->
-        <div *ngIf="openIdentity">
-            <form [formGroup]="formLeaveIdentity" class="flex flex-col justify-between h-full customBorder">
+        <div *ngIf="openIdentity" class="flex flex-col justify-between h-full">
+            <form [formGroup]="formLeaveIdentity">
                 <!-- Form Section -->
                 <div class="flex flex-row">
                     <div class="mr-5">
@@ -149,7 +149,7 @@
                         <div *ngIf="IsTypeIsLeave() === false">
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
-                                    <span>Kategori Izin*</span>
+                                    <span>Kategori Ijin*</span>
                                 </div>
                                 <div >
                                     <mat-radio-group 
@@ -173,7 +173,8 @@
                                     <span>Bantuan Tiket*</span>
                                 </div>
                                 <div>
-                                    <mat-radio-group [formControlName]="'is_ticket_supported'" aria-label="Select an option">
+                                    <mat-radio-group [formControlName]="'is_ticket_supported'" aria-label="Select an option" 
+                                    (change)="SelectTicketSupported()">
                                         <mat-radio-button [value]="true">Ada</mat-radio-button>
                                         <mat-radio-button [value]="false">Tidak</mat-radio-button>
                                       </mat-radio-group>
@@ -280,6 +281,11 @@
                                 <div>
                                     <mat-form-field appearance="outline" class="w-full">
                                         <input matInput [formControlName]="'leave_location'">
+                                        <mat-error
+                                        *ngIf="formLeaveIdentity.get('leave_location').hasError('required')"
+                                        >
+                                        Kolom ini wajib diisi
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -311,29 +317,27 @@
                         </div>
                     </div>
                 </div>
-    
-                <!-- Button Group -->
-                <div class="self-end">
-                    <button mat-raised-button color="warn">Batalkan</button>
-                    <button (click)="SaveIdentity()" class="ml-2" mat-raised-button color="primary">Simpan</button>
-                </div>
             </form>
+            <!-- Button Group -->
+            <div class="self-end">
+                <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
+                <button (click)="SaveIdentity()" class="ml-2" mat-raised-button color="primary">Simpan</button>
+            </div>
         </div>
 
         <!-- Leave Form Section 2 -->
-        <div *ngIf="openDetailRequest">
+        <div *ngIf="openDetailRequest" class="flex flex-col justify-between h-full">
+            <div class="ml-1 self-start mb-3">
+                <button (click)="OpenIdentity()" color="accent" mat-raised-button>
+                    Kembali
+                </button>
+            </div>
             <!-- FORM IZIN START -->
-            <form  [formGroup]="formLeaveDetailRequest" class="flex flex-col justify-between h-full customBorder">
-
-                <div class="ml-1 self-start mb-3">
-                    <button (click)="OpenIdentity()" color="accent" mat-raised-button>
-                        Kembali
-                    </button>
-                </div>
+            <form  [formGroup]="formLeaveDetailRequest" >
     
                 <!-- Form Section -->
                     <div class="mr-5">
-                        <div *ngIf="(IsTypeIsLeave() && !IsLeaveCategoryIsYearly()) || permissionType === 'pp'" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="(IsTypeIsLeave() && !IsLeaveCategoryIsYearly() && formLeaveIdentity.get('is_ticket_supported').value) || permissionType === 'pp'" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Tanggal Berangkat (hari off)*</span>
                             </div>
@@ -356,17 +360,19 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() === false && permissionType === 'pp'" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Alasan Izin*</span>
+                                <span>Alasan Ijin*</span>
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
                                     <input 
+                                    (focusout)="SelectPermissionType()"
                                     matInput
                                     formControlName="permission_type"
                                     [matAutocomplete]="permissionList"
                                     >
                                     <mat-autocomplete #permissionList="matAutocomplete">
                                         <mat-option 
+                                        (click)="SelectPermissionType()"
                                         *ngFor="let item of filteredPermission | async" [value]="item.name">
                                             {{ item.name }}
                                         </mat-option>
@@ -381,7 +387,7 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Alasan Izin*</span>
+                                <span>Alasan Ijin*</span>
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
@@ -399,13 +405,13 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() === false" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Jumlah Hari Izin*</span>
+                                <span>Jumlah Hari Ijin*</span>
                             </div>
                             <div>
                                 <mat-form-field appearance="outline" class="w-full">
                                     <input 
                                     (keypress)="preventNonNumericalInput($event)"
-                                    (focusout)="CalculatePermissionLeaveDate()"
+                                    (focusout)="ResetFieldAfterInputPermissionAmount()"
                                     matInput [formControlName]="'permission_duration'" >
                                     <mat-error
                                     *ngIf="formLeaveDetailRequest.get('permission_duration').hasError('required')"
@@ -435,7 +441,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()" class="flex flex-row h-10 mb-5 items-baseline">
+                        <div *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly() && formLeaveIdentity.get('is_ticket_supported').value" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
                                 <span>Perjalanan*</span>
                             </div>
@@ -461,7 +467,7 @@
                             <div>
                                 <mat-form-field appearance="outline" class="w-full">
                                     <input 
-                                    (focusout)="CalculateLeaveDate()"
+                                    (focusout)="CalculateLeaveDate('first')"
                                     (keypress)="preventNonNumericalInput($event)"
                                     matInput [formControlName]="'field_leave_duration'">
                                     <mat-error
@@ -478,7 +484,10 @@
                             </div>
                             <div class="flex flex-row items-baseline">
                                 <mat-form-field appearance="outline" class="testing"> 
-                                    <input matInput [formControlName]="'field_leave_start_date'" [matDatepicker]="picker_leave_date_start" [readonly]="true">
+                                    <input  
+                                    (dateInput)="CalculateLeaveDate('last')"
+                                    matInput [formControlName]="'field_leave_start_date'" [matDatepicker]="picker_leave_date_start" 
+                                    [readonly]="false">
                                     <mat-datepicker-toggle matIconSuffix [for]="picker_leave_date_start"></mat-datepicker-toggle>
                                     <mat-datepicker #picker_leave_date_start></mat-datepicker>
                                 </mat-form-field>
@@ -510,7 +519,7 @@
                         </div>
                         <div *ngIf="IsYearlySelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Jumlah Cuti Tahunan*</span>
+                                <span>Jumlah Hari Cuti Tahunan*</span>
                             </div>
                             <div class="flex flex-row items-baseline">
                                 <mat-form-field appearance="outline" class="w-full">
@@ -544,6 +553,11 @@
                                     [formControlName]="'yearly_leave_start_date'" [matDatepicker]="picker_leave_yearly_start" [readonly]="true">
                                     <mat-datepicker-toggle matIconSuffix [for]="picker_leave_yearly_start"></mat-datepicker-toggle>
                                     <mat-datepicker #picker_leave_yearly_start></mat-datepicker>
+                                    <mat-error
+                                    *ngIf="formLeaveDetailRequest.get('yearly_leave_start_date').hasError('required')"
+                                    >
+                                    Kolom ini wajib diisi
+                                    </mat-error>
                                 </mat-form-field>
                                 <span class="mx-1">s/d</span>
                                 <mat-form-field appearance="outline" class="testing"> 
@@ -555,7 +569,7 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Tambah Izin*</span>
+                                <span>Tambah Ijin*</span>
                             </div>
                             <div>
                                 <mat-radio-group 
@@ -573,17 +587,19 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() && IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Alasan Izin*</span>
+                                <span>Alasan Ijin*</span>
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
                                     <input 
+                                    (focusout)="SelectPermissionType()"
                                     matInput
                                     formControlName="permission_type"
                                     [matAutocomplete]="permissionList"
                                     >
                                     <mat-autocomplete #permissionList="matAutocomplete">
                                         <mat-option 
+                                        (click)="SelectPermissionType()"
                                         *ngFor="let item of filteredPermission | async" [value]="item.name">
                                             {{ item.name }}
                                         </mat-option>
@@ -598,7 +614,7 @@
                         </div>
                         <div *ngIf="IsTypeIsLeave() && IsPermissionSelected()" class="flex flex-row h-10 mb-5 items-baseline">
                             <div class="w-50 text-left">
-                                <span>Jumlah Hari Izin*</span>
+                                <span>Jumlah Hari Ijin*</span>
                             </div>
                             <div>
                                 <mat-form-field appearance="outline" class="w-full">
@@ -688,27 +704,24 @@
                             </div>
                         </div>
                     </div>
-    
-                <!-- Button Group -->
-                <div class="self-end">
-                    <button mat-raised-button color="warn">Batalkan</button>
-                    <button (click)="SaveDetailRequest()" class="ml-2" mat-raised-button color="primary">Simpan</button>
-                </div>
             </form>
             <!-- FORM IZIN END -->
-
+           <!-- Button Group -->
+           <div class="self-end">
+            <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
+            <button (click)="SaveDetailRequest()" class="ml-2" mat-raised-button color="primary">Simpan</button>
+           </div>
         </div>
 
         <!-- Leave Form Section 3 -->
-        <div *ngIf="openTicektApproval">
-            <form  [formGroup]="formLeaveTicektApproval" class="flex flex-col justify-between h-full customBorder">
+        <div *ngIf="openTicektApproval" class="flex flex-col justify-between h-full">
+            <div class="ml-1 self-start mb-3">
+                <button (click)="OpenDetailRequest()" color="accent" mat-raised-button>
+                    Kembali
+                </button>
+            </div>
+            <form  [formGroup]="formLeaveTicektApproval" >
 
-                <div class="ml-1 self-start mb-3">
-                    <button (click)="OpenDetailRequest()" color="accent" mat-raised-button>
-                        Kembali
-                    </button>
-                </div>
-    
                 <!-- Form Section -->
                     <div class="mr-5">
                         <div class="flex flex-row h-10 mb-5 items-baseline">
@@ -813,7 +826,7 @@
                                                         <mat-option 
                                                         (click)="UpdateAirPortFormArrTo()"
                                                         *ngFor="let item of filteredAirPortTo | async" [value]="item.value">
-                                                            {{ item.city }} {{ item.value }}
+                                                            {{ item?.city }} {{ item?.value }}
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                     <mat-error
@@ -887,11 +900,6 @@
                             </div>
                             <div >
                                 <mat-form-field appearance="outline" class="w-full">
-                                    <!-- <mat-select [formControlName]="'substitute_officer'">
-                                        <mat-option (click)="selectSubtituteOfficer()"  *ngFor="let item of substituteOfficerList" [value]="item._id">
-                                            {{ item.name }}
-                                        </mat-option>
-                                    </mat-select> -->
                                     <input 
                                     matInput
                                     formControlName="substitute_officer"
@@ -964,15 +972,14 @@
                         </div>
                         <!-- END PERSETUJUAN CUTI -->
                     </div>
-    
-                <!-- Button Group -->
-                <div class="self-end">
-                    <button mat-raised-button color="warn">Batalkan</button>
-                    <button class="ml-2" mat-raised-button color="primary"
-                    (click)="consoleLOG();SaveTicektApproval()"
-                    >Ajukan Permohonan Cuti</button>
-                </div>
             </form>
+            <!-- Button Group -->
+            <div class="self-end">
+                <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
+                <button class="ml-2" mat-raised-button color="primary"
+                (click)="consoleLOG();SaveTicektApproval()"
+                >Ajukan Permohonan</button>
+            </div>
         </div>
 
     </div>

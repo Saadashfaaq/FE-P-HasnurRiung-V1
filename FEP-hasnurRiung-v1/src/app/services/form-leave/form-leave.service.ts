@@ -181,6 +181,7 @@ export class FormLeaveService {
         query GetOneEmployee($id: ID!) {
           GetOneEmployee(_id: $id) {
             name
+            age
             employee_number
             family_status
             date_of_registration {
@@ -204,7 +205,7 @@ export class FormLeaveService {
         }
       `,
       variables: {
-        id: "66181cac2d03e3e3187fa584"
+        id: "66181b5a2d03e3e3187f9c88"
       },
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetOneEmployee']));
@@ -242,5 +243,42 @@ export class FormLeaveService {
       },
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetAllApprovalGroups']));
+  }
+
+//   nrp
+// name
+// jenis permohonan
+// tanggal dibuat
+// bantuan tiket
+// tanggal mulai
+// tanggal berakhir
+// status
+// formulir cuti
+
+  GetAllApplicationForms(filter, sorting, pagination) {
+    return this._apollo.query({
+      query: gql`
+        query GetAllApplicationForms($filter: ApplicationFormFilter $sorting: ApplicationFormSorting $pagination: PaginationInput ) {
+          GetAllApplicationForms(filter: $filter sorting : $sorting pagination: $pagination ) {
+            employee_id {
+              employee_number
+              name
+            }
+            status
+            created_date
+            count_document
+            application_type
+            is_ticket_supported
+            _id
+          }
+        }
+      `,
+      variables: {
+        filter,
+        sorting,
+        pagination
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllApplicationForms']));
   }
 }
