@@ -254,7 +254,7 @@ export class FormLeaveComponent implements OnInit {
       is_ticket_supported: [null ,[Validators.required]],
       position: {value: this.formData?.position?.name, disabled: true},
       poh_status: {value: this.formData?.poh_status, disabled: true},
-      is_with_family: [null, [Validators.required]],
+      is_with_family: [{ value: false, disabled: true }, [Validators.required]],
       is_routine_official_letter: [{value: true , disabled: true}],
       leave_address: [null,[Validators.required]],
       is_lump_sump: [{value: this.formData?.is_lump_sump , disabled: true}],
@@ -582,13 +582,15 @@ SelectPermissionType(){
         this.formLeaveDetailRequest.get('departure_off_day').clearValidators()
         this.formLeaveDetailRequest.get('travel_date').clearValidators()
         this.formLeaveDetailRequest.get('field_leave_start_date').enable()
-        if(this.IsTypeIsLeave()){
+        if(this.IsTypeIsLeave() && this.formLeaveIdentity.get('leave_category').value !== 'tahunan'){
           console.log("kesini?")
           this.formLeaveDetailRequest.get('field_leave_start_date').setValidators([Validators.required])
         } 
       } else {
         this.formLeaveDetailRequest.get('departure_off_day').setValidators([Validators.required])
-        this.formLeaveDetailRequest.get('travel_date').setValidators([Validators.required, this.travelDateValidator('departure_off_day')])
+        if(this.formLeaveIdentity.get('application_type').value !== 'ijin'){
+          this.formLeaveDetailRequest.get('travel_date').setValidators([Validators.required, this.travelDateValidator('departure_off_day')])
+        }
         this.formLeaveDetailRequest.get('field_leave_start_date').disable()
         this.formLeaveDetailRequest.get('field_leave_start_date').clearValidators()
       }
@@ -714,7 +716,7 @@ SelectPermissionType(){
       ],
       start_date: this.formatDatePayload(this.formLeaveTicektApproval.get('leave_date_start_TicektApproval').value) ,
       end_date: this.formatDatePayload(this.formLeaveTicektApproval.get('leave_date_end_TicektApproval').value) ,
-      employee_id: "66238fcf96f3b99e9bd9c384"
+      employee_id: "66238fd096f3b99e9bd9c544"
     }
     return payload 
   }
@@ -1031,6 +1033,12 @@ updateValidators() {
   }
 
   CalculatePermissionLeaveDate(){
+    if(!this.IsTypeIsLeave() && this.formLeaveIdentity.get('permission_category').value === 'pp'){
+      this.formLeaveDetailRequest.get('is_yearly_leave').setValue(null)
+      this.formLeaveDetailRequest.get('yearly_leave_duration').setValue(null)
+      this.formLeaveDetailRequest.get('yearly_leave_start_date').setValue(null)
+      this.formLeaveDetailRequest.get('yearly_leave_end_date').setValue(null)
+    }
     if(this.IsTypeIsLeave()){
       this.formLeaveDetailRequest.get('permission_start_date').setValue(null)
     }
@@ -1090,7 +1098,7 @@ updateValidators() {
     } else if (this.IsTypeIsLeave() === false) {
       if (this.permissionType === 'pp') {
         const result = new Date(permissionStartDate);
-        result.setDate(result.getDate() + parseInt(permissionDuration));
+        result.setDate(result.getDate() + parseInt(permissionDuration) - 1);
         this.formLeaveDetailRequest.get('permission_end_date').setValue(result);
       } else if (this.permissionType === 'non_pp') {
         const result = new Date(permissionStartDate);
@@ -1675,27 +1683,30 @@ patchFormLeaveIdentity(data: any) {
   }
 
   SelectTicketSupported(){
-    console.log("salah")
-    if(this.formLeaveIdentity.get('is_ticket_supported').value === false){
-      this.formLeaveIdentity.get('is_with_family').setValue(false) 
-      this.formLeaveIdentity.get('is_with_family').disable()
-    } else {
-      this.formLeaveIdentity.get('is_with_family').setValue(false) 
-      this.formLeaveIdentity.get('is_with_family').disable()
-    }
-
-    if(!this.IsTypeIsLeave()){
-      this.formLeaveIdentity.get('is_with_family').setValue(false) 
-      this.formLeaveIdentity.get('is_with_family').disable()
-    } else {
-      if(this.formLeaveIdentity.get('is_ticket_supported').value === false){
+    if(this.formLeaveIdentity.get('poh_status').value === 'Non Lokal Perumahan'){
+      if(!this.IsTypeIsLeave()){
         this.formLeaveIdentity.get('is_with_family').setValue(false) 
         this.formLeaveIdentity.get('is_with_family').disable()
       } else {
-        this.formLeaveIdentity.get('is_with_family').setValue(null) 
-        this.formLeaveIdentity.get('is_with_family').enable()
+        if(this.formLeaveIdentity.get('is_ticket_supported').value === false){
+          this.formLeaveIdentity.get('is_with_family').setValue(false) 
+          this.formLeaveIdentity.get('is_with_family').disable()
+        } else {
+          this.formLeaveIdentity.get('is_with_family').setValue(null) 
+          this.formLeaveIdentity.get('is_with_family').enable()
+        }
       }
     }
+    // console.log("salah")
+    // if(this.formLeaveIdentity.get('is_ticket_supported').value === false){
+    //   this.formLeaveIdentity.get('is_with_family').setValue(false) 
+    //   this.formLeaveIdentity.get('is_with_family').disable()
+    // } else {
+    //   this.formLeaveIdentity.get('is_with_family').setValue(false) 
+    //   this.formLeaveIdentity.get('is_with_family').disable()
+    // }
+
+
   }
 
   GetAllUserForDropdown(){
