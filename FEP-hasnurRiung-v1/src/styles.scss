@@ -9,6 +9,9 @@
   }
   
   body {
+    background-color: #F2F1F1 !important;
+    padding: 0px;
+    margin: 0px;
     font-family: 'Catamaran-Regular', sans-serif; /* Gunakan font Catamaran secara default */
   }
 
@@ -78,8 +81,30 @@
     padding-bottom: 2px !important;
 }
 
-
 // Radio Button
+
+.mdc-button--raised {
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 8px 0 8px;
+}
+
+.mat-mdc-raised-button.mat-accent {
+    --mdc-protected-button-container-color: #FFF138;
+    --mdc-protected-button-label-text-color: #fff;
+    --mat-protected-button-state-layer-color: #fff;
+    --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+}
+
+.mat-mdc-raised-button.mat-primary {
+    --mdc-protected-button-container-color: #015BAB;
+    --mdc-protected-button-label-text-color: #fff;
+    --mat-protected-button-state-layer-color: #fff;
+    --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+}
+
+.mdc-button .mdc-button__label {
+    font-size: 10px;
+}
 
 .mat-mdc-radio-button.mat-accent {
     --mdc-radio-disabled-selected-icon-color: #000;
@@ -87,14 +112,35 @@
     --mdc-radio-unselected-hover-icon-color: #212121;
     --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
     --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
-    // --mdc-radio-selected-focus-icon-color: #ff4081;
-    --mdc-radio-selected-hover-icon-color: #ff4081;
-    --mdc-radio-selected-icon-color: #ff4081;
-    --mdc-radio-selected-pressed-icon-color: #ff4081;
+    --mdc-radio-selected-focus-icon-color: #015BAB;
+    --mdc-radio-selected-hover-icon-color: #015BAB;
+    --mdc-radio-selected-icon-color: #015BAB;
+    --mdc-radio-selected-pressed-icon-color: #015BAB;
     --mat-radio-ripple-color: #000;
-    --mat-radio-checked-ripple-color: #ff4081;
+    --mat-radio-checked-ripple-color: #015BAB;
     --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
 }
 
+.mat-mdc-form-field-error{
+    font-size: 12px;
+}
+
+// .mat-mdc-form-field.disabled {
+//     opacity: 0.6; /* Contoh: mengurangi opacity saat disable */
+//     pointer-events: none; /* Menonaktifkan interaksi pengguna saat disable */
+//   }
+  
+//   /* Styling untuk input saat dalam keadaan disable */
+//   .mat-mdc-input-element:disabled {
+//     background-color: #f2f2f2; /* Contoh: warna latar belakang saat disable */
+//     color: #999; /* Contoh: warna teks saat disable */
+//   }
+
+//   .mat-form-field-disabled{
+//     background-color: #015BAB;
+//   }
+
+
+  
 
 

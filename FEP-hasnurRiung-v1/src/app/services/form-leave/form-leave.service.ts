@@ -22,6 +22,8 @@ export class FormLeaveService {
               application_form_input: $application_form_input
             ){
               _id
+              pdf_application_form
+              pdf_leave_letter
             }
           }
         `,
@@ -58,6 +60,7 @@ export class FormLeaveService {
       })
       .pipe(map((resp) => resp?.data['UpdateApplicationForm']));
   }
+
 
   GetOneApplicationForm(payload){
     return this._apollo
@@ -173,6 +176,113 @@ export class FormLeaveService {
   }
   
 
+  GetOneEmployee(payload) {
+    return this._apollo.query({
+      query: gql`
+        query GetOneEmployee($id: ID!) {
+          GetOneEmployee(_id: $id) {
+            name
+            age
+            remaining_yearly_leaves
+            employee_number
+            family_status
+            date_of_registration {
+              time
+              date
+            }
+            poh_status
+            position {
+              name
+            }
+            placement_status
+            is_routine_official_letter
+            is_lump_sump
+            lump_sump_amount
+            date_of_eligible_for_leave {
+              time
+              date
+            }
+            _id
+          }
+        }
+      `,
+      variables: {
+        id: payload
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetOneEmployee']));
+  }
 
+  GetAllEmployees() {
+    return this._apollo.query({
+      query: gql`
+        query GetAllEmployees {
+          GetAllEmployees {
+            name
+            _id
+          }
+        }
+      `,
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllEmployees']));
+  }
 
+  GetAllApprovalGroups() {
+    return this._apollo.query({
+      query: gql`
+        query GetAllApprovalGroups($filter: ApprovalGroupFilter) {
+          GetAllApprovalGroups(filter: $filter)  {
+            _id
+            name
+            approval_index
+          }
+        }
+      `,
+      variables: {
+        filter: {
+          is_enabled: true
+        }
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllApprovalGroups']));
+  }
+
+//   nrp
+// name
+// jenis permohonan
+// tanggal dibuat
+// bantuan tiket
+// tanggal mulai
+// tanggal berakhir
+// status
+// formulir cuti
+
+  GetAllApplicationForms(filter, sorting, pagination) {
+    return this._apollo.query({
+      query: gql`
+        query GetAllApplicationForms($filter: ApplicationFormFilter $sorting: ApplicationFormSorting $pagination: PaginationInput ) {
+          GetAllApplicationForms(filter: $filter sorting : $sorting pagination: $pagination ) {
+            employee_id {
+              employee_number
+              name
+            }
+            status
+            created_date
+            count_document
+            application_type
+            start_date
+            end_date
+            is_ticket_supported
+            _id
+          }
+        }
+      `,
+      variables: {
+        filter,
+        sorting,
+        pagination
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllApplicationForms']));
+  }
 }

@@ -10,6 +10,9 @@ import isExtractableFile from 'extract-files/isExtractableFile.mjs';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { ToolbarComponent } from './navigation/toolbar/toolbar.component';
+import { SharedModule } from './modules/shared/shared.module';
 
 const uri = environment.apiUrl; // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
@@ -27,11 +30,14 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     AppComponent,
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     AppRoutingModule,
     ApolloModule, 
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SidenavListComponent,
+    ToolbarComponent
   ],
   providers: [
     {
