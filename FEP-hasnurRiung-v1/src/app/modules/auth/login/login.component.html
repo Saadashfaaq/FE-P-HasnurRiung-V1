@@ -1,0 +1,71 @@
+<div class="flex flex-col text-center items-center h-full justify-center w-full">
+    <mat-card style="width: 400px;" class="flex flex-col h-full mt-10 jusify-center py-4 px-10">
+        <div>
+            <img class="w-28 h-28" src="assets/images/LOGO.ico" alt="Deskripsi Gambar">
+        </div>
+       <h2 color="primary" style="font-weight: 800; color: #015BAB;" class="my-1 font-bold">STOPLESS</h2>
+       <p class="mt-0 text-xs italic">Surat Tugas Paperless</p>
+       <form class="flex flex-col" [formGroup]="loginForm">
+        <!-- NRP -->
+        <div >
+            <div class="text-left ml-1">
+                <span>NRP*</span>
+            </div>
+            <mat-form-field appearance="outline" class="w-full">
+                <input
+                    matInput
+                    [formControlName]="'employee_number'"
+                />
+                <mat-error>
+                    Kolom ini harus diisi
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Password field -->
+        <div>
+            <div class="text-left ml-1">
+                <span>Password*</span>
+            </div>
+            <mat-form-field appearance="outline" class="w-full">
+                <input
+                    id="password"
+                    matInput
+                    type="password"
+                    [formControlName]="'password'"
+                    #passwordField
+                />
+                <button
+                    mat-icon-button
+                    type="button"
+                    (click)="
+                        passwordField.type === 'password'
+                            ? (passwordField.type = 'text')
+                            : (passwordField.type = 'password')
+                    "
+                    matSuffix
+                >
+                    <mat-icon
+                        class="icon-size-5"
+                        *ngIf="passwordField.type === 'password'"
+                        [svgIcon]="'heroicons_solid:eye'"
+                    ></mat-icon>
+                    <mat-icon
+                        class="icon-size-5"
+                        *ngIf="passwordField.type === 'text'"
+                        [svgIcon]="'heroicons_solid:eye-slash'"
+                    ></mat-icon>
+                </button>
+                <mat-error>
+                    Kolom ini harus diisi
+                </mat-error>
+            </mat-form-field>
+        </div>
+       </form>
+       <div class="text-left">
+        <mat-checkbox class="example-margin">Ingat Saya</mat-checkbox>
+       </div>
+       <div>
+        <button (click)=" Login()" color="primary" mat-raised-button>Masuk</button>
+       </div>
+    </mat-card>
+</div>

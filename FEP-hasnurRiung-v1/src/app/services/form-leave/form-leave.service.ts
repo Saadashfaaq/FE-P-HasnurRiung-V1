@@ -23,6 +23,7 @@ export class FormLeaveService {
             ){
               _id
               pdf_application_form
+              pdf_leave_letter
             }
           }
         `,
@@ -206,7 +207,7 @@ export class FormLeaveService {
         }
       `,
       variables: {
-        id: "66238fcf96f3b99e9bd9c384"
+        id: payload
       },
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetOneEmployee']));
@@ -269,6 +270,8 @@ export class FormLeaveService {
             created_date
             count_document
             application_type
+            start_date
+            end_date
             is_ticket_supported
             _id
           }

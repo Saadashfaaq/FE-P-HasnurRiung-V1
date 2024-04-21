@@ -89,6 +89,8 @@ export class FormLeaveComponent implements OnInit {
   filteredPermission: Observable<any>
   filteredSubtituteOfficer: Observable<any>
 
+  employeeId : any
+
   //Boolena for open section
   openIdentity : boolean = false
   openDetailRequest : boolean = false
@@ -232,6 +234,8 @@ export class FormLeaveComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.employeeId = localStorage.getItem('userProfile');
+    console.log('employee_id', this.employeeId)
     this.GetOneUserLoginForm()
     this.SetDatePickerFormat()
   }
@@ -650,8 +654,10 @@ SelectPermissionType(){
       this.subs.sink = this._formLeaveService.CreateFormIdentity(payload).subscribe(
         (resp)=>{
           if(resp){
-            const url = resp?.pdf_application_form;
-            window.open(url, '_blank');
+            const urlAplicationForm = resp?.pdf_application_form;
+            const urlPdfLeave = resp?.pdf_leave_letter
+            window.open(urlAplicationForm, '_blank');
+            window.open(urlPdfLeave, '_blank');
             this.router.navigate([''])
           }
         },
@@ -716,7 +722,7 @@ SelectPermissionType(){
       ],
       start_date: this.formatDatePayload(this.formLeaveTicektApproval.get('leave_date_start_TicektApproval').value) ,
       end_date: this.formatDatePayload(this.formLeaveTicektApproval.get('leave_date_end_TicektApproval').value) ,
-      employee_id: "66238fd096f3b99e9bd9c544"
+      employee_id: this.employeeId
     }
     return payload 
   }
@@ -752,6 +758,7 @@ SelectPermissionType(){
         }
       }
     }
+    payload.leaves['leave_category'] = this.formLeaveIdentity.get('leave_category').value ? this.formLeaveIdentity.get('leave_category').value : null
     return payload;
   }
 
@@ -806,6 +813,8 @@ SelectPermissionType(){
         this.formLeaveDetailRequest.get('is_yearly_leave').setValue(true)
         this.formLeaveIdentity.get('is_ticket_supported').setValue(false)
         this.formLeaveIdentity.get('is_ticket_supported').disable()
+        this.formLeaveIdentity.get('is_with_family').setValue(false)
+        this.formLeaveIdentity.get('is_with_family').disable()
         this.formLeaveDetailRequest.get('yearly_leave_start_date').enable()
         this.formLeaveDetailRequest.get('yearly_leave_start_date').setValidators([Validators.required])
         this.formLeaveDetailRequest.get('yearly_leave_end_date').disable()
@@ -1102,7 +1111,7 @@ updateValidators() {
         this.formLeaveDetailRequest.get('permission_end_date').setValue(result);
       } else if (this.permissionType === 'non_pp') {
         const result = new Date(permissionStartDate);
-        result.setDate(result.getDate() + parseInt(permissionDuration));
+        result.setDate(result.getDate() + parseInt(permissionDuration) -1);
         this.formLeaveDetailRequest.get('permission_end_date').setValue(result);
       }
     }
@@ -1645,7 +1654,7 @@ patchFormLeaveIdentity(data: any) {
 
 
   GetOneUserLoginForm(){
-    this.subs.sink = this._formLeaveService.GetOneEmployee('').subscribe(
+    this.subs.sink = this._formLeaveService.GetOneEmployee(this.employeeId).subscribe(
       (resp)=>{
         if(resp){
           this.formData = resp

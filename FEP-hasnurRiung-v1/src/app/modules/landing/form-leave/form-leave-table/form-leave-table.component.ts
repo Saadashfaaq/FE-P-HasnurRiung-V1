@@ -20,8 +20,8 @@ import { SubSink } from 'subsink';
 })
 export class FormLeaveTableComponent {
   private subs = new SubSink();
-
-
+  employeeId : any
+  token : any
   dataSource = new MatTableDataSource([]);
   selection = new SelectionModel<any>(true, []);
   noData: any;
@@ -103,7 +103,15 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 
   }
   ngOnInit(): void {
+    this.employeeId = localStorage.getItem('userProfile');
+    this.token = localStorage.getItem('token')
     this.GetAllApplicationForms()
+    // if(this.employeeId &&  this.token){
+    //   this.router.navigate(['/auth/login'])
+    // } else {
+    //   console.log('employee_id', this.employeeId)
+    //   this.GetAllApplicationForms()
+    // }
   }
 
   ngAfterViewInit(): void {
@@ -153,6 +161,13 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 
   OpenFormToCreate(){
     this.router.navigate(['/form-leave'])
+  }
+
+  TemporaryLogout(){
+    console.log("HAHAHAH")
+    localStorage.removeItem('token');
+    localStorage.removeItem('userProfile');
+    this.router.navigate(['/auth/login'])
   }
   
 }
