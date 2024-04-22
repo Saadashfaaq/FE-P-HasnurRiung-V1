@@ -31,7 +31,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/tailwind.scss"
+              "src/tailwind.scss",
+              "node_modules/boxicons/css/boxicons.min.css"
             ],
             "scripts": []
           },

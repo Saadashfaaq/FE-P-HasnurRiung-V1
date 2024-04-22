@@ -94,7 +94,7 @@
                         <div class="mb-2">
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
-                                    <span>Alamat {{formType}}*</span>
+                                    <span>{{ formType ? 'Alamat ' + formType + '*' : 'Alamat*' }}</span>
                                 </div>
                                 <div>
                                     <mat-form-field appearance="outline" class="w-90">
@@ -282,7 +282,7 @@
                         <div class="mb-2">
                             <div class="flex flex-row h-10 mb-5 items-baseline">
                                 <div class="w-50 text-left">
-                                    <span>Tempat Tujuan {{formType}}*</span>
+                                    <span>{{ formType ? 'Tempat Tujuan ' + formType + '*' : 'Tempat Tujuan*' }}</span>
                                 </div>
                                 <div>
                                     <mat-form-field appearance="outline" class="w-90">
@@ -928,7 +928,7 @@
                                         <mat-option 
                                         (click)="selectSubtituteOfficer()"
                                         *ngFor="let item of filteredSubtituteOfficer | async" [value]="item.name">
-                                            {{ item.name }}
+                                          {{item?.employee_number}}  {{ item?.name }}
                                         </mat-option>
                                     </mat-autocomplete>
                                     <mat-error

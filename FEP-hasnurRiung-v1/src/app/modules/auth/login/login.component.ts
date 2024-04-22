@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy{
           if(resp){
             localStorage.setItem('token', resp.token);
             localStorage.setItem('userProfile', resp?.employee?._id);
-            this.router.navigate([''])
+            this.router.navigate(['/permit-leave'])
           }
         },
         (err)=>{

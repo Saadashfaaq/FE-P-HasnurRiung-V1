@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren:()=> import('./modules/landing/form-leave/form-leave.module').then((m)=>m.FormLeaveModule)
   },
   {
-    path: '',
+    path: 'auth',
     loadChildren:()=> import('./modules/auth/auth.module').then((m)=>m.AuthModule)
   },
   {

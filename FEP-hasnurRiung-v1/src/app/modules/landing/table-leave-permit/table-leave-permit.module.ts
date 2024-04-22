@@ -4,8 +4,6 @@ import { RouterModule, Routes } from '@angular/router';import { TableLeavePermit
 
 const routes : Routes = [
   {path: '', component:TableLeavePermitComponent},
-  // {path: 'form-leave', component:FormLeaveComponent},
-  // {path: 'form-leave/:id', component:FormLeaveComponent}
 ]
 
 @NgModule({

@@ -191,6 +191,7 @@ export class FormLeaveService {
               date
             }
             poh_status
+            poh_location
             position {
               name
             }
@@ -220,6 +221,7 @@ export class FormLeaveService {
           GetAllEmployees {
             name
             _id
+            employee_number
           }
         }
       `,

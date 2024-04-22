@@ -8,7 +8,7 @@ import { SharedModule } from '../../shared/shared.module';
 const routes : Routes = [
   // {path: '', component:FormLeaveTableComponent},
   {path: '', component:FormLeaveComponent},
-  {path: '/:id', component:FormLeaveComponent}
+  // {path: '/:id', component:FormLeaveComponent}
 ]
 
 @NgModule({

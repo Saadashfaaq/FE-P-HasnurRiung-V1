@@ -96,6 +96,8 @@ export class FormLeaveComponent implements OnInit {
   openDetailRequest : boolean = false
   openTicektApproval : boolean = false
 
+  poh_location
+
   // Variable For Item List
   categoryList = [
     {
@@ -246,13 +248,24 @@ export class FormLeaveComponent implements OnInit {
   }
 
   InitFormLeaveIdentity(){
+    let originalDate = this.formData?.date_of_registration?.date;
+
+    let parts = originalDate.split('/');
+    let day = parseInt(parts[0]);
+    let month = parseInt(parts[1]);
+    let year = parseInt(parts[2]);
+
+    let newDate = new Date(year, month - 1, day + 1);
+
+    let formattedDate = `${newDate.getDate().toString().padStart(2, '0')}/${(newDate.getMonth() + 1).toString().padStart(2, '0')}/${newDate.getFullYear()}`;
+
     this.formLeaveIdentity = this._formBuilder.group({
       application_type: [null,[Validators.required]],
       date_of_eligible_for_leave:{value: this.formData?.date_of_eligible_for_leave?.date, disabled: true},
       name: {value: this.formData?.name, disabled: true},
       employee_number: {value: this.formData?.employee_number, disabled: true},
       family_status: {value: this.formData?.family_status, disabled: true},
-      date_of_registration: {value: this.formData?.date_of_registration?.date, disabled: true},
+      date_of_registration: {value: formattedDate, disabled: true},
       leave_location : [null ,[Validators.required]],
       phone_number: [null ,[Validators.required]],
       is_ticket_supported: [null ,[Validators.required]],
@@ -328,7 +341,6 @@ export class FormLeaveComponent implements OnInit {
     }
   }
 
-
   InitFormLeaveDetailRequest(){
     this.formLeaveDetailRequest = this._formBuilder.group({
       departure_off_day: [null,[Validators.required]],
@@ -337,7 +349,7 @@ export class FormLeaveComponent implements OnInit {
       field_leave_start_date:[null],
       field_leave_end_date: [null],
       is_yearly_leave: [null,[Validators.required]],
-      yearly_leave_duration: [null, [Validators.pattern("^[0-6]$"), this.validateYearlyLeaveDuration.bind(this)]],
+      yearly_leave_duration: [null, [Validators.required,Validators.pattern("^[0-6]$"), this.validateYearlyLeaveDuration.bind(this)]],
       yearly_leave_start_date:[null],
       yearly_leave_end_date:[null],
       is_permission: [null,[Validators.required]],
@@ -381,7 +393,7 @@ export class FormLeaveComponent implements OnInit {
   updateYearlyLeaveValidation(value: boolean) {
     const yearlyLeaveDurationControl = this.formLeaveDetailRequest.get('yearly_leave_duration');
     if (value) {
-      yearlyLeaveDurationControl.setValidators([Validators.pattern("^[0-6]$"), this.validateYearlyLeaveDuration.bind(this)]);
+      yearlyLeaveDurationControl.setValidators([Validators.required ,Validators.pattern("^[0-6]$"), this.validateYearlyLeaveDuration.bind(this)]);
     } else {
       yearlyLeaveDurationControl.clearValidators();
     }
@@ -825,6 +837,8 @@ SelectPermissionType(){
         this.formLeaveDetailRequest.get('departure_off_day').clearValidators()
         this.formLeaveDetailRequest.get('field_leave_duration').clearValidators()
         this.formLeaveDetailRequest.get('is_compensation').clearValidators()
+        this.formLeaveDetailRequest.get('permission_start_date').disable()
+        this.formLeaveDetailRequest.get('permission_end_date').disable()
 
       } else {
         this.formLeaveIdentity.get('is_ticket_supported').setValue(null)
@@ -846,7 +860,7 @@ SelectPermissionType(){
         this.formLeaveDetailRequest.get('departure_off_day').setValidators([Validators.required, this.travelDateValidator('departure_off_day')])
         this.formLeaveDetailRequest.get('field_leave_duration').setValidators([Validators.required])
         this.formLeaveDetailRequest.get('is_compensation').setValidators([Validators.required])
-        if(this.formLeaveIdentity.get('poh_status').value === 'Lokal'){
+        if(this.formLeaveIdentity.get('poh_status').value === 'LOKAL'){
           this.formLeaveIdentity.get('is_ticket_supported').setValue(false)
           this.formLeaveIdentity.get('is_ticket_supported').disable()
         }
@@ -868,7 +882,7 @@ SelectPermissionType(){
 
   IsPohNonLocalPerumahan(): boolean{
     if(this.formLeaveIdentity.get('poh_status').value){
-      if(this.formLeaveIdentity.get('poh_status').value === 'Non Lokal Perumahan'){
+      if(this.formLeaveIdentity.get('poh_status').value === `NON LOKAL PERUMAHAN ${this.poh_location}`){
         return true
       } else {
         return false
@@ -1408,7 +1422,7 @@ updateValidators() {
     // return this.airPortList.filter(option => option.city.toLowerCase().includes(filerValue));
 
     const filterValue = value.toLowerCase()
-    const results = this.airPortList.filter(option => option.name.toLowerCase().includes(filterValue))
+    const results = this.airPortList.filter(option => option.city.toLowerCase().includes(filterValue))
     return results.length ? results : [{value:'Data Tidak Ditemukan'}];
   }
 
@@ -1417,7 +1431,7 @@ updateValidators() {
     // return this.airPortList.filter(option => option.city.toLowerCase().includes(filterValue))
 
     const filterValue = value.toLowerCase()
-    const results = this.airPortList.filter(option => option.name.toLowerCase().includes(filterValue))
+    const results = this.airPortList.filter(option => option.city.toLowerCase().includes(filterValue))
     return results.length ? results : [{value:'Data Tidak Ditemukan'}];
   }
 
@@ -1472,7 +1486,7 @@ updateValidators() {
     this.filteredAirPortTo = this.ticketsTravel.at(0).get('departure_to').valueChanges.pipe(
       startWith(''),
       map(value =>{
-        const name = typeof value === 'string' ? value : value?.city;
+        const name = typeof value === 'string' ? value : value?.value;
         return name ? this._filterAirPortTo(name as string) : this.airPortList.slice()
       })
     )
@@ -1482,7 +1496,7 @@ updateValidators() {
     this.filteredAirPortFrom = this.ticketsTravel.at(0).get('arrival_from').valueChanges.pipe(
       startWith(''),
       map(value =>{
-        const name = typeof value === 'string' ? value : value?.city;
+        const name = typeof value === 'string' ? value : value?.value;
         return name ? this._filterAirPortFrom(name as string) : this.airPortList.slice()
       })
     )
@@ -1668,6 +1682,7 @@ patchFormLeaveIdentity(data: any) {
           this.GetAllApprovalGroups()
           this.FilterPermission()
           this.filterSubituteOfficer()
+          this.poh_location = resp?.poh_location
           this.PohConfig(resp)
           this.InitStartDateDatailRequestBackup()
         }
@@ -1679,20 +1694,21 @@ patchFormLeaveIdentity(data: any) {
 
   PohConfig(resp){
     if(resp.poh_status === 'lokal') {
-      this.formLeaveIdentity.get('poh_status').setValue('Lokal')
+      // this.formLeaveIdentity.get('poh_status').setValue('LOKAL')
+      this.formLeaveIdentity.get('poh_status').setValue(`LOKAL ${this.poh_location}`)
       this.formLeaveIdentity.get('is_with_family').setValue(false)
       this.formLeaveIdentity.get('is_with_family').disable()
     }else if (resp.poh_status === 'non_lokal'){
-      this.formLeaveIdentity.get('poh_status').setValue('Non Lokal')
+      this.formLeaveIdentity.get('poh_status').setValue(`NON LOKAL ${this.poh_location}`)
       this.formLeaveIdentity.get('is_with_family').setValue(false)
       this.formLeaveIdentity.get('is_with_family').disable()
     } else if (resp.poh_status === 'non_lokal_perumahan'){
-      this.formLeaveIdentity.get('poh_status').setValue('Non Lokal Perumahan')
+      this.formLeaveIdentity.get('poh_status').setValue(`NON LOKAL PERUMAHAN ${this.poh_location}`)
     }
   }
 
   SelectTicketSupported(){
-    if(this.formLeaveIdentity.get('poh_status').value === 'Non Lokal Perumahan'){
+    if(this.formLeaveIdentity.get('poh_status').value === `NON LOKAL PERUMAHAN ${this.poh_location}`){
       if(!this.IsTypeIsLeave()){
         this.formLeaveIdentity.get('is_with_family').setValue(false) 
         this.formLeaveIdentity.get('is_with_family').disable()
@@ -1774,7 +1790,7 @@ patchFormLeaveIdentity(data: any) {
     }).then((resp)=>{
       console.log("resp", resp)
       if(resp.isConfirmed){
-        this.router.navigate([''])
+        this.router.navigate(['/permit-leave'])
       } else {
         return
       }
