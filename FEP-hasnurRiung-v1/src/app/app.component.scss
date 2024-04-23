@@ -12,7 +12,7 @@
   top: 0;
   height: 100%;
   width: 78px;
-  background: #11101d;
+  background: #fff;
   padding: 6px 14px;
   z-index: 99;
   transition: all 0.5s ease;
@@ -31,7 +31,7 @@
   transition: all 0.5s ease;
 }
 .sidebar .logo-details .logo_name {
-  color: #fff;
+  color: #1d1b31;
   font-size: 20px;
   font-weight: 600;
   opacity: 0;
@@ -55,7 +55,7 @@
   text-align: right;
 }
 .sidebar i {
-  color: #fff;
+  color: #1d1b31;
   height: 60px;
   min-width: 50px;
   font-size: 28px;
@@ -99,7 +99,7 @@
 }
 .sidebar input {
   font-size: 15px;
-  color: #fff;
+  color: #1d1b31;
   font-weight: 400;
   outline: none;
   height: 50px;
@@ -121,15 +121,15 @@
   transform: translateY(-50%);
   font-size: 22px;
   background: #1d1b31;
-  color: #fff;
+  color: #1d1b31;
 }
 .sidebar.open .bx-search:hover {
   background: #1d1b31;
-  color: #fff;
+  color: #1d1b31;
 }
 .sidebar .bx-search:hover {
-  background: #fff;
-  color: #11101d;
+  background: #1d1b31;
+  color: #fff;
 }
 .sidebar li a {
   display: flex;
@@ -139,13 +139,13 @@
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
-  background: #11101d;
-}
-.sidebar li a:hover {
   background: #fff;
 }
+.sidebar li a:hover {
+  background: #1d1b31;
+}
 .sidebar li a .links_name {
-  color: #fff;
+  color: #1d1b31;
   font-size: 15px;
   font-weight: 400;
   white-space: nowrap;
@@ -160,7 +160,7 @@
 .sidebar li a:hover .links_name,
 .sidebar li a:hover i {
   transition: all 0.5s ease;
-  color: #11101d;
+  color: #fff;
 }
 .sidebar li i {
   height: 50px;
@@ -197,7 +197,7 @@
 .sidebar li.profile .name,
 .sidebar li.profile .job {
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 600;
   color: #fff;
   white-space: nowrap;
 }
@@ -222,7 +222,7 @@
 }
 .home-section {
   position: relative;
-  background: #e4e9f7;
+  background: #f2f2f2;
   min-height: 100vh;
   top: 0;
   left: 78px;
@@ -236,11 +236,18 @@
 }
 .home-section .text {
   display: inline-block;
-  color: #11101d;
+  color: #fff;
   font-size: 25px;
   font-weight: 500;
   margin: 18px;
 }
+
+.button-logout{
+  cursor: pointer;
+  color: #fff !important;
+}
+
+
 @media (max-width: 420px) {
   .sidebar li .tooltip {
     display: none;

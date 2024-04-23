@@ -21,6 +21,7 @@ export class UserService {
               token
               employee {
                 _id
+                name
               }
             }
           }

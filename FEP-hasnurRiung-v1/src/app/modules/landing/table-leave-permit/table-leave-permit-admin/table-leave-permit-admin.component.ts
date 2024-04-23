@@ -162,11 +162,4 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
   OpenFormToCreate(){
     this.router.navigate(['/form-leave'])
   }
-
-  TemporaryLogout(){
-    console.log("HAHAHAH")
-    localStorage.removeItem('token');
-    localStorage.removeItem('userProfile');
-    this.router.navigate(['/auth/login'])
-  }
 }
