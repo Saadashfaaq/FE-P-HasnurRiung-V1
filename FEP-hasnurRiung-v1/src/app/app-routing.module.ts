@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'permit-work',
     loadChildren:()=> import('./modules/landing/table-work-permit/table-work-permit.module').then((m)=>m.TableWorkPermitModule)
+  },
+  {
+    path: 'approval',
+    loadChildren:()=> import('./modules/landing/approval-page/approval-page.module').then((m)=>m.ApprovalPageModule)
   }
 ];
 

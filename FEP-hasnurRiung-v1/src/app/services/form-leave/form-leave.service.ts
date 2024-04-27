@@ -325,4 +325,41 @@ export class FormLeaveService {
       .pipe(map((resp) => resp?.data['UpdateApprovalApplicationForm']));
   }
 
+  GetAllApplicationFormsEmployee(filter, sorting, pagination) {
+    return this._apollo.query({
+      query: gql`
+        query GetAllApplicationForms($filter: ApplicationFormFilter $sorting: ApplicationFormSorting $pagination: PaginationInput ) {
+          GetAllApplicationForms(filter: $filter sorting : $sorting pagination: $pagination ) {
+            application_type 
+            leaves {
+              departure_off_day {
+                date 
+              }
+              field_leave_duration 
+              yearly_leave_duration 
+              permission_duration 
+              compensation_duration 
+            }
+            is_ticket_supported 
+            start_date 
+            end_date 
+            created_date 
+            form_status 
+            pdf_application_form 
+            pdf_leave_letter 
+            count_document 
+            _id 
+          }
+        }
+      `,
+      variables: {
+        filter,
+        sorting,
+        pagination
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllApplicationForms']));
+  }
+
+
 }

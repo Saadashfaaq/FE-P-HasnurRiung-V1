@@ -11,16 +11,16 @@ import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'app-table-leave-permit-admin',
+  selector: 'app-approval-table-leave',
   standalone: true,
   imports: [
     SharedModule,
     MatIconModule
   ],
-  templateUrl: './table-leave-permit-admin.component.html',
-  styleUrl: './table-leave-permit-admin.component.scss'
+  templateUrl: './approval-table-leave.component.html',
+  styleUrl: './approval-table-leave.component.scss'
 })
-export class TableLeavePermitAdminComponent {
+export class ApprovalTableLeaveComponent {
   private subs = new SubSink();
   employeeId : any
   token : any
