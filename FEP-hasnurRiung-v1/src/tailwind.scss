@@ -2,6 +2,10 @@
   position: absolute
 }
 
+.sticky {
+  position: sticky
+}
+
 .inset-0 {
   inset: 0px
 }
@@ -25,6 +29,10 @@
   margin-bottom: 0.25rem
 }
 
+.mb-10 {
+  margin-bottom: 2.5rem
+}
+
 .mb-2 {
   margin-bottom: 0.5rem
 }
@@ -43,6 +51,10 @@
 
 .ml-1 {
   margin-left: 0.25rem
+}
+
+.ml-10 {
+  margin-left: 2.5rem
 }
 
 .ml-2 {
@@ -85,6 +97,10 @@
   margin-top: 2.5rem
 }
 
+.mt-2 {
+  margin-top: 0.5rem
+}
+
 .flex {
   display: flex
 }
@@ -101,12 +117,8 @@
   height: 2.5rem
 }
 
-.h-12 {
-  height: 3rem
-}
-
-.h-18 {
-  height: 4.5rem
+.h-20 {
+  height: 5rem
 }
 
 .h-28 {
@@ -129,16 +141,8 @@
   width: 2.75rem
 }
 
-.w-12 {
-  width: 3rem
-}
-
 .w-15 {
   width: 3.75rem
-}
-
-.w-18 {
-  width: 4.5rem
 }
 
 .w-2\/3 {
@@ -165,8 +169,12 @@
   width: 15rem
 }
 
-.w-90 {
-  width: 22.5rem
+.w-64 {
+  width: 16rem
+}
+
+.w-\[75\%\] {
+  width: 75%
 }
 
 .w-full {
@@ -176,6 +184,10 @@
 .w-max {
   width: -moz-max-content;
   width: max-content
+}
+
+.cursor-pointer {
+  cursor: pointer
 }
 
 .flex-row {
@@ -200,6 +212,10 @@
 
 .justify-between {
   justify-content: space-between
+}
+
+.gap-1 {
+  gap: 0.25rem
 }
 
 .self-start {
@@ -291,6 +307,21 @@
 
 .italic {
   font-style: italic
+}
+
+.text-green-700 {
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity))
+}
+
+.text-indigo-900 {
+  --tw-text-opacity: 1;
+  color: rgb(49 46 129 / var(--tw-text-opacity))
+}
+
+.text-red-700 {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity))
 }
 
 .text-white {

@@ -1722,16 +1722,6 @@ patchFormLeaveIdentity(data: any) {
         }
       }
     }
-    // console.log("salah")
-    // if(this.formLeaveIdentity.get('is_ticket_supported').value === false){
-    //   this.formLeaveIdentity.get('is_with_family').setValue(false) 
-    //   this.formLeaveIdentity.get('is_with_family').disable()
-    // } else {
-    //   this.formLeaveIdentity.get('is_with_family').setValue(false) 
-    //   this.formLeaveIdentity.get('is_with_family').disable()
-    // }
-
-
   }
 
   GetAllUserForDropdown(){
@@ -1749,16 +1739,21 @@ patchFormLeaveIdentity(data: any) {
   }
 
   GetAllApprovalGroups(){
-    this.subs.sink = this._formLeaveService.GetAllApprovalGroups().subscribe(
+    this.subs.sink = this._formLeaveService.GetAllApprovalGroups(this.employeeId).subscribe(
       (resp)=>{
         if(resp){
-          resp.forEach((approval)=>{
-            if(approval.approval_index === 1){
-              this.formLeaveTicektApproval.get('approval_id_2').setValue(approval?.name)
-            } else if(approval.approval_index === 2){
-              this.formLeaveTicektApproval.get('approval_id_3').setValue(approval?.name)
-            }
-          })
+          if(resp.length < 2){
+            this.formLeaveTicektApproval.get('approval_id_2').setValue(resp[0].name)
+            this.formLeaveTicektApproval.get('approval_id_3').setValue(resp[0].name)
+          } else {
+            resp.forEach((approval)=>{
+              if(approval?.name === 'HRGS'){
+                this.formLeaveTicektApproval.get('approval_id_3').setValue(approval?.name)
+              } else {
+                this.formLeaveTicektApproval.get('approval_id_2').setValue(approval?.name)
+              }
+            })
+          }
         }
       },
       (err)=>{
@@ -1794,7 +1789,6 @@ patchFormLeaveIdentity(data: any) {
       } else {
         return
       }
-      
     })
   }
 

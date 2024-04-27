@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ViewChild } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +15,7 @@ import { SubSink } from 'subsink';
   standalone: true,
   imports: [
     SharedModule,
+    MatIconModule
   ],
   templateUrl: './table-leave-permit-admin.component.html',
   styleUrl: './table-leave-permit-admin.component.scss'
@@ -63,36 +65,35 @@ export class TableLeavePermitAdminComponent {
     }
 ]
 
-// nrp
-// name
-// jenis permohonan
-// tanggal dibuat
-// bantuan tiket
-// tanggal mulai
-// tanggal berakhir
-// status
-// formulir cuti
+
 displayedColumns: string[] = [
-  'employee_number',
-  'name',
-  'application_type',
-  'is_ticket_supported',
-  'start_date',
-  'end_date',
-  'status',
-  'form_leave',
-  'action'
-];
-// displayedColumns: string[] = [
-//   'satu',
-//   'dua',
-//   'tiga',
-//   'empat',
-//   'lima',
-//   'enam',
-//   'formulir-cuti',
-//   'action'
-// ];
+  // "checkbox",
+  // "leave_letter_number",
+  "employee_number",
+  "name",
+  "position",
+  "department",
+  // "poh_status",
+  // "lump_sump_amount",
+  // "remaining_yearly_leaves",
+  // "application_type",
+  // "date",
+  // "field_leave_duration",
+  // "yearly_leave_duration",
+  // "permission_duration",
+  // "compensation_duration",
+  // "leave_comment",
+  // "start_date",
+  // "end_date",
+  // "leave_location",
+  // "leave_location_2",
+  "created_date",
+  "form_status",
+  "pdf_application_form",
+  "approver",
+  "action",
+
+]
 filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 
 
@@ -135,7 +136,9 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
       page: this.paginator.pageIndex ? this.paginator.pageIndex : 0,
     };
 
-    const filter = null
+    const filter = {
+      application_type: 'cuti'
+    }
 
     this.subs.sink = this._formLeaveService.GetAllApplicationForms(filter,this.sortValue,pagination)
     .subscribe(
@@ -161,5 +164,29 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 
   OpenFormToCreate(){
     this.router.navigate(['/form-leave'])
+  }
+
+  OpenPdfApplicationForm(url: string){
+    window.open(url, '_blank');
+  }
+
+  OpenPDFLeaveLetter(url : string){
+    window.open(url, '_blank');
+  }
+
+  TemporaryApproval(id: string , order : string){
+    const approver = {
+      approval_status: order === 'approve'? 'approved' : 'rejected',
+      approver_id: this.employeeId
+    }
+    this.subs.sink = this._formLeaveService.UpdateApprovalApplicationForm(id,approver).subscribe(
+      (resp)=>{
+        this.GetAllApplicationForms()
+        console.log("success")
+      },
+      (err)=>{
+        console.error(err)
+      }
+    )
   }
 }

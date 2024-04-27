@@ -229,7 +229,7 @@ export class FormLeaveService {
     }).pipe(map(resp => resp.data['GetAllEmployees']));
   }
 
-  GetAllApprovalGroups() {
+  GetAllApprovalGroups(userId) {
     return this._apollo.query({
       query: gql`
         query GetAllApprovalGroups($filter: ApprovalGroupFilter) {
@@ -242,39 +242,51 @@ export class FormLeaveService {
       `,
       variables: {
         filter: {
-          is_enabled: true
+          is_enabled: true,
+          employee_id: userId
         }
       },
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetAllApprovalGroups']));
   }
 
-//   nrp
-// name
-// jenis permohonan
-// tanggal dibuat
-// bantuan tiket
-// tanggal mulai
-// tanggal berakhir
-// status
-// formulir cuti
 
   GetAllApplicationForms(filter, sorting, pagination) {
     return this._apollo.query({
       query: gql`
         query GetAllApplicationForms($filter: ApplicationFormFilter $sorting: ApplicationFormSorting $pagination: PaginationInput ) {
           GetAllApplicationForms(filter: $filter sorting : $sorting pagination: $pagination ) {
+            leave_letter_number
             employee_id {
               employee_number
               name
+              position {
+                name
+                department
+              }
+              poh_status
+              lump_sump_amount
+              remaining_yearly_leaves
             }
-            status
-            created_date
-            count_document
             application_type
+            leaves {
+              departure_off_day {
+                date
+              }
+              field_leave_duration
+              yearly_leave_duration
+              permission_duration
+              compensation_duration
+              leave_comment
+            }
             start_date
             end_date
-            is_ticket_supported
+            leave_location
+            created_date
+            form_status
+            pdf_application_form
+            pdf_leave_letter
+            count_document
             _id
           }
         }
@@ -287,4 +299,30 @@ export class FormLeaveService {
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetAllApplicationForms']));
   }
+
+  UpdateApprovalApplicationForm(_id, approval_input) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation UpdateApprovalApplicationForm(
+            $_id: ID,
+            $approval_input : FormApprovalInput
+          ) {
+            UpdateApprovalApplicationForm(
+              _id: $_id,
+              approval_input: $approval_input
+            ){
+              _id
+            }
+          }
+        `,
+        variables: {
+          _id,
+          approval_input
+        },
+        errorPolicy: 'all',
+      })
+      .pipe(map((resp) => resp?.data['UpdateApprovalApplicationForm']));
+  }
+
 }
