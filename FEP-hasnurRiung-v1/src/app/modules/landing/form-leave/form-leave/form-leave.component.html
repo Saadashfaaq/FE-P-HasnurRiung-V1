@@ -325,7 +325,7 @@
                 </div>
             </form>
             <!-- Button Group -->
-            <div class="self-end">
+            <div *ngIf="!isPreviewMode" class="self-end">
                 <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
                 <button (click)="SaveIdentity()" class="ml-2" mat-raised-button color="primary">Simpan</button>
             </div>
@@ -333,7 +333,7 @@
 
         <!-- Leave Form Section 2 -->
         <div *ngIf="openDetailRequest" class="flex flex-col justify-between h-full">
-            <div class="ml-1 self-start mb-3">
+            <div *ngIf="!isPreviewMode" class="ml-1 self-start mb-3">
                 <button (click)="OpenIdentity()" color="accent" mat-raised-button>
                     Kembali
                 </button>
@@ -723,7 +723,7 @@
             </form>
             <!-- FORM IZIN END -->
            <!-- Button Group -->
-           <div class="self-end">
+           <div *ngIf="!isPreviewMode" class="self-end">
             <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
             <button (click)="SaveDetailRequest()" class="ml-2" mat-raised-button color="primary">Simpan</button>
            </div>
@@ -731,7 +731,7 @@
 
         <!-- Leave Form Section 3 -->
         <div *ngIf="openTicektApproval" class="flex flex-col ml-10 justify-between h-full">
-            <div class="ml-1 self-start mb-3">
+            <div *ngIf="!isPreviewMode" class="ml-1 self-start mb-3">
                 <button (click)="OpenDetailRequest()" color="accent" mat-raised-button>
                     Kembali
                 </button>
@@ -992,11 +992,27 @@
                     </div>
             </form>
             <!-- Button Group -->
-            <div class="self-end">
+            <div *ngIf="!isPreviewMode" class="self-end">
                 <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
                 <button class="ml-2" mat-raised-button color="primary"
                 (click)="consoleLOG();SaveTicektApproval()"
                 >Ajukan Permohonan</button>
+            </div>
+            <div  *ngIf="isPreviewMode" class="flex flex-row justify-between"> 
+                <div class="self-end gap-3">
+                    <button (click)="CancelCreateForm()" class="ml-2" color="warn" mat-raised-button >Batalkan</button>
+                </div>
+                <div  class="flex flex-row self-end">
+                    <div *ngIf="ButtonApproveCondition()">
+                        <button  (click)="OpenDialogApproval('cancel')" mat-raised-button color="warn">Tolak</button>
+                    </div>
+                    <div *ngIf="ButtonApproveCondition()" class="ml-2">
+                        <button (click)="OpenDialogApproval('revision')" mat-raised-button color="accent">Revisi </button>
+                    </div>
+                    <div *ngIf="ButtonApproveCondition()" class="ml-2">
+                        <button (click)="ApproveForm()"  mat-raised-button color="primary">Setuju </button>
+                    </div>
+                </div>
             </div>
         </div>
 

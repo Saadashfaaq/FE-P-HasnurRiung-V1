@@ -123,10 +123,6 @@
             <th mat-header-cell *matHeaderCellDef></th>
           </ng-container>
 
-          <ng-container matColumnDef="approver_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
-          </ng-container>
-
           <ng-container class="rightBottom" matColumnDef="action_filter" stickyEnd>
             <th mat-header-cell *matHeaderCellDef></th>
           </ng-container>
@@ -266,6 +262,7 @@
             <th mat-header-cell *matHeaderCellDef> Status Formulir </th>
             <td mat-cell *matCellDef="let element"> 
               <button 
+              (click)=" OpenDialogTimeline(element?._id)"
               [matTooltip]="getStatusTooltip(element?.form_status)"
               mat-icon-button
               [ngStyle]="{'color': getStatusColor(element?.form_status)}">
@@ -286,29 +283,11 @@
             </td>
           </ng-container>
 
-          <ng-container  matColumnDef="approver">
-            <th mat-header-cell *matHeaderCellDef > Approver Column </th>
-            <td mat-cell *matCellDef="let element"> 
-              <div class="flex flex-row jusify-center align-center gap-1">
-                <button
-                matTooltip="Approve Form"
-                 (click)="TemporaryApproval(element?._id , 'approve')" mat-icon-button>
-                  <mat-icon class="text-green-700">check</mat-icon>
-                </button>
-                <button 
-                matTooltip="Reject Form"
-                 (click)="TemporaryApproval(element?._id,'reject')" mat-icon-button>
-                  <mat-icon class="text-red-700">close</mat-icon>
-                </button>
-              </div>
-            </td>
-      </ng-container>
-
           <ng-container class="rightTop" matColumnDef="action" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef > Action </th>
                 <td mat-cell *matCellDef="let element"> 
                   <div class="flex flex-row jusify-center align-center gap-1">
-                    <button mat-icon-button>
+                    <button [routerLink]="['/form-leave',element?._id]" mat-icon-button>
                       <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
                     </button>
                     <button *ngIf="element.pdf_application_form" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>

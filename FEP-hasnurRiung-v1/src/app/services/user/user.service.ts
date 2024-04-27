@@ -22,6 +22,7 @@ export class UserService {
               employee {
                 _id
                 name
+                is_admin
               }
             }
           }

@@ -1,0 +1,48 @@
+<div class="p-3">
+    <div class="flex flex-row items-start justify-between">
+        <div>
+        <h2>{{data.order === 'cancel'? 'Tolak Permohonan' : 'Revisi Permohonan'}}</h2>
+        </div>
+        <div>
+            <button (click)="OnClose()" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <!-- <hr class="m-0"> -->
+    <div class="mb-2">
+        <h4 class="mb-1">
+            {{data.order === 'cancel'? 'Alasan Ditolak' : 'Alasan Revisi'}}
+        </h4>
+        <div class="p-2">
+            <mat-form-field class="h-max" appearance="outline" class="w-full">
+                <textarea 
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMaxCols="3"
+                cols="3"
+                [formControl]="summary"
+                ></textarea>
+                <!-- <mat-error
+                
+                >
+                Kolom ini wajib diisi
+                </mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="flex flex-row justify-end">
+        <button color="warn" mat-raised-button>
+            Batalkan
+        </button>
+        <button [disabled]="summary.invalid" (click)=" onSubmit()" *ngIf="data.order === 'cancel'" class="ml-2" color="accent" mat-raised-button>
+            Tolak
+        </button>
+        <button [disabled]="summary.invalid" (click)=" onSubmit()"  *ngIf="data.order !== 'cancel'" class="ml-2" color="accent" mat-raised-button>
+            Revisi
+        </button>
+    </div>
+</div>

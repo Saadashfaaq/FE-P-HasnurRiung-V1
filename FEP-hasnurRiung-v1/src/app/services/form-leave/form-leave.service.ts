@@ -85,8 +85,8 @@ export class FormLeaveService {
             phone_number
             permission_category
             pending_job
-            pdf_work_permit
-            pdf_leave_permit
+            pdf_work_letter
+            pdf_leave_letter
             pdf_application_form
             leaves {
               travel_date
@@ -160,9 +160,14 @@ export class FormLeaveService {
             approval {
               approver_id {
                 name
+                _id
               }
             }
             application_type
+            form_status
+            current_approvers {
+              _id
+            }
             _id
           }
         }

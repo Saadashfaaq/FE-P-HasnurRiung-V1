@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +10,7 @@ import { map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
+import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.component';
 
 @Component({
   selector: 'app-approval-table-leave',
@@ -58,7 +60,6 @@ displayedColumns: string[] = [
   "created_date",
   "form_status",
   "pdf_application_form",
-  "approver",
   "action",
 
 ]
@@ -68,6 +69,7 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
   constructor(
     private _formLeaveService : FormLeaveService,
     private router: Router,
+    private dialog: MatDialog
   ){
 
   }
@@ -104,15 +106,14 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
       page: this.paginator.pageIndex ? this.paginator.pageIndex : 0,
     };
 
-    // const filter = {
-    //   application_type: 'cuti'
-    // }
-    const filter = null
+    const filter = {
+      employee_id: this.employeeId,
+      is_for_approval: true
+    }
 
     this.subs.sink = this._formLeaveService.GetAllApplicationForms(filter,this.sortValue,pagination)
     .subscribe(
       (resp)=>{
-        console.log("RESP", resp)
         if(resp && resp.length){
           this.dataSource.data = resp
           this.paginator.length = resp[0].count_document;
@@ -209,5 +210,18 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
           default:
             return 'Status Tidak Diketahui';
         }
+      }
+
+      OpenDialogTimeline(formId){
+        const dialogRef = this.dialog.open(TimelineDialogComponent, {
+          data:formId,
+          width: '600px',
+          height: '340px',
+          disableClose: true,
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+        });
       }
 }

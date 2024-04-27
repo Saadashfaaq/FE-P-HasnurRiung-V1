@@ -9,6 +9,8 @@ import { map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
+import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-table-leave-permit-employee',
@@ -38,6 +40,7 @@ export class TableLeavePermitEmployeeComponent {
   constructor(
     private _formLeaveService : FormLeaveService,
     private router: Router,
+    public dialog: MatDialog
   ){
 
   }
@@ -173,5 +176,18 @@ export class TableLeavePermitEmployeeComponent {
         default:
           return 'Status Tidak Diketahui';
       }
+    }
+
+    OpenDialogTimeline(formId){
+      const dialogRef = this.dialog.open(TimelineDialogComponent, {
+        data:formId,
+        width: '600px',
+        height: '340px',
+        disableClose: true,
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      });
     }
 }

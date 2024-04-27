@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubSink } from 'subsink';
+import { MatDialog } from '@angular/material/dialog';
+import { ApprovalTableDialogComponent } from '../../approval-page/approval-table-dialog/approval-table-dialog.component';
 
 @Component({
   selector: 'app-form-leave',
@@ -28,6 +30,7 @@ import { SubSink } from 'subsink';
 })
 export class FormLeaveComponent implements OnInit {
   subs: SubSink = new SubSink();
+  isPreviewMode : boolean = false
   constructor(
     private _formBuilder: UntypedFormBuilder,
     // private datePipe: DatePipe
@@ -37,10 +40,13 @@ export class FormLeaveComponent implements OnInit {
     private _formLeaveService : FormLeaveService,
     private router: Router,
     private route: ActivatedRoute,
+    public dialog: MatDialog
   ){}
 
   formID : string
   formData
+  formStatus
+  currentApprovers
 
   isAplicationTypeLeave : boolean = null
   isPermissionPP : boolean = null
@@ -666,11 +672,7 @@ SelectPermissionType(){
       this.subs.sink = this._formLeaveService.CreateFormIdentity(payload).subscribe(
         (resp)=>{
           if(resp){
-            const urlAplicationForm = resp?.pdf_application_form;
-            const urlPdfLeave = resp?.pdf_leave_letter
-            window.open(urlAplicationForm, '_blank');
-            window.open(urlPdfLeave, '_blank');
-            this.router.navigate([''])
+            this.router.navigate(['/permit-leave'])
           }
         },
         (err)=>{
@@ -739,17 +741,21 @@ SelectPermissionType(){
     return payload 
   }
   CreatePayloadForDetailRequest(){
-    const leaves = this.formLeaveDetailRequest.value;
+    const leaves = this.formLeaveDetailRequest.getRawValue();
     const payload = {
       leaves: {},
       current_step_index: 1
     };
-  
+
+    console.log("leaves", leaves)
     // Perulangan untuk memeriksa setiap field dalam objek leaves
     for (const key in leaves) {
+      console.log("RILLLLL", key)
       if (leaves.hasOwnProperty(key)) {
+        console.log("APAKAH LOLOS SELEKSI SIR?", key)
         // Periksa apakah nilai field ada dan tidak null
         if (leaves[key] != null && leaves[key] !== '') {
+          console.log("cek lagi deh", key)
           // Jika ya, tambahkan field ke dalam payload
           if (key === 'departure_off_day') {
             // Jika field departure_off_day, tambahkan objek date ke dalam payload
@@ -758,6 +764,7 @@ SelectPermissionType(){
               time: '' // Kosongkan nilai time
             };
           } else if (key.includes('date')) {
+            console.log("masuk sini ga?",key )
             // Jika field berisi tanggal lain, konversi format tanggal dan tambahkan ke dalam payload
             payload.leaves[key] = formatDate(leaves[key], 'dd/MM/yyyy', 'en-US');
           } else if (key.includes('duration')) {
@@ -766,6 +773,7 @@ SelectPermissionType(){
           } else {
             // Jika bukan tanggal atau duration, langsung tambahkan ke dalam payload
             payload.leaves[key] = leaves[key];
+            console.log("NOER CONSOLE", key)
           }
         }
       }
@@ -942,21 +950,32 @@ SelectPermissionType(){
     const travelDate = this.formLeaveDetailRequest.get('travel_date').value;
     if (this.formLeaveIdentity.get('is_ticket_supported').value === true) {
       if (travelDate) {
+        
         const resultStart = new Date(travelDate);
         resultStart.setDate(resultStart.getDate() + 1);
         this.formLeaveDetailRequest.get('field_leave_start_date').setValue(resultStart);
     
         const resultEnd = new Date(travelDate);
         resultEnd.setDate(resultEnd.getDate() + parseInt(this.formLeaveDetailRequest.get('field_leave_duration').value));
+       
         this.formLeaveDetailRequest.get('field_leave_end_date').setValue(resultEnd);
+        console.log("this.formLeaveDetailRequest.get('field_leave_end_date'):",this.formLeaveDetailRequest.get('field_leave_end_date').value)
+
+        console.log("this.formLeaveDetailRequest.get('field_leave_end_date') 2:",this.formLeaveDetailRequest.get('field_leave_end_date').value)
+        console.log("this.formLeaveDetailRequest.get('field_leave_end_date') 3:",this.formLeaveDetailRequest.getRawValue())
       } else {
         console.error("Travel date is invalid.");
       }
     } else if (this.formLeaveIdentity.get('is_ticket_supported').value === false) {
       if (step === 'last') {
         const resultEnd = new Date(this.formLeaveDetailRequest.get('field_leave_start_date').value);
-        resultEnd.setDate(resultEnd.getDate() + parseInt(this.formLeaveDetailRequest.get('field_leave_duration').value) - 1);
+        resultEnd.setDate(resultEnd.getDate() + parseInt(this.formLeaveDetailRequest.get('field_leave_duration').value) - 1); 
+       
         this.formLeaveDetailRequest.get('field_leave_end_date').setValue(resultEnd);
+        console.log("this.formLeaveDetailRequest.get('field_leave_end_date'):",this.formLeaveDetailRequest.get('field_leave_end_date').value)
+
+        console.log("this.formLeaveDetailRequest.get('field_leave_end_date') 2:",this.formLeaveDetailRequest.get('field_leave_end_date').value)
+        console.log("this.formLeaveDetailRequest.get('field_leave_end_date') 3:",this.formLeaveDetailRequest.getRawValue())
       } else {
         return;
       }
@@ -1566,15 +1585,23 @@ updateValidators() {
       confirmButtonText:'Oke',
     })
   }
-
-
+  
   getParamsId(){
     const getParams = this.route.snapshot.params['id'];
     if(getParams){
       this.subs.sink = this._formLeaveService.GetOneApplicationForm(getParams).subscribe(
         (resp)=>{
+          this.isPreviewMode = true
+          this.openIdentity = true
+          this.openDetailRequest = true
+          this.openTicektApproval = true
           const data = resp
-          this.formID = resp._id
+          this.formID = getParams
+          setTimeout(() => {
+            this.formStatus = resp.form_status
+            this.currentApprovers = resp.current_approvers
+          }, 10);
+          console.log("resp.form_status", resp.form_status)
           this.patchFormLeaveIdentity(data);
           this.patchFormLeaveDetailRequest(data.leaves);
           this.patchFormLeaveTicketApproval(data);
@@ -1596,17 +1623,17 @@ patchFormLeaveIdentity(data: any) {
       date_of_registration: data?.employee_id?.date_of_registration?.date || null,
       leave_location: data?.leave_location || null,
       phone_number: data?.phone_number || null,
-      is_ticket_supported: data?.is_ticket_supported || null,
+      is_ticket_supported: data?.is_ticket_supported ,
       position: data?.employee_id?.position?.position || null,
       poh_status: data?.employee_id?.poh_status || null,
-      is_with_family: data?.is_with_family || null,
-      is_routine_official_letter: data?.employee_id?.is_routine_official_letter || null,
+      is_with_family: data?.is_with_family ,
+      is_routine_official_letter: data?.employee_id?.is_routine_official_letter,
       leave_address: data?.leave_address || null,
-      is_lump_sump: data?.employee_id?.is_lump_sump || null,
+      is_lump_sump: data?.employee_id?.is_lump_sump,
       lump_sump_amount: data?.employee_id?.lump_sump_amount || null,
       placement_status: data?.employee_id?.placement_status || null,
       leave_category:data?.leaves.leave_category || null,
-      permission_category:data?.permission_category || null
+      permission_category:data?.permission_category || null,
     });
   }
   
@@ -1617,16 +1644,16 @@ patchFormLeaveIdentity(data: any) {
       field_leave_duration: data?.field_leave_duration ? data.field_leave_duration.toString() : null,
       field_leave_start_date: data?.field_leave_start_date ? new Date(data.field_leave_start_date).toISOString() : null,
       field_leave_end_date: data?.field_leave_end_date ? new Date(data.field_leave_end_date).toISOString() : null,
-      is_yearly_leave: data?.is_yearly_leave || null,
+      is_yearly_leave: data?.is_yearly_leave ,
       yearly_leave_duration: data?.yearly_leave_duration ? data.yearly_leave_duration.toString() : null,
       yearly_leave_start_date: data?.yearly_leave_start_date ? new Date(data.yearly_leave_start_date).toISOString() : null,
       yearly_leave_end_date: data?.yearly_leave_end_date ? new Date(data.yearly_leave_end_date).toISOString() : null,
-      is_permission: data?.is_permission || null,
+      is_permission: data?.is_permission ,
       permission_type: data?.permission_type || null,
       permission_duration: data?.permission_duration ? data.permission_duration.toString() : null,
       permission_start_date: data?.permission_start_date ? new Date(data.permission_start_date).toISOString() : null,
       permission_end_date: data?.permission_end_date ? new Date(data.permission_end_date).toISOString() : null,
-      is_compensation: data?.is_compensation || null,
+      is_compensation: data?.is_compensation ,
       compensation_duration: data?.compensation_duration ? data.compensation_duration.toString() : null,
       compensation_start_date: data?.compensation_start_date ? new Date(data.compensation_start_date).toISOString() : null,
       compensation_end_date: data?.compensation_end_date ? new Date(data.compensation_end_date).toISOString() : null,
@@ -1640,10 +1667,10 @@ patchFormLeaveIdentity(data: any) {
       leave_date_start_TicektApproval: data?.travel_date || null,
       leave_date_end_TicektApproval: data?.travel_date || null,
       total_leave_amount: null, // Isi sesuai kebutuhan
-      leave_comment: data?.leave_comment || null,
-      substitute_officer: null, // Isi sesuai kebutuhan
+      leave_comment: data?.leaves?.leave_comment || null,
+      substitute_officer: data?.approval[0].approver_id?._id, // Isi sesuai kebutuhan
       pending_job: data?.pending_job || null,
-      approval_id_1: null, // Isi sesuai kebutuhan
+      approval_id_1: data?.approval[0].approver_id?.name, // Isi sesuai kebutuhan
       approval_id_2: data?.approval?.[0]?.approver_id?.name || null, // Menggunakan nama approver pertama jika tersedia
       approval_id_3: data?.approval?.[1]?.approver_id?.name || null, // Menggunakan nama approver kedua jika tersedia
     });
@@ -1747,7 +1774,7 @@ patchFormLeaveIdentity(data: any) {
             this.formLeaveTicektApproval.get('approval_id_3').setValue(resp[0].name)
           } else {
             resp.forEach((approval)=>{
-              if(approval?.name === 'HRGS'){
+              if(approval?.name === 'HCGS'){
                 this.formLeaveTicektApproval.get('approval_id_3').setValue(approval?.name)
               } else {
                 this.formLeaveTicektApproval.get('approval_id_2').setValue(approval?.name)
@@ -1805,4 +1832,78 @@ patchFormLeaveIdentity(data: any) {
     return `${formattedDay}/${formattedMonth}/${year}`;
   }
 
+  OpenDialogApproval(order:string){
+    const dialogRef = this.dialog.open(ApprovalTableDialogComponent, {
+      data: {
+        order: order,
+        formID : this.formID,
+      },
+      width: '600px',
+      height: '340px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  ApproveForm(){
+    Swal.fire({
+      title: 'Apakah Anda yakin untuk Menyetujui permohonan?',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText:'Iya',
+      showCancelButton: true,
+      cancelButtonText: "Tidak"
+    }).then((resp)=>{
+      console.log("resp", resp)
+      if(resp.isConfirmed){
+        this.SendApproveForm(this.formID)
+      } else {
+        return
+      }
+    })
+  }
+
+  
+  SendApproveForm(id: string){
+    const approver = {
+      approval_status: 'approved',
+      approver_id: this.employeeId
+    }
+    this.subs.sink = this._formLeaveService.UpdateApprovalApplicationForm(id,approver).subscribe(
+      (resp)=>{
+        if(resp){
+          Swal.fire({
+            title: 'Permohonan Disetujui',
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+            allowEnterKey: false,
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            confirmButtonText:'Iya',
+          }).then(()=>{
+            this.router.navigate(['/approval'])
+            console.log("success")
+          })
+        }
+      },
+      (err)=>{
+        console.error(err)
+      }
+    )
+  }
+
+  ButtonApproveCondition(): boolean {
+    return this.currentApprovers.some((approver) => approver._id === this.employeeId);
+  }
+
+
 }
+
+
+

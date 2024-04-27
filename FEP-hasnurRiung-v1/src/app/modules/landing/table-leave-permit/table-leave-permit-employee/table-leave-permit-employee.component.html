@@ -145,7 +145,7 @@
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let element"> 
                 <div class="flex flex-row jusify-center align-center gap-1">
-                    <button mat-icon-button>
+                    <button [routerLink]="['/form-leave',element?._id]" mat-icon-button>
                       <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
                     </button>
                     <button *ngIf="element.pdf_application_form" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>
