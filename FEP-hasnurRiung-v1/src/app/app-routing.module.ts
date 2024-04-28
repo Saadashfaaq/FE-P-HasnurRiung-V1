@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'approval',
     loadChildren:()=> import('./modules/landing/approval-page/approval-page.module').then((m)=>m.ApprovalPageModule)
+  },
+  {
+    path: 'approval-group',
+    loadChildren:()=> import('./modules/landing/approval-group/approval-group.module').then((m)=>m.ApprovalGroupModule)
   }
 ];
 

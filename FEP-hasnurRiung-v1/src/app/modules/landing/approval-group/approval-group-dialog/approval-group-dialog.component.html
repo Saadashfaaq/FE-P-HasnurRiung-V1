@@ -1,0 +1,108 @@
+<div class="p-3">
+    <div class="flex flex-row items-start justify-between">
+        <div>
+        <h2>Testing Componenet</h2>
+        </div>
+        <div>
+            <button (click)="OnClose()" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <!-- <hr class="m-0"> -->
+    <!-- <div class="flex flex-row gap-4 justify-around mb-2 w-full"> -->
+        <div
+        class="flex flex-row gap-4 mb-2 w-full"
+        [ngClass]="{
+          'justify-around': openApproval3,
+          'justify-start ml-4': !openApproval3
+        }"
+      >
+        <div class="flex flex-col text-left">
+            <h4 class="mb-1">
+                Testing Dialog
+            </h4>
+            <div class="flex flex-col p-2">
+                <form [formGroup]="formApproval2">
+                    <div class="flex flex-col" formArrayName="employees">
+                        <div *ngFor="let aprroval of approvals2.controls; let i = index" [formGroupName]="i">
+                            <div class="flex flex-row items-baseline gap-2">
+                                <div class="w-10 mr-2">
+                                    <span>
+                                        {{ i === 0 ? 'Default' : (i !== undefined ? (i + 1).toString() : 'Unknown') }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <mat-form-field class="w-50" appearance="outline">
+                                        <mat-select formControlName="employee">
+                                            <mat-option *ngFor="let key of employeeList" [value]="key._id" >
+                                                {{ key.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="text-red-500">
+                                    <button (click)="RemoveApproval2(i)" mat-icon-button>
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="self-end mr-3">
+                    <button (click)="CreateApprovals2()" class="p-2" mat-fab color="primary" >
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="openApproval3" class="flex flex-col text-left">
+            <h4 class="mb-1">
+                Testing Dialog
+            </h4>
+            <div class="flex flex-col p-2">
+                <form [formGroup]="formApproval3">
+                    <div class="flex flex-col" formArrayName="employees">
+                        <div *ngFor="let aprroval of approvals3.controls; let i = index" [formGroupName]="i">
+                            <div class="flex flex-row items-baseline gap-2">
+                                <div class="w-10 mr-2">
+                                    <span>
+                                        {{ i === 0 ? 'Default' : (i !== undefined ? (i + 1).toString() : 'Unknown') }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <mat-form-field class="w-50" appearance="outline">
+                                        <mat-select formControlName="employee">
+                                            <mat-option *ngFor="let key of employeeList" [value]="key._id" >
+                                                {{ key.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="text-red-500">
+                                    <button (click)="RemoveApproval3(i)" mat-icon-button>
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="self-end mr-3">
+                    <button (click)="CreateApprovals3()" class="p-2" mat-fab color="primary" >
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-row justify-end">
+        <button (click)="OnClose()" color="warn" mat-raised-button>
+            Batalkan
+        </button>
+        <button  (click)="UpdateGroupMutation()"   class="ml-2" color="primary" mat-raised-button>
+            Simpan
+        </button>
+    </div>
+</div>

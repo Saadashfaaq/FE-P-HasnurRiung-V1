@@ -367,4 +367,100 @@ export class FormLeaveService {
   }
 
 
+  GetAllApproalGroupMenu(userId){
+    return this._apollo.query({
+      query: gql`
+        query GetAllApprovalGroups($filter: ApprovalGroupFilter) {
+          GetAllApprovalGroups(filter: $filter)  {
+            _id
+            name
+            approval_index
+            department
+            approvals {
+              approver_list {
+                name
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        filter: {
+          employee_id: userId
+        }
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllApprovalGroups']));
+  }
+
+  GetOneApproalGroupMenu(id,employee_id){
+    return this._apollo.query({
+      query: gql`
+        query GetOneApprovalGroup($_id: ID $filter: ApprovalGroupFilter) {
+          GetOneApprovalGroup(_id: $_id filter: $filter)  {
+            _id
+            name
+            approval_index
+            department
+            approvals {
+              approver_list {
+                name
+                _id
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        _id : id,
+        filter: {
+          employee_id: employee_id
+        }
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetOneApprovalGroup']));
+  }
+
+  GetAllEmployeesApprovalMenu(userId) {
+    return this._apollo.query({
+      query: gql`
+        query GetAllEmployees($filter: EmployeeFilter) {
+          GetAllEmployees(filter: $filter) {
+            _id 
+            name
+            employee_number
+          }
+        }
+      `,
+      variables: {
+        userId: userId
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllEmployees']));
+  }
+
+
+  UpdateApprovalGroup(payload){
+    return this._apollo
+    .mutate({
+      mutation: gql`
+        mutation UpdateApprovalGroup(
+          $_id: ID, $approval_group_input: ApprovalGroupInput
+        ) {
+          UpdateApprovalGroup(
+            _id: $_id, approval_group_input: $approval_group_input
+          ){
+            _id
+          }
+        }
+      `,
+      variables: {
+        _id: payload.id,
+        approval_group_input: payload.approvalGroupInput
+      },
+      errorPolicy: 'all',
+    })
+    .pipe(map((resp) => resp?.data['UpdateApprovalGroup']));
+  }
+
 }
