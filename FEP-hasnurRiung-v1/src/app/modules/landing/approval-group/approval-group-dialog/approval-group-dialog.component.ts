@@ -5,13 +5,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
+import {MatDividerModule} from '@angular/material/divider';
+import { NgSelectModule } from '@ng-select/ng-select';
+import Swal from 'sweetalert2';
+import { result } from 'lodash';
 
 @Component({
   selector: 'app-approval-group-dialog',
   standalone: true,
   imports: [
     SharedModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDividerModule,
+    NgSelectModule,
   ],
   templateUrl: './approval-group-dialog.component.html',
   styleUrl: './approval-group-dialog.component.scss'
@@ -22,6 +28,9 @@ export class ApprovalGroupDialogComponent {
   formApproval2: FormGroup;
   formApproval3: FormGroup;
   employeeList
+  originalEmployeeList
+  hcgsList
+  originalHcgsList
   employeeId
   openApproval3 : boolean = false
 
@@ -44,13 +53,6 @@ export class ApprovalGroupDialogComponent {
     this.GetAllEmployee()
     this.GetOneApproalGroupMenu()
     this.InitFormApproval2()
-    
-    const approvalCount = 5;
-  
-    // Buat approval2 beberapa kali sesuai kebutuhan
-    for (let i = 0; i < approvalCount; i++) {
-      this.CreateApprovals2();
-    }
   }
 
   InitFormApproval2(){
@@ -121,35 +123,40 @@ export class ApprovalGroupDialogComponent {
 
 
       GetOneApproalGroupMenu(){
-        this.subs.sink = this._formLeaveService.GetOneApproalGroupMenu(this.data._id, this.employeeId)
+        this.subs.sink = this._formLeaveService.GetOneApproalGroupMenu(this.data._id, this.employeeId, this.data.department)
          .subscribe(
           (resp)=>{
             if(resp){
               if(resp.approvals.length > 1){
                 this.openApproval3 = true
+                this.GetAllEmployee3()
                 this.InitFormApproval3()
                 this.changeDetectorRef.detectChanges();
-                const approvalCount = 5;
-              
+
+                const approvalCount2 = resp.approvals[0].approver_list.length <= 5 ? 5 : resp.approvals[0].approver_list.length;
+  
                 // Buat approval2 beberapa kali sesuai kebutuhan
-                for (let i = 0; i < approvalCount; i++) {
+                for (let i = 0; i < approvalCount2; i++) {
+                  this.CreateApprovals2();
+                }
+
+                const approvalCount3 = resp.approvals[1].approver_list.length <= 5 ? 5 : resp.approvals[1].approver_list.length;
+                for (let i = 0; i < approvalCount3; i++) {
                   this.CreateApprovals3()
                 }
-                // const toSelect2 = this.employeeList.find(c => c._id === resp.approvals[0].approver_list[0]._id);
-                
-                // this.approvals2.at(0).get('employee').setValue(resp.approvals[0].approver_list[0]._id)
                 resp.approvals[0].approver_list.forEach((list,index)=>{
                   this.approvals2.at(index).get('employee').setValue(list._id)
+                  this.changeDetectorRef.detectChanges()
                 })
-                // const toSelect3 = this.employeeList.find(c => c._id === resp.approvals[1].approver_list[0]._id);
-                
-                // this.approvals3.at(0).get('employee').setValue(resp.approvals[1].approver_list[0]._id)
                 resp.approvals[1].approver_list.forEach((list,index)=>{
                   this.approvals3.at(index).get('employee').setValue(list._id)
+                  this.changeDetectorRef.detectChanges()
                 })
+                
               } else {
                 resp.approvals[0].approver_list.forEach((list,index)=>{
                   this.approvals2.at(index).get('employee').setValue(list._id)
+                  this.changeDetectorRef.detectChanges()
                 })
               }
             }
@@ -161,12 +168,36 @@ export class ApprovalGroupDialogComponent {
       }
 
       GetAllEmployee(){
-        
-        this.subs.sink = this._formLeaveService.GetAllEmployeesApprovalMenu(this.employeeId)
+        this.subs.sink = this._formLeaveService.GetAllEmployeesApprovalMenu(this.data.department)
         .subscribe(
          (resp)=>{
            if(resp){
-             this.employeeList = resp
+              // Tambahkan properti displayName ke setiap objek
+              this.hcgsList = resp.map((emp) => ({
+                ...emp, // salin semua properti asli
+                displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
+              }));
+              this.originalHcgsList = [...this.hcgsList]; // simpan salinan asli
+            //  this.employeeList = resp
+            //  this.originalEmployeeList = resp
+           }
+         },
+         (err)=>{
+           console.error(err)
+         }
+       )
+      }
+      GetAllEmployee3(){
+        this.subs.sink = this._formLeaveService.GetAllEmployeesApprovalMenu('HCGS')
+        .subscribe(
+         (resp)=>{
+           if(resp){
+              // Tambahkan properti displayName ke setiap objek
+              this.employeeList = resp.map((emp) => ({
+                ...emp, // salin semua properti asli
+                displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
+              }));
+              this.originalEmployeeList = [...this.employeeList]; // simpan salinan asli
            }
          },
          (err)=>{
@@ -176,7 +207,7 @@ export class ApprovalGroupDialogComponent {
       }
 
 
-    UpdateGroupMutation(){
+    UpdateGroupMutation(department){
      const approvalFormArray = [
       this.formApproval2.value, 
       this.formApproval3 ? this.formApproval3.value : []
@@ -188,13 +219,13 @@ export class ApprovalGroupDialogComponent {
       this.subs.sink = this._formLeaveService.UpdateApprovalGroup(payload)
       .subscribe((reps)=>{
         if(reps){
-          this.dialogRef.close('success');
+          this.openSwalSave(department)
+          // this.dialogRef.close('success');
         }
       })
     }
 
     CreateDynamicPayload(id, approvalForms) {
-      // Filter approvalForms untuk menghindari elemen yang kosong atau tidak valid
       const validApprovalForms = approvalForms.filter((form) => form && form.employees && form.employees.length > 0);
     
       // Pemetaan hanya pada formulir yang valid
@@ -202,9 +233,9 @@ export class ApprovalGroupDialogComponent {
         const approverList = form.employees.map((emp) => emp.employee); 
     
         return {
-          approval_index: index + 1, // Indeks persetujuan berdasarkan urutan dalam array
-          default_approver: approverList[0], // Default approver adalah yang pertama dalam daftar
-          approver_list: approverList, // Daftar semua approver dalam grup ini
+          approval_index: index + 1,
+          default_approver: approverList[0], 
+          approver_list: approverList, 
         };
       });
     
@@ -218,6 +249,61 @@ export class ApprovalGroupDialogComponent {
       return payload; // Kembalikan payload yang telah dibuat
     }
 
+    openSwalSave(department){
+      Swal.fire({
+        title: `Grup Approval Departemen ${department} berhasil di perbaru`,
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        allowEnterKey: false,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then((result)=>{
+        if(result){
+          this.dialogRef.close('success');
+        }
+      })
+    }
+    openSwalCancel(){
+      Swal.fire({
+        title: 'Apakah Anda Yakin Ingin Membatalkan?',
+        icon: 'warning',
+        html:'Perubahan yang Anda masukkan tidak akan disimpan',
+        confirmButtonColor: '#3085d6',
+        allowEnterKey: false,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        confirmButtonText:'Iya',
+        showCancelButton: true,
+        cancelButtonText: "Tidak"
+      }).then((result)=>{
+        if(result.isConfirmed){
+          this.dialogRef.close();
+        } else {
+          return
+        }
+      })
+    }
 
+
+    onEmployeeSelect() {
+      const selectedValues = this.approvals2.controls
+        .map((control) => control.get('employee')?.value)
+        .filter((value) => value !== null); // kumpulkan semua nilai yang telah dipilih
+  
+      // Perbarui daftar opsi dengan menghapus item yang telah dipilih
+      this.employeeList = this.originalEmployeeList.filter(
+        (emp) => !selectedValues.includes(emp._id)
+      );
+    }
+    onHsgsSelect() {
+      const selectedValues = this.approvals3.controls
+        .map((control) => control.get('employee')?.value)
+        .filter((value) => value !== null); // kumpulkan semua nilai yang telah dipilih
+  
+      // Perbarui daftar opsi dengan menghapus item yang telah dipilih
+      this.hcgsList = this.originalHcgsList.filter(
+        (emp) => !selectedValues.includes(emp._id)
+      );
+    }
 
 }

@@ -183,16 +183,20 @@
   height: 5rem
 }
 
-.h-24 {
-  height: 6rem
-}
-
 .h-28 {
   height: 7rem
 }
 
+.h-32 {
+  height: 8rem
+}
+
 .h-8 {
   height: 2rem
+}
+
+.h-\[45px\] {
+  height: 45px
 }
 
 .h-full {
@@ -232,16 +236,16 @@
   width: 5rem
 }
 
-.w-24 {
-  width: 6rem
-}
-
 .w-28 {
   width: 7rem
 }
 
 .w-30 {
   width: 7.5rem
+}
+
+.w-32 {
+  width: 8rem
 }
 
 .w-40 {
@@ -264,6 +268,10 @@
   width: 2rem
 }
 
+.w-80 {
+  width: 20rem
+}
+
 .w-\[75\%\] {
   width: 75%
 }
@@ -281,8 +289,8 @@
   min-width: 12.5rem
 }
 
-.max-w-50 {
-  max-width: 12.5rem
+.max-w-80 {
+  max-width: 20rem
 }
 
 .cursor-pointer {
@@ -361,6 +369,10 @@
   align-self: flex-end
 }
 
+.self-center {
+  align-self: center
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -436,6 +448,11 @@
   padding-right: 0.5rem
 }
 
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem
@@ -451,6 +468,10 @@
   padding-bottom: 1rem
 }
 
+.pb-2 {
+  padding-bottom: 0.5rem
+}
+
 .pl-1 {
   padding-left: 0.25rem
 }
@@ -461,6 +482,10 @@
 
 .pt-3 {
   padding-top: 0.75rem
+}
+
+.pt-4 {
+  padding-top: 1rem
 }
 
 .text-left {
@@ -501,6 +526,11 @@
 .text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity))
+}
+
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity))
 }
 
 .text-green-700 {

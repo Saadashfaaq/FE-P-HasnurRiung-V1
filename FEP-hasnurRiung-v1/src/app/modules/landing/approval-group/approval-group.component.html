@@ -1,19 +1,19 @@
 <div class="p-10 flex flex-wrap gap-5 justify-center">
     <div *ngFor="let group of approvalGroupData">
-        <div (click)="OpenDialogAprovalGroup(group)" class="min-w-50 cursor-pointer max-w-50 w-50 custom-background border text-center border-gray-200 rounded-lg shadow-md p-4">
+        <div (click)="OpenDialogAprovalGroup(group)" class="min-w-50 cursor-pointer max-w-80 w-80 custom-background flex flex-col justify-center border text-center border-gray-200 rounded-lg shadow-md p-4">
             <!-- Bagian gambar -->
             <div class="flex justify-center mb-2">
               <img
-                class="w-24 h-24 rounded-full"
+                class="w-32 h-32 rounded-full"
                 src="../../../../assets/images/60111.jpg"
                 alt="User profile"
               />
             </div>
             <!-- Bagian informasi pengguna -->
-            <div class="text-center mt-4">
+            <div class="text-center flex flex-col self-center justify-center w-60 mt-4">
               <h3 class="text-sm text-white font-semibold">{{group?.department}}</h3>
-              <p class="text-white text-sm text-content truncate">{{ group?.approvals?.[0]?.approver_list?.[0]?.name }}</p>
-              <p class="text-white  text-xs mb-0 text-content truncate">{{ group?.approvals?.[0]?.approver_list?.[0]?.position?.name }}</p>
+              <p class="text-white text-md text-content truncate">{{ group?.approvals?.[0]?.approver_list?.[0]?.name }}</p>
+              <p class="text-white  text-md mb-0 text-content truncate">{{ group?.approvals?.[0]?.approver_list?.[0]?.position?.name }}</p>
             </div>
             <!-- Bagian aksi/tombol -->
             <div class="w-full h-max flex justify-center">
@@ -21,7 +21,7 @@
                 <!-- <button (click)="OpenDialogAprovalGroup(group)" mat-raised-button color="accent">
                   Edit
                 </button> -->
-                <span class="text-black font-semibold text-content text-xs">{{ group?.approvals?.[0]?.approver_list?.[0]?.employee_number }}</span>
+                <span class="text-black font-semibold text-content text-sm">{{ group?.approvals?.[0]?.approver_list?.[0]?.employee_number }}</span>
               </div>
             </div>
           </div>

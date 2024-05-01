@@ -397,7 +397,7 @@ export class FormLeaveService {
     }).pipe(map(resp => resp.data['GetAllApprovalGroups']));
   }
 
-  GetOneApproalGroupMenu(id,employee_id){
+  GetOneApproalGroupMenu(id,employee_id,department){
     return this._apollo.query({
       query: gql`
         query GetOneApprovalGroup($_id: ID $filter: ApprovalGroupFilter) {
@@ -410,6 +410,7 @@ export class FormLeaveService {
               approver_list {
                 name
                 _id
+                employee_number
               }
             }
           }
@@ -418,14 +419,15 @@ export class FormLeaveService {
       variables: {
         _id : id,
         filter: {
-          employee_id: employee_id
+          employee_id: employee_id,
+          department : department
         }
       },
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetOneApprovalGroup']));
   }
 
-  GetAllEmployeesApprovalMenu(userId) {
+  GetAllEmployeesApprovalMenu(department) {
     return this._apollo.query({
       query: gql`
         query GetAllEmployees($filter: EmployeeFilter) {
@@ -437,7 +439,10 @@ export class FormLeaveService {
         }
       `,
       variables: {
-        userId: userId
+        filter:{
+          department: department
+        }
+        
       },
       fetchPolicy: 'network-only',
     }).pipe(map(resp => resp.data['GetAllEmployees']));

@@ -6,13 +6,14 @@ import { ApprovalGroupDialogComponent } from './approval-group-dialog/approval-g
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
 import {MatDividerModule} from '@angular/material/divider';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-approval-group',
   standalone: true,
   imports: [
     SharedModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   templateUrl: './approval-group.component.html',
   styleUrl: './approval-group.component.scss'
@@ -32,13 +33,12 @@ export class ApprovalGroupComponent {
   ngOnInit(): void {
     this.employeeId = localStorage.getItem('userProfile');
     this.GetAllAppoverGroup()
-    // this.changeDetectorRef.detectChanges();
   }
 
 OpenDialogAprovalGroup(group){
   const dialogRef = this.dialog.open(ApprovalGroupDialogComponent, {
     data:group,
-    width: '930px',
+    width: '980px',
     height: '620px',
     disableClose: true,
   });

@@ -1,7 +1,7 @@
-<div class="p-3">
+<div class="px-8 pt-4 pb-2">
     <div class="flex flex-row items-start justify-between">
         <div>
-        <h2> Grup Approval {{ data.department}}</h2>
+        <h2 class="text-gray-900"> Grup Approval {{ data.department}}</h2>
         </div>
         <div>
             <button (click)="OnClose()" mat-icon-button>
@@ -9,8 +9,7 @@
             </button>
         </div>
     </div>
-    <!-- <hr class="m-0"> -->
-    <!-- <div class="flex flex-row gap-4 justify-around mb-2 w-full"> -->
+    <mat-divider></mat-divider>
         <div
         class="flex flex-row gap-4 mb-2 w-full"
         [ngClass]="{
@@ -19,30 +18,39 @@
         }"
       >
         <div class="flex flex-col text-left">
-            <h4 class="mb-1">
+            <h4 class="mb-1 text-gray-900">
                 Persetujuan 2
             </h4>
             <div class="flex flex-col p-2">
                 <form [formGroup]="formApproval2">
                     <div class="flex flex-col" formArrayName="employees">
                         <div *ngFor="let aprroval of approvals2.controls; let i = index" [formGroupName]="i">
-                            <div class="flex flex-row items-baseline gap-2">
-                                <div class="w-10 mr-2">
-                                    <span>
-                                        {{ i === 0 ? 'Default' : (i !== undefined ? (i + 1).toString() : 'Unknown') }}
+                            <div class="flex flex-row my-3 items-baseline gap-2">
+                                <div class="w-10 mr-3">
+                                    <span class="font-semibold text-gray-900">
+                                        {{ i === 0 ? 'Default' : (i !== undefined ? (i).toString() : 'Unknown') }}
                                     </span>
                                 </div>
-                                <div>
-                                    <mat-form-field class="w-50" appearance="outline">
+                                <div class="w-80 h-[45px]">
+                                    <!-- <mat-form-field class="w-80" appearance="outline">
                                         <mat-select formControlName="employee">
-                                            <mat-option *ngFor="let key of employeeList" [value]="key._id" >
-                                                {{ key.name }}
+                                            <mat-option class="truncate" *ngFor="let key of employeeList" [value]="key._id" >
+                                                {{ key.employee_number + ' - ' + key.name }}
                                             </mat-option>
                                         </mat-select>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+                                    <ng-select 
+                                    appendTo="body"
+                                    [items]="employeeList"
+                                    bindLabel="displayName"
+                                    bindValue="_id"
+                                    placeholder="Pilih Karyawan"
+                                    formControlName="employee"
+                                    (change)="onEmployeeSelect()">
+                         </ng-select>
                                 </div>
                                 <div class="text-red-500">
-                                    <button (click)="RemoveApproval2(i)" mat-icon-button>
+                                    <button *ngIf="i !== 0" (click)="RemoveApproval2(i)" mat-icon-button>
                                         <mat-icon>delete</mat-icon>
                                     </button>
                                 </div>
@@ -58,30 +66,39 @@
             </div>
         </div>
         <div *ngIf="openApproval3" class="flex flex-col text-left">
-            <h4 class="mb-1">
+            <h4 class="mb-1 text-gray-900">
                 Persetujuan 3
             </h4>
             <div class="flex flex-col p-2">
                 <form [formGroup]="formApproval3">
                     <div class="flex flex-col" formArrayName="employees">
                         <div *ngFor="let aprroval of approvals3.controls; let i = index" [formGroupName]="i">
-                            <div class="flex flex-row items-baseline gap-2">
-                                <div class="w-10 mr-2">
-                                    <span>
-                                        {{ i === 0 ? 'Default' : (i !== undefined ? (i + 1).toString() : 'Unknown') }}
+                            <div class="flex flex-row my-3 items-baseline gap-2">
+                                <div class="w-10 mr-3">
+                                    <span class="font-semibold">
+                                        {{ i === 0 ? 'Default' : (i !== undefined ? (i).toString() : 'Unknown') }}
                                     </span>
                                 </div>
-                                <div>
-                                    <mat-form-field class="w-50" appearance="outline">
+                                <div class="w-80 h-[45px]">
+                                    <!-- <mat-form-field class="w-80" appearance="outline">
                                         <mat-select formControlName="employee">
                                             <mat-option *ngFor="let key of employeeList" [value]="key._id" >
-                                                {{ key.name }}
+                                                {{ key.employee_number + ' - ' + key.name }}
                                             </mat-option>
                                         </mat-select>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+                                    <ng-select 
+                                    appendTo="body"
+                                    [items]="employeeList"
+                                    bindLabel="displayName"
+                                    bindValue="_id"
+                                    placeholder="Pilih Karyawan"
+                                    formControlName="employee"
+                                    (change)="onHsgsSelect()">
+                         </ng-select>
                                 </div>
                                 <div class="text-red-500">
-                                    <button (click)="RemoveApproval3(i)" mat-icon-button>
+                                    <button *ngIf="i !== 0" (click)="RemoveApproval3(i)" mat-icon-button>
                                         <mat-icon>delete</mat-icon>
                                     </button>
                                 </div>
@@ -98,10 +115,10 @@
         </div>
     </div>
     <div class="flex flex-row justify-end">
-        <button (click)="OnClose()" color="warn" mat-raised-button>
+        <button (click)="openSwalCancel()" color="warn" mat-raised-button>
             Batalkan
         </button>
-        <button  (click)="UpdateGroupMutation()"   class="ml-2" color="primary" mat-raised-button>
+        <button  (click)="UpdateGroupMutation(data.department)"   class="ml-2" color="primary" mat-raised-button>
             Simpan
         </button>
     </div>
