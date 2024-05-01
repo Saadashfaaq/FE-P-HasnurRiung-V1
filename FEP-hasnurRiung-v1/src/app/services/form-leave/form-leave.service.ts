@@ -379,6 +379,10 @@ export class FormLeaveService {
             approvals {
               approver_list {
                 name
+                employee_number
+                position {
+                  name
+                }
               }
             }
           }
@@ -462,5 +466,32 @@ export class FormLeaveService {
     })
     .pipe(map((resp) => resp?.data['UpdateApprovalGroup']));
   }
+
+  GetAllNotifications(userId){
+    return this._apollo.query({
+      query: gql`
+        query GetAllNotifications($filter: NotificationFilter) {
+          GetAllNotifications(filter: $filter) {
+            _id
+            application_form_id {
+              _id
+              employee_id {
+                name
+              }
+              _id
+            }
+            is_read
+          }
+        }
+      `,
+      variables: {
+        filter: {
+          approver_id: userId
+        }
+      },
+      fetchPolicy: 'network-only',
+    }).pipe(map(resp => resp.data['GetAllNotifications']));
+  }
+d
 
 }

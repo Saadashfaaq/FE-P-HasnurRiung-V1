@@ -79,7 +79,7 @@ export class ApprovalGroupDialogComponent {
   // Helper method untuk membuat FormGroup alamat dengan data awal
       CreateApprovals2() {
         const newEmployee = this.formBuilder.group({
-          employee: [ 'holla', Validators.required],
+          employee: [ null, Validators.required],
         });
 
         this.approvals2.push(newEmployee)
@@ -107,7 +107,7 @@ export class ApprovalGroupDialogComponent {
   // Helper method untuk membuat FormGroup alamat dengan data awal
       CreateApprovals3() {
         const newEmployee = this.formBuilder.group({
-          employee: [ 'holla', Validators.required],
+          employee: [ null, Validators.required],
         });
 
         this.approvals3.push(newEmployee)
@@ -121,7 +121,7 @@ export class ApprovalGroupDialogComponent {
 
 
       GetOneApproalGroupMenu(){
-        this.subs.sink = this._formLeaveService.GetOneApproalGroupMenu(this.data, this.employeeId)
+        this.subs.sink = this._formLeaveService.GetOneApproalGroupMenu(this.data._id, this.employeeId)
          .subscribe(
           (resp)=>{
             if(resp){
@@ -137,12 +137,20 @@ export class ApprovalGroupDialogComponent {
                 }
                 // const toSelect2 = this.employeeList.find(c => c._id === resp.approvals[0].approver_list[0]._id);
                 
-                this.approvals2.at(0).get('employee').setValue(resp.approvals[0].approver_list[0]._id)
+                // this.approvals2.at(0).get('employee').setValue(resp.approvals[0].approver_list[0]._id)
+                resp.approvals[0].approver_list.forEach((list,index)=>{
+                  this.approvals2.at(index).get('employee').setValue(list._id)
+                })
                 // const toSelect3 = this.employeeList.find(c => c._id === resp.approvals[1].approver_list[0]._id);
                 
-                this.approvals3.at(0).get('employee').setValue(resp.approvals[1].approver_list[0]._id)
+                // this.approvals3.at(0).get('employee').setValue(resp.approvals[1].approver_list[0]._id)
+                resp.approvals[1].approver_list.forEach((list,index)=>{
+                  this.approvals3.at(index).get('employee').setValue(list._id)
+                })
               } else {
-                this.approvals2.at(0).get('employee').setValue(resp.approvals[0].approver_list[0]._id)
+                resp.approvals[0].approver_list.forEach((list,index)=>{
+                  this.approvals2.at(index).get('employee').setValue(list._id)
+                })
               }
             }
           },
@@ -171,10 +179,10 @@ export class ApprovalGroupDialogComponent {
     UpdateGroupMutation(){
      const approvalFormArray = [
       this.formApproval2.value, 
-      this.formApproval3.value ? this.formApproval3.value : null, 
+      this.formApproval3 ? this.formApproval3.value : []
     ]
 
-      const payload = this.CreateDynamicPayload(this.data, approvalFormArray)
+      const payload = this.CreateDynamicPayload(this.data._id, approvalFormArray)
 
 
       this.subs.sink = this._formLeaveService.UpdateApprovalGroup(payload)
@@ -186,25 +194,29 @@ export class ApprovalGroupDialogComponent {
     }
 
     CreateDynamicPayload(id, approvalForms) {
-      const approvals = approvalForms.map((form, index) => {
-          const approverList = form.employees.map((emp) => emp.employee); 
-  
-          return {
-              approval_index: index + 1, 
-              default_approver: approverList[0],
-              approver_list: approverList,
-          };
+      // Filter approvalForms untuk menghindari elemen yang kosong atau tidak valid
+      const validApprovalForms = approvalForms.filter((form) => form && form.employees && form.employees.length > 0);
+    
+      // Pemetaan hanya pada formulir yang valid
+      const approvals = validApprovalForms.map((form, index) => {
+        const approverList = form.employees.map((emp) => emp.employee); 
+    
+        return {
+          approval_index: index + 1, // Indeks persetujuan berdasarkan urutan dalam array
+          default_approver: approverList[0], // Default approver adalah yang pertama dalam daftar
+          approver_list: approverList, // Daftar semua approver dalam grup ini
+        };
       });
-  
+    
       const payload = {
-          id: id, 
-          approvalGroupInput: {
-              approvals: approvals,
-          },
+        id: id, // ID utama, dapat disesuaikan
+        approvalGroupInput: {
+          approvals: approvals, // Tambahkan daftar persetujuan yang telah diolah
+        },
       };
-  
-      return payload; 
-  }
+    
+      return payload; // Kembalikan payload yang telah dibuat
+    }
 
 
 

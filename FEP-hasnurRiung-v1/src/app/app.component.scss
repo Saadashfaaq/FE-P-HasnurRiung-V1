@@ -17,6 +17,11 @@
   z-index: 99;
   transition: all 0.5s ease;
 }
+
+.sidebar[hidden] {
+  opacity: 0; /* Mengurangi visibilitas */
+  display: none; /* Tidak menampilkan elemen */
+}
 .sidebar.open {
   width: 250px;
 }
@@ -240,11 +245,24 @@
   font-size: 25px;
   font-weight: 500;
   margin: 18px;
+  padding-left: 10px;
 }
 
 .button-logout{
   cursor: pointer;
   color: #fff !important;
+}
+
+// .notification-header-background{
+//   background: #015BAB !important;
+// }
+
+// .cursor-custom{
+//   cursor: default !important;
+// }
+
+.auth-section{
+  background: #f2f2f2;
 }
 
 
