@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'approval-group',
     loadChildren:()=> import('./modules/landing/approval-group/approval-group.module').then((m)=>m.ApprovalGroupModule)
+  },
+  {
+    path: 'barcode-form',
+    loadChildren:()=> import('./modules/landing/barcode/barcode.module').then((m)=>m.BarcodeModule)
   }
 ];
 

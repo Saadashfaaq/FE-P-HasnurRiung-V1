@@ -171,16 +171,14 @@ export class ApprovalGroupDialogComponent {
         this.subs.sink = this._formLeaveService.GetAllEmployeesApprovalMenu(this.data.department)
         .subscribe(
          (resp)=>{
-           if(resp){
-              // Tambahkan properti displayName ke setiap objek
-              this.hcgsList = resp.map((emp) => ({
-                ...emp, // salin semua properti asli
-                displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
-              }));
-              this.originalHcgsList = [...this.hcgsList]; // simpan salinan asli
-            //  this.employeeList = resp
-            //  this.originalEmployeeList = resp
-           }
+          if(resp){
+            // Tambahkan properti displayName ke setiap objek
+            this.employeeList = resp.map((emp) => ({
+              ...emp, // salin semua properti asli
+              displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
+            }));
+            this.originalEmployeeList = [...this.employeeList]; // simpan salinan asli
+         }
          },
          (err)=>{
            console.error(err)
@@ -191,14 +189,16 @@ export class ApprovalGroupDialogComponent {
         this.subs.sink = this._formLeaveService.GetAllEmployeesApprovalMenu('HCGS')
         .subscribe(
          (resp)=>{
-           if(resp){
-              // Tambahkan properti displayName ke setiap objek
-              this.employeeList = resp.map((emp) => ({
-                ...emp, // salin semua properti asli
-                displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
-              }));
-              this.originalEmployeeList = [...this.employeeList]; // simpan salinan asli
-           }
+          if(resp){
+            // Tambahkan properti displayName ke setiap objek
+            this.hcgsList = resp.map((emp) => ({
+              ...emp, // salin semua properti asli
+              displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
+            }));
+            this.originalHcgsList = [...this.hcgsList]; // simpan salinan asli
+          //  this.employeeList = resp
+          //  this.originalEmployeeList = resp
+         }
          },
          (err)=>{
            console.error(err)

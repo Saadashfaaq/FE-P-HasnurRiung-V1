@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
@@ -9,44 +9,48 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [
-    SharedModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
+  imports: [SharedModule, MatIconModule, MatButtonModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  userName : string = ''
+  userName: string = '';
   subs: SubSink = new SubSink();
-  notifList
-  employeeId
+  notifList;
+  employeeId;
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private _formLeaveService : FormLeaveService) {
-  }
+    private _formLeaveService: FormLeaveService
+  ) {}
 
   ngOnInit(): void {
     this.employeeId = localStorage.getItem('userProfile');
-    this.getAllNotificationList()
- }
-
-  getAllNotificationList(){
-    this.subs.sink = this._formLeaveService.GetAllNotifications(this.employeeId)
-     .subscribe(
-      (resp)=>{
-        this.notifList = resp
-      },
-      (err)=>{
-        console.error(err)
-      }
-     )
+    this.getAllNotificationList();
   }
-  openForm(formId){
-    // const
-    // window.open(url, '_blank');
-    this.router.navigate([`/form-leave/${formId}`])
+
+  getAllNotificationList() {
+    this.subs.sink = this._formLeaveService
+      .GetAllNotifications(this.employeeId)
+      .subscribe(
+        (resp) => {
+          this.notifList = resp;
+          this.changeDetectorRef.detectChanges();
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+  }
+  openForm(formId, notifId) {
+    this.subs.sink = this._formLeaveService
+      .UpdateNotification(notifId, true)
+      .subscribe((resp) => {
+        if (resp) {
+          this.getAllNotificationList();
+        }
+      });
+    this.router.navigate([`/form-leave/${formId}`]);
   }
 }
