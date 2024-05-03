@@ -1,4 +1,5 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 @font-face {
     font-family: 'Catamaran';
@@ -9,7 +10,7 @@
   }
   
   body {
-    background-color: #F2F1F1 !important;
+    background-color: #FFFF !important;
     padding: 0px;
     margin: 0px;
     font-family: 'Catamaran-Regular', sans-serif; /* Gunakan font Catamaran secara default */
@@ -124,6 +125,43 @@
 .mat-mdc-form-field-error{
     font-size: 12px;
 }
+
+.mat-mdc-menu-panel {
+    min-width: 112px;
+    max-width: 500px !important;
+    overflow: auto!important; 
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    outline: 0;
+    border-radius: var(--mat-menu-container-shape);
+    background-color: var(--mat-menu-container-color);
+    will-change: transform, opacity;
+  }
+  
+  .mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    white-space: normal;
+    font-family: var(--mat-menu-item-label-text-font);
+    line-height: var(--mat-menu-item-label-text-line-height);
+    font-size: var(--mat-menu-item-label-text-size);
+    letter-spacing: var(--mat-menu-item-label-text-tracking);
+    font-weight: var(--mat-menu-item-label-text-weight);
+    width: 500px !important;
+    padding-top: 0px!important;
+    max-height: 300px !important;
+    overflow-x: hidden;
+  }
+
+  .ng-select.ng-select-single .ng-select-container {
+    height: 45px;
+    min-height: 45px;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+    top: 10px;
+}
+  
 
 // .mat-mdc-form-field.disabled {
 //     opacity: 0.6; /* Contoh: mengurangi opacity saat disable */

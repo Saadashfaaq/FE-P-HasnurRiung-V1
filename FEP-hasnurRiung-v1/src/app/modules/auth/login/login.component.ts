@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user/user.service';
 import { SubSink } from 'subsink';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit, OnDestroy{
+export class LoginComponent implements OnInit,OnChanges, OnDestroy{
   subs: SubSink = new SubSink();
   loginForm : UntypedFormGroup
 
@@ -23,9 +23,11 @@ export class LoginComponent implements OnInit, OnDestroy{
     private _formBuilder: UntypedFormBuilder,
     private userService : UserService,
     private router: Router,
-  ){
+  ){}
+  ngOnChanges(changes: SimpleChanges): void {
 
   }
+
 
   ngOnInit(): void {
      this.InitFormLogin()
@@ -47,7 +49,9 @@ export class LoginComponent implements OnInit, OnDestroy{
           if(resp){
             localStorage.setItem('token', resp.token);
             localStorage.setItem('userProfile', resp?.employee?._id);
-            this.router.navigate([''])
+            localStorage.setItem('name',resp?.employee?.name)
+            localStorage.setItem('isAdmin', resp?.is_admin)
+            this.router.navigate(['/permit-leave'])
           }
         },
         (err)=>{

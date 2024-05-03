@@ -1,0 +1,277 @@
+table{
+    padding: 10px;
+    background-color: #f2f2f2  ;
+    border-radius: 8px;
+  }
+  
+  :host ::ng-deep table {
+    position: relative;
+    tr {
+      td,
+      th {
+        &:nth-child(1) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+  
+        &:nth-child(2) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(3) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(4) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(5) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(6) {
+          width: 6%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 60px;
+          max-width: 60px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(7) {
+          width: 6%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 60px;
+          max-width: 60px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(8) {
+          width: 6%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 60px;
+          max-width: 60px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(9) {
+          width: 6%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 60px;
+          max-width: 60px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(10) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(11) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(12) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(13) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(14) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(15) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+        &:nth-child(16) {
+          width: 8%;
+          padding-left: 0px !important;
+          text-align: center !important;
+          font-weight: 400 !important;
+          min-width: 80px;
+          max-width: 80px;
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+      }
+  
+      td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+        white-space: nowrap;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+      }
+  
+      th {
+        vertical-align: top;
+  
+        .mat-form-field-infix {
+          width: unset !important;
+        }
+      }
+      &:nth-child(1) {
+        th {
+          padding-top: 0.9em;
+        }
+      }
+    }
+  
+    thead tr {
+      &:nth-child(1) {
+        height: 20px;
+      }
+      &:nth-child(2) {
+        height: 20px;
+      }
+  
+    }
+  
+    tr {
+      td,
+      td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+        white-space: nowrap;
+        padding: 0.5em;
+      }
+  
+      th {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        font-weight: bold !important;
+        vertical-align: top;
+        padding-left: 1rem;
+      }
+    }
+  
+    thead {
+      background: #015BAB;
+    }
+  }
+  
+  .mat-mdc-header-row{
+    color: #f2f2f2;
+  }
+  
+  .mat-mdc-header-cell.mat-column-created_date {
+  border-top-left-radius: 8px;
+  }
+  .mat-mdc-header-cell.mat-column-created_date_filter {
+    border-bottom-left-radius: 8px;
+  
+  }
+  .mat-mdc-header-cell.mat-column-action {
+    border-top-right-radius: 8px;
+  
+  }
+  .mat-mdc-header-cell.mat-column-action_filter {
+    border-bottom-right-radius: 8px;
+  }
+  
+  .mat-mdc-header-cell {
+    border: 0px solid #ffffff;
+  }
+  
+  .mat-mdc-cell{
+    border: 0px solid #ffffff;
+  }
+
+  

@@ -1,14 +1,55 @@
+.fixed {
+  position: fixed
+}
+
 .absolute {
   position: absolute
+}
+
+.relative {
+  position: relative
+}
+
+.sticky {
+  position: sticky
 }
 
 .inset-0 {
   inset: 0px
 }
 
+.left-0 {
+  left: 0px
+}
+
+.right-0 {
+  right: 0px
+}
+
+.top-0 {
+  top: 0px
+}
+
+.z-50 {
+  z-index: 50
+}
+
+.z-\[100\] {
+  z-index: 100
+}
+
+.m-0 {
+  margin: 0px
+}
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem
+}
+
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem
 }
 
 .my-1 {
@@ -21,8 +62,21 @@
   margin-bottom: 0.5rem
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem
+}
+
+.mb-0 {
+  margin-bottom: 0px
+}
+
 .mb-1 {
   margin-bottom: 0.25rem
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem
 }
 
 .mb-2 {
@@ -45,8 +99,16 @@
   margin-left: 0.25rem
 }
 
+.ml-10 {
+  margin-left: 2.5rem
+}
+
 .ml-2 {
   margin-left: 0.5rem
+}
+
+.ml-3 {
+  margin-left: 0.75rem
 }
 
 .ml-4 {
@@ -81,8 +143,20 @@
   margin-top: 0.25rem
 }
 
-.mt-10 {
-  margin-top: 2.5rem
+.mt-2 {
+  margin-top: 0.5rem
+}
+
+.mt-4 {
+  margin-top: 1rem
+}
+
+.mt-6 {
+  margin-top: 1.5rem
+}
+
+.mt-60 {
+  margin-top: 15rem
 }
 
 .flex {
@@ -101,12 +175,41 @@
   height: 2.5rem
 }
 
+.h-100 {
+  height: 25rem
+}
+
+.h-20 {
+  height: 5rem
+}
+
 .h-28 {
   height: 7rem
 }
 
+.h-32 {
+  height: 8rem
+}
+
+.h-8 {
+  height: 2rem
+}
+
+.h-\[45px\] {
+  height: 45px
+}
+
 .h-full {
   height: 100%
+}
+
+.h-max {
+  height: -moz-max-content;
+  height: max-content
+}
+
+.h-screen {
+  height: 100vh
 }
 
 .w-1\/2 {
@@ -141,6 +244,14 @@
   width: 7.5rem
 }
 
+.w-32 {
+  width: 8rem
+}
+
+.w-40 {
+  width: 10rem
+}
+
 .w-50 {
   width: 12.5rem
 }
@@ -149,8 +260,20 @@
   width: 15rem
 }
 
-.w-90 {
-  width: 22.5rem
+.w-64 {
+  width: 16rem
+}
+
+.w-8 {
+  width: 2rem
+}
+
+.w-80 {
+  width: 20rem
+}
+
+.w-\[75\%\] {
+  width: 75%
 }
 
 .w-full {
@@ -162,12 +285,32 @@
   width: max-content
 }
 
+.min-w-50 {
+  min-width: 12.5rem
+}
+
+.max-w-80 {
+  max-width: 20rem
+}
+
+.cursor-pointer {
+  cursor: pointer
+}
+
 .flex-row {
   flex-direction: row
 }
 
 .flex-col {
   flex-direction: column
+}
+
+.flex-wrap {
+  flex-wrap: wrap
+}
+
+.items-start {
+  align-items: flex-start
 }
 
 .items-center {
@@ -178,12 +321,44 @@
   align-items: baseline
 }
 
+.justify-start {
+  justify-content: flex-start
+}
+
+.justify-end {
+  justify-content: flex-end
+}
+
 .justify-center {
   justify-content: center
 }
 
 .justify-between {
   justify-content: space-between
+}
+
+.justify-around {
+  justify-content: space-around
+}
+
+.gap-1 {
+  gap: 0.25rem
+}
+
+.gap-2 {
+  gap: 0.5rem
+}
+
+.gap-3 {
+  gap: 0.75rem
+}
+
+.gap-4 {
+  gap: 1rem
+}
+
+.gap-5 {
+  gap: 1.25rem
 }
 
 .self-start {
@@ -194,8 +369,48 @@
   align-self: flex-end
 }
 
+.self-center {
+  align-self: center
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
 .rounded {
   border-radius: 0.25rem
+}
+
+.rounded-full {
+  border-radius: 9999px
+}
+
+.rounded-lg {
+  border-radius: 0.5rem
+}
+
+.border {
+  border-width: 1px
+}
+
+.border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity))
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+}
+
+.p-1 {
+  padding: 0.25rem
+}
+
+.p-10 {
+  padding: 2.5rem
 }
 
 .p-2 {
@@ -204,6 +419,10 @@
 
 .p-3 {
   padding: 0.75rem
+}
+
+.p-4 {
+  padding: 1rem
 }
 
 .p-5 {
@@ -229,9 +448,9 @@
   padding-right: 0.5rem
 }
 
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem
 }
 
 .py-1 {
@@ -249,6 +468,10 @@
   padding-bottom: 1rem
 }
 
+.pb-2 {
+  padding-bottom: 0.5rem
+}
+
 .pl-1 {
   padding-left: 0.25rem
 }
@@ -261,12 +484,21 @@
   padding-top: 0.75rem
 }
 
+.pt-4 {
+  padding-top: 1rem
+}
+
 .text-left {
   text-align: left
 }
 
 .text-center {
   text-align: center
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem
 }
 
 .text-xs {
@@ -278,13 +510,58 @@
   font-weight: 700
 }
 
+.font-semibold {
+  font-weight: 600
+}
+
 .italic {
   font-style: italic
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity))
+}
+
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity))
+}
+
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity))
+}
+
+.text-green-700 {
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity))
+}
+
+.text-indigo-900 {
+  --tw-text-opacity: 1;
+  color: rgb(49 46 129 / var(--tw-text-opacity))
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity))
+}
+
+.text-red-700 {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity))
 }
 
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity))
+}
+
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
 
 .outline {

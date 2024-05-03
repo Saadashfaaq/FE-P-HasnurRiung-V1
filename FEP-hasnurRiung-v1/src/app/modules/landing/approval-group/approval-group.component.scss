@@ -1,0 +1,34 @@
+.custom-background{
+    background-color: #015BAB;
+}
+
+.custom-nrp{
+    background-color: #FFF138;
+    padding: 5px 15px;
+}
+
+
+:host ::ng-deep.mat-mdc-raised-button.mat-accent {
+    --mdc-protected-button-container-color: #FFF138;
+    --mdc-protected-button-label-text-color: black;
+    --mat-protected-button-state-layer-color: #fff;
+    --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+}
+
+:host ::ng-deep.mdc-button .mdc-button__label {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.card-transform{
+
+}
+
+
+.card-transform {
+    transition: transform 0.3s ease; /* Transisi halus */
+  }
+  
+  .card-transform:hover {
+    transform: scale(1.02); /* Membesarkan elemen saat di-hover */
+  }

@@ -1,0 +1,322 @@
+<div class="p-2">
+    <div class="flex flex-row justify-between mb-2">
+      <div class="flex flex-row">
+        <button (click)="OpenFormToCreate()" class="mr-1" color="primary" mat-raised-button>+ Ajukan Permohohan</button>
+        <button class="mr-1" color="primary" mat-raised-button>Cabut Cuti</button>
+        <button color="accent" mat-raised-button>Hapus</button>
+      </div>
+      <div>
+        <button  color="primary" mat-raised-button>Export</button>
+      </div>
+    </div>
+    <table class="mat-elevation-z8" mat-table [dataSource]="dataSource">
+        <!-- <ng-container class="leftBottom sticky" matColumnDef="checkbox_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container> -->
+
+          <ng-container class="leftBottom sticky" matColumnDef="employee_number_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container class="sticky" matColumnDef="name_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          
+          <ng-container class="sticky" matColumnDef="position_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container class="sticky" matColumnDef="department_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="created_date_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <!-- <ng-container class="sticky" matColumnDef="leave_letter_number_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container class="sticky" matColumnDef="employee_number_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container class="sticky" matColumnDef="name_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container class="sticky" matColumnDef="position_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container class="sticky" matColumnDef="department_filter" sticky>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container matColumnDef="poh_status_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="application_type_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="departure_off_day_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="start_date_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="field_leave_duration_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="yearly_leave_duration_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="permission_duration_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="compensation_duration_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="end_date_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="leave_location_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="leave_location_2_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container matColumnDef="lump_sump_amount_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container matColumnDef="remaining_yearly_leaves_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container matColumnDef="created_date_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container matColumnDef="leave_comment_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container> -->
+
+          <ng-container matColumnDef="form_status_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+          
+          <ng-container matColumnDef="pdf_application_form_filter">
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+          <ng-container class="rightBottom" matColumnDef="action_filter" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef></th>
+          </ng-container>
+
+        <!-- <ng-container class="leftTop sticky" matColumnDef="checkbox" sticky>
+            <th mat-header-cell *matHeaderCellDef >  </th>
+            <td mat-cell *matCellDef="let element"> </td>
+          </ng-container> -->
+
+          <ng-container class="leftTop sticky" matColumnDef="employee_number" sticky>
+            <th mat-header-cell *matHeaderCellDef> NRP</th>
+            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.employee_number }} </td>
+          </ng-container> 
+
+          <ng-container class="sticky" matColumnDef="name" sticky>
+            <th mat-header-cell *matHeaderCellDef> Nama</th>
+            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.name }} </td>
+          </ng-container> 
+  
+        <ng-container class="sticky" matColumnDef="position" sticky>
+          <th mat-header-cell *matHeaderCellDef> Posisi </th>
+          <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.position?.name }} </td>
+        </ng-container>
+
+        <ng-container class="sticky" matColumnDef="department" sticky>
+          <th mat-header-cell *matHeaderCellDef> Departemen </th>
+          <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.position?.department }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="created_date">
+          <th mat-header-cell *matHeaderCellDef> Tanggal Pengajuan </th>
+          <td mat-cell *matCellDef="let element"> {{ element?.created_date }} </td>
+        </ng-container>
+        
+
+          <!-- <ng-container class="sticky" matColumnDef="leave_letter_number" sticky>
+            <th mat-header-cell *matHeaderCellDef> No Cuti </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leave_letter_number }} </td>
+          </ng-container>
+
+        <ng-container class="sticky" matColumnDef="employee_number" sticky>
+          <th mat-header-cell *matHeaderCellDef> NRP</th>
+          <td mat-cell *matCellDef="let element"> {{ element?.employee_number }} </td>
+        </ng-container> 
+        
+        <ng-container class="sticky" matColumnDef="name" sticky>
+          <th mat-header-cell *matHeaderCellDef> Nama</th>
+          <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.name }} </td>
+        </ng-container> 
+
+        <ng-container class="sticky" matColumnDef="position" sticky>
+          <th mat-header-cell *matHeaderCellDef> Posisi </th>
+          <td mat-cell *matCellDef="let element"> {{ element?.position?.name }} </td>
+        </ng-container>
+
+        <ng-container class="sticky" matColumnDef="department" sticky>
+          <th mat-header-cell *matHeaderCellDef> Departemen </th>
+          <td mat-cell *matCellDef="let element"> {{ element?.position?.department }} </td>
+        </ng-container>
+          
+          <ng-container matColumnDef="poh_status">
+            <th mat-header-cell *matHeaderCellDef> Status POH </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.poh_status }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="application_type">
+            <th mat-header-cell *matHeaderCellDef> Tipe Permohonan </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.application_type }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="departure_off_day">
+            <th mat-header-cell *matHeaderCellDef> Tanggal Berangkat</th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.departure_off_day?.date }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="start_date">
+            <th mat-header-cell *matHeaderCellDef> Awal Cuti</th>
+            <td mat-cell *matCellDef="let element"> {{ element?.start_date }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="field_leave_duration">
+            <th mat-header-cell *matHeaderCellDef> Roster</th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.field_leave_duration }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="yearly_leave_duration">
+            <th mat-header-cell *matHeaderCellDef> Tahunan / Besar </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.yearly_leave_duration }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="permission_duration">
+            <th mat-header-cell *matHeaderCellDef> Ijin </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.permission_duration }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="compensation_duration">
+            <th mat-header-cell *matHeaderCellDef> Durasi Kompensasi </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.compensation_duration }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="end_date">
+            <th mat-header-cell *matHeaderCellDef> Tanggal Akhir </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.end_date }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="leave_location">
+            <th mat-header-cell *matHeaderCellDef> Tujuan Cuti </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leave_location }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="leave_location_2">
+            <th mat-header-cell *matHeaderCellDef> Kembali Dari </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leave_location }} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="lump_sump_amount">
+            <th mat-header-cell *matHeaderCellDef>Lumpsump </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.lump_sump_amount }} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="remaining_yearly_leaves">
+            <th mat-header-cell *matHeaderCellDef> Sisa Cuti Tahunan </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.remaining_yearly_leaves }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="created_date">
+            <th mat-header-cell *matHeaderCellDef> Tanggal Pengajuan </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.created_date }} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="leave_comment">
+            <th mat-header-cell *matHeaderCellDef> Keterangan </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.leave_comment }} </td>
+          </ng-container> -->
+          
+          <ng-container matColumnDef="form_status">
+            <th mat-header-cell *matHeaderCellDef> Status Formulir </th>
+            <td mat-cell *matCellDef="let element"> 
+              <button 
+              (click)=" OpenDialogTimeline(element?._id)"
+              [matTooltip]="getStatusTooltip(element?.form_status)"
+              mat-icon-button
+              [ngStyle]="{'color': getStatusColor(element?.form_status)}">
+                <mat-icon>lens</mat-icon>
+            </button>
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="pdf_application_form">
+            <th mat-header-cell *matHeaderCellDef> Formulir Permohonan </th>
+            <td mat-cell *matCellDef="let element"> 
+              <button (click)="OpenPdfApplicationForm(element?.pdf_application_form)" *ngIf="element.pdf_application_form" mat-icon-button>
+                <mat-icon class="cursor-pointer" class="text-green-700" >picture_as_pdf</mat-icon>
+              </button>
+              <button  *ngIf="!element.pdf_application_form" mat-icon-button>
+                <mat-icon  class="text-red-700" >picture_as_pdf</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container class="rightTop" matColumnDef="action" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef > Action </th>
+                <td mat-cell *matCellDef="let element"> 
+                  <div class="flex flex-row jusify-center align-center gap-1">
+                    <button [routerLink]="['/form-leave',element?._id]" mat-icon-button>
+                      <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
+                    </button>
+                    <button *ngIf="element.pdf_application_form" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>
+                      <mat-icon  class="cursor-pointer text-indigo-900" >picture_as_pdf</mat-icon>
+                    </button>
+                  </div>
+                </td>
+          </ng-container>
+
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-header-row *matHeaderRowDef="filterCols"></tr>
+         
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <div *ngIf="(noData | async)" class="no-records" data-cy="no-data">
+      Data Tidak Ditemukan
+    </div>
+    <div [ngClass]="{ hide: noData | async }">
+      <mat-paginator
+        [ngClass]="{ 'hide-pagination-buttons': paginator.length <= 10 }"
+        [length]="dataCount"
+        [hidePageSize]="true"
+        [pageSize]="10"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+</div>
+
+ <!-- <tr mat-header-row *matHeaderRowDef="['loading']" [hidden]="!isWaitingForResponse"></tr> -->
