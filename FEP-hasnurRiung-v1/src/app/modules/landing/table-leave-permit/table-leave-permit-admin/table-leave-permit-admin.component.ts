@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
@@ -33,6 +33,7 @@ export class TableLeavePermitAdminComponent {
   dataCount = 0;
   isReset = false
   dataLoaded = false;
+  isWaitingForResponse = false
 
 displayedColumns: string[] = [
   // "checkbox",

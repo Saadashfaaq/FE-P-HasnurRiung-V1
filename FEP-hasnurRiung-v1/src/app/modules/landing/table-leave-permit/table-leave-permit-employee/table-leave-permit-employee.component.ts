@@ -5,12 +5,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { map, startWith, tap } from 'rxjs';
+import { debounceTime, map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
 import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-table-leave-permit-employee',
@@ -36,6 +37,7 @@ export class TableLeavePermitEmployeeComponent {
   dataCount = 0;
   isReset = false
   dataLoaded = false;
+  isWaitingForResponse = false
 
   constructor(
     private _formLeaveService : FormLeaveService,
@@ -62,6 +64,36 @@ export class TableLeavePermitEmployeeComponent {
   ]
   filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 
+  filteredValue = {
+    created_date: null,
+    application_type: null,
+    is_ticket_supported: null,
+    departure_off_day: null,
+    start_date: null,
+    field_leave_duration: null,
+    yearly_leave_duration: null,
+    permission_duration: null,
+    compensation_duration: null,
+    end_date: null,
+    form_status: null,
+    pdf_application_form: null
+  }
+  formControls = {
+    createdDateCtrl : new UntypedFormControl(null),
+    applicationTypeCtrl : new UntypedFormControl(null),
+    isTicketSupportedCtrl : new UntypedFormControl(null),
+    departureOffDayCtrl : new UntypedFormControl(null),
+    startDateCtrl : new UntypedFormControl(null),
+    fieldLeaveDurationCtrl : new UntypedFormControl(null),
+    yearlyLeaveDurationCtrl : new UntypedFormControl(null),
+    permissionDurationCtrl : new UntypedFormControl(null),
+    compensationDurationCtrl : new UntypedFormControl(null),
+    endDateCtrl : new UntypedFormControl(null),
+    formStatusCtrl : new UntypedFormControl(null),
+    pdfApplicationFormCtrl : new UntypedFormControl(null),
+  }
+
+
   ngOnInit(): void {
     this.employeeId = localStorage.getItem('userProfile');
     this.token = localStorage.getItem('token')
@@ -83,6 +115,7 @@ export class TableLeavePermitEmployeeComponent {
   }
 
   GetAllApplicationFormsEmployee(){
+    this.isWaitingForResponse = true
     const pagination = {
       limit: this.paginator.pageSize ? this.paginator.pageSize : 10,
       page: this.paginator.pageIndex ? this.paginator.pageIndex : 0,
@@ -100,10 +133,12 @@ export class TableLeavePermitEmployeeComponent {
           this.dataSource.data = resp
           this.paginator.length = resp[0].count_document;
           this.dataCount = resp[0]?.count_document;
+          this.isWaitingForResponse = false
         } else {
           this.dataSource.data = [];
           this.paginator.length = 0;
           this.dataCount = 0;
+          this.isWaitingForResponse = false
         }
         this.noData = this.dataSource.connect().pipe(map((dataa) => dataa.length === 0));
         this.isReset = false;
@@ -190,4 +225,26 @@ export class TableLeavePermitEmployeeComponent {
         console.log('The dialog was closed');
       });
     }
+
+    initFilter() {
+        Object.keys(this.formControls).forEach((key) => {
+          const control = this.formControls[key];
+          const filteredKey = key.replace('Ctrl', '');
+          
+          control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
+            if (filteredKey.toLowerCase().includes("date")) {
+              this.filteredValue[filteredKey] = value ? new Date(value).toISOString() : null;
+            } else {
+              this.filteredValue[filteredKey] = value ? value : null;
+            }
+      
+            this.paginator.firstPage();
+      
+            if (!this.isReset) {
+              this.GetAllApplicationFormsEmployee();
+            }
+          });
+        });
+    }
+
 }

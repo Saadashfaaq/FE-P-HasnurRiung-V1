@@ -161,6 +161,54 @@
 .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
     top: 10px;
 }
+
+// loading spinner that displayed inside of an element with dark background
+.inner-loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999999999;
+  }
+  .inner-loading-indicator:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  // loading spinner that displayed inside of an element with transparent background
+  .inner-loading-indicator-transparent-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999999999;
+  }
+  .inner-loading-indicator-transparent-bg:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
   
 
 // .mat-mdc-form-field.disabled {

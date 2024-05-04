@@ -274,4 +274,17 @@ table{
     border: 0px solid #ffffff;
   }
 
+  .horizontal {
+    overflow: auto;
+    overflow-y: hidden;
+    background: #424242;
+  }
+  .horizontal::-webkit-scrollbar-track {
+    background: #212121;
+  }
+  .horizontal::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background: #eaa11c !important;
+  }
+
   
