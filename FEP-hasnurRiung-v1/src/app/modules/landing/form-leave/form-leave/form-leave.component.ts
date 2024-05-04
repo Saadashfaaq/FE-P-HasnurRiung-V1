@@ -1144,10 +1144,19 @@ export class FormLeaveComponent implements OnInit {
 
   // Regex Input For Numeric
   preventNonNumericalInput(event) {
-    if (event && event.key) {
-      if (!event.key.match(/^[0-9]+$/)) {
-        event.preventDefault();
-      }
+    const input = event.target;
+    const key = event.key;
+
+    // Cegah input jika bukan angka
+    if (!key.match(/^[0-9]+$/)) {
+      event.preventDefault();
+      return;
+    }
+
+    // Cegah masukan jika angka pertama adalah "0"
+    if (input.value.length === 0 && key === '0') {
+      event.preventDefault();
+      return;
     }
   }
   ResetBottomData() {

@@ -123,17 +123,17 @@ export class TableLeavePermitEmployeeComponent {
 
   filteredValue = {
     // created_date: null,
-    // application_type: null,
-    // is_ticket_supported: null,
+    application_type: null,
+    is_ticket_supported: null,
     // departure_off_day: null,
     // start_date: null,
-    // field_leave_duration: null,
-    // yearly_leave_duration: null,
-    // permission_duration: null,
-    // compensation_duration: null,
+    field_leave_duration: null,
+    yearly_leave_duration: null,
+    permission_duration: null,
+    compensation_duration: null,
     // end_date: null,
-    // form_status: null,
-    // pdf_application_form: null
+    form_status: null,
+    pdf_application_form: null
   }
   formControls = {
     created_date_ctrl : new UntypedFormControl(null),

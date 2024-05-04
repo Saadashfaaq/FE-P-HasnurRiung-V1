@@ -52,6 +52,8 @@ export class LoginComponent implements OnInit,OnChanges, OnDestroy{
             localStorage.setItem('name',resp?.employee?.name)
             localStorage.setItem('isAdmin', resp?.is_admin)
             this.router.navigate(['/permit-leave'])
+          } else{
+            this.InvalidSwalNRP()
           }
         },
         (err)=>{
@@ -76,8 +78,23 @@ export class LoginComponent implements OnInit,OnChanges, OnDestroy{
     })
   }
 
-  ngOnDestroy(): void {
-    
+  InvalidSwalNRP() {
+    Swal.fire({
+      title: 'NRP atau Kata Sandi Anda Tidak Sesuai',
+      html: 'Mohon periksa kembali NRP atau Kata Sandi Anda',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText: 'Oke',
+    });
   }
+
+  ngOnDestroy(): void {
+
+  }
+
+
 
 }

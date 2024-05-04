@@ -13,14 +13,15 @@
       </div>
     </div>
     <div class="mat-elevation-z8 horizontal">
-      <table  mat-table [dataSource]="dataSource">
+      <table class="mat-elevation-z8"  mat-table [dataSource]="dataSource">
 
         <!-- Fillter Section -->
 
           <ng-container  matColumnDef="created_date_filter" sticky>
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full">
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto">
                 <input
+                placeholder="Cari"
                   matInput
                   [formControl]="formControls.created_date_ctrl"
                   [matDatepicker]="created_date_filter"
@@ -67,8 +68,9 @@
 
           <ng-container  matColumnDef="departure_off_day_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full" >
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto" >
                 <input
+                placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.departure_off_day_ctrl"
@@ -79,8 +81,9 @@
 
           <ng-container  matColumnDef="start_date_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full" class="w-full w">
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto" >
                 <input
+                placeholder="Cari"
                   matInput
                   [formControl]="formControls.start_date_ctrl"
                   [matDatepicker]="start_date_filter"
@@ -97,8 +100,9 @@
 
           <ng-container  matColumnDef="field_leave_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full" >
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto" >
                 <input
+                placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.field_leave_duration_ctrl"
@@ -109,8 +113,9 @@
 
           <ng-container  matColumnDef="yearly_leave_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full" >
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto" >
                 <input
+                placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.yearly_leave_duration_ctrl"
@@ -121,8 +126,9 @@
 
           <ng-container  matColumnDef="permission_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full" >
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto" >
                 <input
+                placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.permission_duration_ctrl"
@@ -133,8 +139,9 @@
 
           <ng-container  matColumnDef="compensation_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full" >
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto" >
                 <input
+                placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.compensation_duration_ctrl"
@@ -145,8 +152,9 @@
 
           <ng-container  matColumnDef="end_date_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field class="w-full w-full" class="w-full w">
+              <mat-form-field appearance="outline"  class="w-full w-full px-1 mx-auto" class="w-full w">
                 <input
+                placeholder="Cari"
                   matInput
                   [formControl]="formControls.end_date_ctrl"
                   [matDatepicker]="end_date_filter"

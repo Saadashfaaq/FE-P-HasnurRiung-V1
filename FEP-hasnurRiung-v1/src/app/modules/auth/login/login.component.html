@@ -3,7 +3,7 @@
         <div>
             <img class="w-28 h-28" src="assets/images/LOGO.ico" alt="Deskripsi Gambar">
         </div>
-       <h2 color="primary" style="font-weight: 800; color: #1d1b31;" class="my-1 font-bold">STOPLESS</h2>
+       <h2 color="primary" style="font-weight: 800; color: #015BAB;" class="my-1 font-bold">STOPLESS</h2>
        <p class="mt-0 text-xs italic">Surat Tugas Online Paperless</p>
        <form class="flex flex-col" [formGroup]="loginForm">
         <!-- NRP -->
@@ -16,6 +16,14 @@
                     matInput
                     [formControlName]="'employee_number'"
                 />
+                <button
+                class="cursor-default"
+                mat-icon-button
+                type="button"
+                matSuffix
+            >
+            <i class='bx bxs-user-circle'></i>
+            </button>
                 <mat-error>
                     Kolom ini harus diisi
                 </mat-error>
@@ -24,7 +32,7 @@
         <!-- Password field -->
         <div>
             <div class="text-left ml-1">
-                <span>Password*</span>
+                <span>Kata Sandi*</span>
             </div>
             <mat-form-field appearance="outline" class="w-full">
                 <input
@@ -44,18 +52,8 @@
                     "
                     matSuffix
                 >
-                <i *ngIf="passwordField.type === 'password'" class='bx bx-show'></i>
-                <i *ngIf="passwordField.type === 'text'" class='bx bx-hide' ></i>
-                    <!-- <mat-icon
-                        class="icon-size-5"
-                        *ngIf="passwordField.type === 'password'"
-                        [svgIcon]="'heroicons_solid:eye'"
-                    ></mat-icon> -->
-                    <!-- <mat-icon
-                        class="icon-size-5"
-                        *ngIf="passwordField.type === 'text'"
-                        [svgIcon]="'heroicons_solid:eye-slash'"
-                    ></mat-icon> -->
+                <i *ngIf="passwordField.type === 'password'" class='bx bxs-show'></i>
+                <i *ngIf="passwordField.type === 'text'" class='bx bxs-hide' ></i>
                 </button>
                 <mat-error>
                     Kolom ini harus diisi
@@ -63,6 +61,11 @@
             </mat-form-field>
         </div>
        </form>
+       <div class="text-right">
+        <a>
+          Lupa Kata Sandi
+        </a>
+       </div>
        <div class="text-left">
         <mat-checkbox color="primary" class="example-margin">Ingat Saya</mat-checkbox>
        </div>

@@ -3,7 +3,7 @@ table{
     background-color: #f2f2f2  ;
     border-radius: 8px;
   }
-  
+
   :host ::ng-deep table {
     position: relative;
     tr {
@@ -20,7 +20,7 @@ table{
             width: 80%;
           }
         }
-  
+
         &:nth-child(2) {
           width: 10%;
           padding-left: 0px !important;
@@ -110,7 +110,7 @@ table{
           }
         }
       }
-  
+
       td {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -121,10 +121,10 @@ table{
         padding-top: 0px !important;
         padding-bottom: 0px !important;
       }
-  
+
       th {
         vertical-align: top;
-  
+
         .mat-form-field-infix {
           width: unset !important;
         }
@@ -135,7 +135,7 @@ table{
         }
       }
     }
-  
+
     thead tr {
       &:nth-child(1) {
         height: 20px;
@@ -143,9 +143,9 @@ table{
       &:nth-child(2) {
         height: 20px;
       }
-  
+
     }
-  
+
     tr {
       td,
       td {
@@ -155,7 +155,7 @@ table{
         white-space: nowrap;
         padding: 0.5em;
       }
-  
+
       th {
         padding-top: 1rem;
         padding-bottom: 1rem;
@@ -164,35 +164,43 @@ table{
         padding-left: 1rem;
       }
     }
-  
+
     thead {
       background: #015BAB;
     }
   }
-  
+
   .mat-mdc-header-row{
     color: #f2f2f2;
   }
-  
+
   .mat-mdc-header-cell.mat-column-employee_number {
   border-top-left-radius: 8px;
   }
   .mat-mdc-header-cell.mat-column-employee_number_filter {
     border-bottom-left-radius: 8px;
-  
+
   }
   .mat-mdc-header-cell.mat-column-action {
     border-top-right-radius: 8px;
-  
+
   }
   .mat-mdc-header-cell.mat-column-action_filter {
     border-bottom-right-radius: 8px;
   }
-  
+
   .mat-mdc-header-cell {
     border: 0px solid #ffffff;
   }
-  
+
   .mat-mdc-cell{
     border: 0px solid #ffffff;
+  }
+
+  .mat-mdc-raised-button.mat-accent {
+    --mdc-protected-button-container-color: #FFF138;
+    --mdc-protected-button-label-text-color: #000000;
+    --mat-protected-button-state-layer-color: #000000;
+    --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+    font-weight: 600;
   }
