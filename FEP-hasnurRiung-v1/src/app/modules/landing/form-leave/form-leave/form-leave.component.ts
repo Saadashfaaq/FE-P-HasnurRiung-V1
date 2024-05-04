@@ -60,6 +60,7 @@ export class FormLeaveComponent implements OnInit {
   remainingYearlyLeaves: number;
 
   formType: string;
+  isWaitingForResponse = false
 
   ChangeAplication() {
     const applicationType =
@@ -832,6 +833,7 @@ export class FormLeaveComponent implements OnInit {
   }
 
   SaveTicektApproval() {
+    this.isWaitingForResponse = false
     Object.keys(this.formLeaveTicektApproval.controls).forEach((key) => {
       this.formLeaveTicektApproval.get(key).markAsDirty();
       this.formLeaveTicektApproval.get(key).markAsTouched();
@@ -839,6 +841,7 @@ export class FormLeaveComponent implements OnInit {
     this.isSection3Submited = true;
     const payload = this.CreateFormPayload();
     if (this.formLeaveTicektApproval.invalid) {
+      this.isWaitingForResponse = false
       this.InvalidSwal();
     } else {
       // this.openIdentity = true
@@ -849,10 +852,12 @@ export class FormLeaveComponent implements OnInit {
         .subscribe(
           (resp) => {
             if (resp) {
+              this.isWaitingForResponse = false
               this.router.navigate(['/permit-leave']);
             }
           },
           (err) => {
+            this.isWaitingForResponse = false
             console.error(err);
           }
         );
@@ -2223,6 +2228,7 @@ export class FormLeaveComponent implements OnInit {
   }
 
   GetOneUserLoginForm() {
+    this.isWaitingForResponse = true
     this.subs.sink = this._formLeaveService
       .GetOneEmployee(this.employeeId)
       .subscribe(
@@ -2242,6 +2248,7 @@ export class FormLeaveComponent implements OnInit {
             this.poh_location = resp?.poh_location;
             this.PohConfig(resp);
             this.InitStartDateDatailRequestBackup();
+            this.isWaitingForResponse = false
           }
         },
         (err) => {
@@ -2315,26 +2322,14 @@ export class FormLeaveComponent implements OnInit {
       .subscribe(
         (resp) => {
           if (resp) {
-            if (resp.length < 2) {
-              this.formLeaveTicektApproval
-                .get('approval_id_2')
-                .setValue(resp[0].name);
-              this.formLeaveTicektApproval
-                .get('approval_id_3')
-                .setValue(resp[0].name);
-            } else {
-              resp.forEach((approval) => {
-                if (approval?.name === 'HCGS') {
-                  this.formLeaveTicektApproval
-                    .get('approval_id_3')
-                    .setValue(approval?.name);
-                } else {
-                  this.formLeaveTicektApproval
-                    .get('approval_id_2')
-                    .setValue(approval?.name);
-                }
-              });
-            }
+            this.formLeaveTicektApproval
+            .get('approval_id_2')
+            .setValue(  resp[0].approvals[0]?.default_approver?.employee_number + ' - ' + resp[0].approvals[0]?.default_approver?.name);
+            console.log()
+          this.formLeaveTicektApproval
+            .get('approval_id_3')
+            .setValue(resp[0].approvals[1]?.default_approver?.employee_number + ' - ' + resp[0].approvals[1]?.default_approver?.name);
+
           }
         },
         (err) => {

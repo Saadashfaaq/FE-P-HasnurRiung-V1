@@ -241,6 +241,13 @@ export class FormLeaveService {
               _id
               name
               approval_index
+              approvals {
+                default_approver {
+                  name
+                  _id
+                  employee_number
+                }
+              }
             }
           }
         `,
@@ -248,6 +255,7 @@ export class FormLeaveService {
           filter: {
             is_enabled: true,
             employee_id: userId,
+            is_for_form: true
           },
         },
         fetchPolicy: 'network-only',
