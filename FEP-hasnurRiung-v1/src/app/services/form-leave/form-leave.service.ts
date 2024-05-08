@@ -159,6 +159,16 @@ export class FormLeaveService {
               current_approvers {
                 _id
               }
+              approval {
+                reason_of_approval
+                reason_of_rejection
+                reason_of_revision
+                approval_index
+                approver_id {
+                  employee_number
+                  name
+                }
+              }
               total_leaves
               start_date
               end_date
@@ -232,7 +242,7 @@ export class FormLeaveService {
       .pipe(map((resp) => resp.data['GetAllEmployees']));
   }
 
-  GetAllApprovalGroups(userId) {
+  GetAllApprovalGroups(userId?) {
     return this._apollo
       .query({
         query: gql`
@@ -254,7 +264,7 @@ export class FormLeaveService {
         variables: {
           filter: {
             is_enabled: true,
-            employee_id: userId,
+            employee_id: userId ? userId : null,
             is_for_form: true
           },
         },
@@ -308,6 +318,7 @@ export class FormLeaveService {
               pdf_application_form
               pdf_leave_letter
               count_document
+              total_leaves
               _id
             }
           }
@@ -516,15 +527,19 @@ export class FormLeaveService {
                 employee_id {
                   name
                 }
-                _id
+              }
+              from {
+                name
               }
               is_read
+              text
             }
           }
         `,
         variables: {
           filter: {
-            approver_id: userId,
+            // approver_id: userId,
+            to: userId
           },
         },
         fetchPolicy: 'network-only',
@@ -565,5 +580,40 @@ export class FormLeaveService {
         errorPolicy: 'all',
       })
       .pipe(map((resp) => resp?.data['UpdateNotification']));
+  }
+
+
+  getOneFormUserBarcode(payload) {
+    return this._apollo
+      .query({
+        query: gql`
+          query GetOneApplicationForm($_id: ID) {
+            GetOneApplicationForm(_id: $_id) {
+              employee_id {
+                name
+                employee_number
+              }
+              created_date
+              date_of_approval
+              approval {
+                date_of_approval {
+                  date
+                }
+                approver_id {
+                  name
+                  position {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          _id: payload,
+        },
+        fetchPolicy: 'network-only',
+      })
+      .pipe(map((resp) => resp.data['GetOneApplicationForm']));
   }
 }

@@ -1,10 +1,13 @@
-<div class="px-8 pt-4 pb-2">
+<div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
+  <mat-spinner color="primary" [diameter]="100"></mat-spinner>
+</div>
+<div [ngClass]="{'hidden': isWaitingForResponse}" class="px-8 pt-4 pb-2">
   <div class="flex flex-row items-start justify-between">
     <div>
       <h2 class="text-gray-900">Grup Approval {{ data.department }}</h2>
     </div>
     <div>
-      <button (click)="OnClose()" mat-icon-button>
+      <button (click)="openSwalCancel()" mat-icon-button>
         <mat-icon>close</mat-icon>
       </button>
     </div>

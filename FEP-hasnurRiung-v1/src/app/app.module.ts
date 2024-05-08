@@ -4,12 +4,13 @@ import { HttpLink } from 'apollo-angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
-import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
+import { ApolloClientOptions, InMemoryCache, ApolloLink } from '@apollo/client/core';
+import { HttpClientModule } from '@angular/common/http';
+import { setContext } from '@apollo/client/link/context';
 import extractFiles from 'extract-files/extractFiles.mjs';
 import isExtractableFile from 'extract-files/isExtractableFile.mjs';
-import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { ToolbarComponent } from './navigation/toolbar/toolbar.component';
 import { SharedModule } from './modules/shared/shared.module';
@@ -17,14 +18,32 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarComponent } from './modules/navigation/navbar/navbar.component';
 
-const uri = environment.apiUrl; // <-- add the URL of the GraphQL server here
+// Fungsi untuk membuat ApolloClientOptions dengan otorisasi
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
+  // Middleware untuk menambahkan token ke header Authorization
+  const authLink = setContext((_, { headers }) => {
+    // Ambil token dari localStorage
+    const token = localStorage.getItem('token'); // Ambil token dengan key 'token'
+    return {
+      headers: {
+        ...headers,
+        Authorization: token ? `Bearer ${token}` : '', // Tambahkan token ke header Authorization
+      },
+    };
+  });
+
+  // Link HTTP untuk GraphQL server
+  const http = httpLink.create({
+    uri: environment.apiUrl, // URI dari server GraphQL
+    extractFiles: (body) => extractFiles(body, isExtractableFile),
+  });
+
+  // Gabungkan authLink dan httpLink
+  const link = ApolloLink.from([authLink, http]);
+
   return {
-    link: httpLink.create({
-      uri: uri,
-      extractFiles: (body) => extractFiles(body, isExtractableFile),
-    }),
-    cache: new InMemoryCache({ addTypename: false }),
+    link,
+    cache: new InMemoryCache({ addTypename: false }), // Cache untuk Apollo Client
   };
 }
 
@@ -38,12 +57,11 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     MatButtonModule,
     BrowserModule,
     AppRoutingModule,
-    ApolloModule, 
+    ApolloModule,
     HttpClientModule,
     BrowserAnimationsModule,
     SidenavListComponent,
     ToolbarComponent,
-
     NavbarComponent
   ],
   providers: [

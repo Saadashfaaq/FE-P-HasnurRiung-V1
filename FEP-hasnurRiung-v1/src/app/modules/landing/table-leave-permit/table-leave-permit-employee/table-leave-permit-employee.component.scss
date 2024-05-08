@@ -293,10 +293,6 @@ table{
   .horizontal {
     overflow: auto;
     overflow-y: hidden;
-    background: #424242;
-  }
-  .horizontal::-webkit-scrollbar-track {
-    background: #212121;
   }
   .horizontal::-webkit-scrollbar-thumb {
     border-radius: 50px;
@@ -340,6 +336,18 @@ table{
   --mdc-protected-button-container-color: #FFF138;
   --mdc-protected-button-label-text-color: #000000;
   --mat-protected-button-state-layer-color: #000000;
+  --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+}
+
+// .mat-mdc-raised-button:not(:disabled) {
+//   background-color: #888888
+// }
+
+.mat-mdc-raised-button.mat-none {
+  --mdc-protected-button-container-color: #888888;
+  --mdc-protected-button-label-text-color: #ffffff;
+  --mat-protected-button-state-layer-color: #ffffff;
   --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
   font-weight: 600;
 }

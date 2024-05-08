@@ -1,76 +1,79 @@
-<div class="flex flex-col text-center items-center h-100 justify-center w-full">
-    <mat-card style="width: 400px;" class="flex flex-colh-50 mt-60 jusify-center py-4 px-10">
-        <div>
-            <img class="w-28 h-28" src="assets/images/LOGO.ico" alt="Deskripsi Gambar">
-        </div>
-       <h2 color="primary" style="font-weight: 800; color: #015BAB;" class="my-1 font-bold">STOPLESS</h2>
-       <p class="mt-0 text-xs italic">Surat Tugas Online Paperless</p>
-       <form class="flex flex-col" [formGroup]="loginForm">
-        <!-- NRP -->
-        <div >
-            <div class="text-left ml-1">
-                <span>NRP*</span>
-            </div>
-            <mat-form-field appearance="outline" class="w-full">
-                <input
-                    matInput
-                    [formControlName]="'employee_number'"
-                />
-                <button
-                class="cursor-default"
-                mat-icon-button
-                type="button"
-                matSuffix
-            >
-            <i class='bx bxs-user-circle'></i>
-            </button>
-                <mat-error>
-                    Kolom ini harus diisi
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <!-- Password field -->
-        <div>
-            <div class="text-left ml-1">
-                <span>Kata Sandi*</span>
-            </div>
-            <mat-form-field appearance="outline" class="w-full">
-                <input
-                    id="password"
-                    matInput
-                    type="password"
-                    [formControlName]="'password'"
-                    #passwordField
-                />
-                <button
-                    mat-icon-button
-                    type="button"
-                    (click)="
-                        passwordField.type === 'password'
-                            ? (passwordField.type = 'text')
-                            : (passwordField.type = 'password')
-                    "
-                    matSuffix
-                >
-                <i *ngIf="passwordField.type === 'password'" class='bx bxs-show'></i>
-                <i *ngIf="passwordField.type === 'text'" class='bx bxs-hide' ></i>
-                </button>
-                <mat-error>
-                    Kolom ini harus diisi
-                </mat-error>
-            </mat-form-field>
-        </div>
-       </form>
-       <div class="text-right">
-        <a>
-          Lupa Kata Sandi
-        </a>
-       </div>
-       <div class="text-left">
-        <mat-checkbox color="primary" class="example-margin">Ingat Saya</mat-checkbox>
-       </div>
-       <div>
-        <button (click)="Login()" color="primary" mat-raised-button>Masuk</button>
-       </div>
-    </mat-card>
+<div class="flex flex-col text-center align-center h-screen items-center my-auto justify-center w-full">
+    <mat-card style="width: 400px;" class="flex flex-col jusify-center py-4 px-10">
+      <div>
+          <img class="w-28 h-28" src="assets/images/LOGO.ico" alt="Deskripsi Gambar">
+      </div>
+     <h2 color="primary" style="font-weight: 800; color: #015BAB;" class="my-1 font-bold">STOPLESS</h2>
+     <p class="mt-0 text-xs italic">Surat Tugas Online Paperless</p>
+     <form class="flex flex-col" [formGroup]="loginForm">
+      <!-- NRP -->
+      <div >
+          <div class="text-left ml-1">
+              <span>NRP*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+              <input
+                  matInput
+                  [formControlName]="'employee_number'"
+              />
+              <button
+              class="cursor-default"
+              mat-icon-button
+              type="button"
+              matSuffix
+          >
+          <i class='bx bxs-user-circle'></i>
+          </button>
+              <mat-error>
+                  Kolom ini harus diisi
+              </mat-error>
+          </mat-form-field>
+      </div>
+      <!-- Password field -->
+      <div>
+          <div class="text-left ml-1">
+              <span>Kata Sandi*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+              <input
+                  id="password"
+                  matInput
+                  type="password"
+                  [formControlName]="'password'"
+                  #passwordField
+              />
+              <button
+                  mat-icon-button
+                  type="button"
+                  (click)="
+                      passwordField.type === 'password'
+                          ? (passwordField.type = 'text')
+                          : (passwordField.type = 'password')
+                  "
+                  matSuffix
+              >
+              <i *ngIf="passwordField.type === 'password'" class='bx bxs-show'></i>
+              <i *ngIf="passwordField.type === 'text'" class='bx bxs-hide' ></i>
+              </button>
+              <mat-error>
+                  Kolom ini harus diisi
+              </mat-error>
+          </mat-form-field>
+      </div>
+     </form>
+     <div class="text-right">
+      <a>
+        Lupa Kata Sandi
+      </a>
+     </div>
+     <div class="text-left">
+      <mat-checkbox color="primary" class="example-margin">Ingat Saya</mat-checkbox>
+     </div>
+     <div>
+      <button (click)="Login()" color="primary" mat-raised-button>Masuk</button>
+     </div>
+  </mat-card>
+</div>
+<div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
+  <mat-spinner color="primary" [diameter]="100"></mat-spinner>
 </div>

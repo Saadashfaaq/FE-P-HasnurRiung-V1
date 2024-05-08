@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren:()=> import('./modules/auth/auth.module').then((m)=>m.AuthModule),
-    
+
   },
   {
     path: 'permit-leave',
@@ -39,7 +39,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always'
   },
   {
-    path: 'barcode-form',
+    path: 'data-validation',
     loadChildren:()=> import('./modules/landing/barcode/barcode.module').then((m)=>m.BarcodeModule)
   },
   { path: '404', loadChildren:()=> import('./modules/landing/form-leave/form-leave.module').then((m)=>m.FormLeaveModule), pathMatch: 'full' },

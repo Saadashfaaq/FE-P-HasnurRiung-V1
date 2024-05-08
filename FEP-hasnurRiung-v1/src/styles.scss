@@ -218,6 +218,24 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  .ng-select .ng-select-container {
+    color: #333;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid rgba(49, 49, 49, 0.54);
+    min-height: 36px;
+    align-items: center;
+  }
+
+  // .ng-select .ng-select-container :hover {
+  //   color: #303030;
+  //   background-color: #fff;
+  //   border-radius: 4px;
+  //   border: 1px solid rgba(0, 0, 0, 0.54);
+  //   min-height: 36px;
+  //   align-items: center;
+  // }
+
 
 
 // .mat-mdc-form-field.disabled {

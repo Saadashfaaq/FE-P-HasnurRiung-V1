@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,6 +13,7 @@ import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.c
 import { MatDialog } from '@angular/material/dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-table-leave-permit-employee',
@@ -44,7 +45,9 @@ export class TableLeavePermitEmployeeComponent {
   constructor(
     private _formLeaveService : FormLeaveService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
+    private _adapter: DateAdapter<any>,
   ){
 
   }
@@ -104,6 +107,17 @@ export class TableLeavePermitEmployeeComponent {
     }
   ]
 
+  isTicketSupportedList = [
+    {
+      name: 'Ada',
+      value: true,
+    },
+    {
+      name: 'Tidak Ada',
+      value: false
+    }
+  ]
+
   displayedColumns: string[] = [
     "created_date",
     "application_type",
@@ -156,7 +170,15 @@ export class TableLeavePermitEmployeeComponent {
     this.token = localStorage.getItem('token')
     this.GetAllApplicationFormsEmployee()
     this.initFilter()
+    this.SetDatePickerFormat()
   }
+
+
+  SetDatePickerFormat() {
+    this._locale = 'en-GB';
+    this._adapter.setLocale(this._locale);
+  }
+
 
   ngAfterViewInit(): void {
     this.subs.sink = this.paginator.page
@@ -209,7 +231,7 @@ export class TableLeavePermitEmployeeComponent {
   }
 
   OpenFormToCreate(){
-    this.router.navigate(['/form-leave'])
+    this.router.navigate(['/form-leave/preview'])
   }
 
   OpenPdfApplicationForm(url: string){
@@ -312,6 +334,17 @@ export class TableLeavePermitEmployeeComponent {
     if (event && event.key) {
       if (!event.key.match(/^[0-9]+$/)) {
         event.preventDefault();
+      }
+    }
+  }
+
+  resetTable() {
+    // Loop through the keys in formControls object
+    for (const key in this.formControls) {
+      // Check if the key is a property of formControls
+      if (this.formControls.hasOwnProperty(key)) {
+        // Set the value of each control to null
+        this.formControls[key].setValue(null);
       }
     }
   }

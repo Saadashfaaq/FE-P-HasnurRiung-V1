@@ -33,6 +33,7 @@ export class ApprovalGroupDialogComponent {
   originalHcgsList
   employeeId
   openApproval3 : boolean = false
+  isWaitingForResponse : boolean = false
 
   constructor(
     public dialogRef: MatDialogRef<ApprovalGroupDialogComponent>,
@@ -57,27 +58,27 @@ export class ApprovalGroupDialogComponent {
 
   InitFormApproval2(){
     this.formApproval2 = this.formBuilder.group({
-      employees: this.formBuilder.array([]), 
+      employees: this.formBuilder.array([]),
     });
   }
   InitFormApproval3(){
     this.formApproval3 = this.formBuilder.group({
-      employees: this.formBuilder.array([]), 
+      employees: this.formBuilder.array([]),
     });
   }
 
       // Getter for the addresses FormArray
       get approvals2(): FormArray {
         return this.formApproval2.get('employees') as FormArray;
-      }  
+      }
       // Helper method untuk mengisi FormArray addresses dengan data yang ada
     updateApprovals2(approvalsData: any[]): void {
       const approvalsArray = this.formApproval2.get('employees') as FormArray;
       approvalsData.forEach((approvals) => {
         approvalsArray.push(this.CreateApprovals2());
       });
-    }    
-  
+    }
+
   // Helper method untuk membuat FormGroup alamat dengan data awal
       CreateApprovals2() {
         const newEmployee = this.formBuilder.group({
@@ -86,7 +87,7 @@ export class ApprovalGroupDialogComponent {
 
         this.approvals2.push(newEmployee)
       }
-    
+
       // Remove an address from the FormArray
       RemoveApproval2(index: number): void {
         this.approvals2.removeAt(index);
@@ -97,15 +98,15 @@ export class ApprovalGroupDialogComponent {
       // Getter for the addresses FormArray
       get approvals3(): FormArray {
         return this.formApproval3.get('employees') as FormArray;
-      }  
+      }
       // Helper method untuk mengisi FormArray addresses dengan data yang ada
     updateApprovals3(approvalsData: any[]): void {
       const approvalsArray = this.formApproval3.get('employees') as FormArray;
       approvalsData.forEach((approvals) => {
         approvalsArray.push(this.CreateApprovals3());
       });
-    }    
-  
+    }
+
   // Helper method untuk membuat FormGroup alamat dengan data awal
       CreateApprovals3() {
         const newEmployee = this.formBuilder.group({
@@ -114,7 +115,7 @@ export class ApprovalGroupDialogComponent {
 
         this.approvals3.push(newEmployee)
       }
-    
+
       // Remove an address from the FormArray
       RemoveApproval3(index: number): void {
         this.approvals3.removeAt(index);
@@ -123,6 +124,7 @@ export class ApprovalGroupDialogComponent {
 
 
       GetOneApproalGroupMenu(){
+        this.isWaitingForResponse = true
         this.subs.sink = this._formLeaveService.GetOneApproalGroupMenu(this.data._id, this.employeeId, this.data.department)
          .subscribe(
           (resp)=>{
@@ -134,7 +136,7 @@ export class ApprovalGroupDialogComponent {
                 this.changeDetectorRef.detectChanges();
 
                 const approvalCount2 = resp.approvals[0].approver_list.length <= 5 ? 5 : resp.approvals[0].approver_list.length;
-  
+
                 // Buat approval2 beberapa kali sesuai kebutuhan
                 for (let i = 0; i < approvalCount2; i++) {
                   this.CreateApprovals2();
@@ -152,22 +154,25 @@ export class ApprovalGroupDialogComponent {
                   this.approvals3.at(index).get('employee').setValue(list._id)
                   this.changeDetectorRef.detectChanges()
                 })
-                
+                this.isWaitingForResponse = false
               } else {
                 resp.approvals[0].approver_list.forEach((list,index)=>{
                   this.approvals2.at(index).get('employee').setValue(list._id)
                   this.changeDetectorRef.detectChanges()
                 })
+                this.isWaitingForResponse = false
               }
             }
           },
           (err)=>{
+            this.isWaitingForResponse = false
             console.error(err)
           }
         )
       }
 
       GetAllEmployee(){
+        this.isWaitingForResponse  = true
         this.subs.sink = this._formLeaveService.GetAllEmployeesApprovalMenu(this.data.department)
         .subscribe(
          (resp)=>{
@@ -178,9 +183,11 @@ export class ApprovalGroupDialogComponent {
               displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
             }));
             this.originalEmployeeList = [...this.employeeList]; // simpan salinan asli
+            this.isWaitingForResponse  = false
          }
          },
          (err)=>{
+          this.isWaitingForResponse  = false
            console.error(err)
          }
        )
@@ -209,7 +216,7 @@ export class ApprovalGroupDialogComponent {
 
     UpdateGroupMutation(department){
      const approvalFormArray = [
-      this.formApproval2.value, 
+      this.formApproval2.value,
       this.formApproval3 ? this.formApproval3.value : []
     ]
 
@@ -227,25 +234,25 @@ export class ApprovalGroupDialogComponent {
 
     CreateDynamicPayload(id, approvalForms) {
       const validApprovalForms = approvalForms.filter((form) => form && form.employees && form.employees.length > 0);
-    
+
       // Pemetaan hanya pada formulir yang valid
       const approvals = validApprovalForms.map((form, index) => {
-        const approverList = form.employees.map((emp) => emp.employee); 
-    
+        const approverList = form.employees.map((emp) => emp.employee);
+
         return {
           approval_index: index + 1,
-          default_approver: approverList[0], 
-          approver_list: approverList, 
+          default_approver: approverList[0],
+          approver_list: approverList,
         };
       });
-    
+
       const payload = {
         id: id, // ID utama, dapat disesuaikan
         approvalGroupInput: {
           approvals: approvals, // Tambahkan daftar persetujuan yang telah diolah
         },
       };
-    
+
       return payload; // Kembalikan payload yang telah dibuat
     }
 
@@ -289,7 +296,7 @@ export class ApprovalGroupDialogComponent {
       const selectedValues = this.approvals2.controls
         .map((control) => control.get('employee')?.value)
         .filter((value) => value !== null); // kumpulkan semua nilai yang telah dipilih
-  
+
       // Perbarui daftar opsi dengan menghapus item yang telah dipilih
       this.employeeList = this.originalEmployeeList.filter(
         (emp) => !selectedValues.includes(emp._id)
@@ -299,7 +306,7 @@ export class ApprovalGroupDialogComponent {
       const selectedValues = this.approvals3.controls
         .map((control) => control.get('employee')?.value)
         .filter((value) => value !== null); // kumpulkan semua nilai yang telah dipilih
-  
+
       // Perbarui daftar opsi dengan menghapus item yang telah dipilih
       this.hcgsList = this.originalHcgsList.filter(
         (emp) => !selectedValues.includes(emp._id)

@@ -160,6 +160,6 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
   }
 
   OpenFormToCreate(){
-    this.router.navigate(['/form-leave'])
-  }  
+    this.router.navigate(['/form-leave/preview'])
+  }
 }

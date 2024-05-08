@@ -8,21 +8,21 @@
   <!--Page Container -->
   <div
     style="background-color: white"
-    class="flex flex-col items-left p-3 customBorder"
+    class="flex flex-col items-left customBorder"
   >
     <!-- Leave Form Section 1 -->
     <div *ngIf="openIdentity" class="flex flex-col justify-between h-full">
       <form [formGroup]="formLeaveIdentity">
         <!-- Form Section -->
         <div class="flex flex-row">
-          <div class="flex flex-col items-center w-1/2 pt-3 mr-2">
-            <div class="mb-6">
-              <div class="flex flex-row h-10 items-baseline">
-                <div class="w-50 text-left">
+          <div class="flex flex-col items-left w-1/2 pt-3 mr-2">
+            <div class="mb-4">
+              <div class="flex flex-row mb-6 h-10 items-baseline">
+                <div class="w-70 text-left">
                   <span>Jenis Permohonan*</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <mat-select [formControlName]="'application_type'">
                       <mat-option
                         (click)="ChangeAplication()"
@@ -45,15 +45,15 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2" *ngIf="IsTypeIsLeave()">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4" *ngIf="IsTypeIsLeave()">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Waktu Matang Cuti</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
-                      class="w-75"
+                      class="w-80"
                       matInput
                       [formControlName]="'date_of_eligible_for_leave'"
                       [disabled]="true"
@@ -63,15 +63,15 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Nama</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
-                      class="w-75"
+                      class="w-80"
                       matInput
                       [formControlName]="'name'"
                       [disabled]="true"
@@ -81,13 +81,13 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>NRP</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
                       matInput
                       [formControlName]="'employee_number'"
@@ -97,13 +97,13 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Status Keluarga</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
                       matInput
                       [formControlName]="'family_status'"
@@ -113,13 +113,13 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Tanggal Diterima Kerja</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
                       matInput
                       [formControlName]="'date_of_registration'"
@@ -129,16 +129,27 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>{{
                     formType ? "Alamat " + formType + "*" : "Alamat*"
                   }}</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input matInput [formControlName]="'leave_address'" />
+                    <!-- <textarea
+                    class="w-80"
+                    matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    cdkAutosizeMaxCols="3"
+                    cols="3"
+                    [formControlName]="'leave_address'"
+                    ></textarea> -->
                     <mat-error
                       *ngIf="
                         formLeaveIdentity
@@ -152,15 +163,15 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Tlp Rumah / HP*</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
-                      (keypress)="preventNonNumericalInput($event)"
+                      (keypress)="preventNonNumericalInputPhoneNumber($event)"
                       matInput
                       [formControlName]="'phone_number'"
                     />
@@ -177,12 +188,12 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2" *ngIf="IsTypeIsLeave()">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4" *ngIf="IsTypeIsLeave()">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Kategori Cuti*</span>
                 </div>
-                <div class="w-75 text-left pl-1">
+                <div class="w-80 text-left pl-1">
                   <mat-radio-group
                     [formControlName]="'leave_category'"
                     aria-label="Select an option"
@@ -206,12 +217,12 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2" *ngIf="IsTypeIsLeave() === false">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4" *ngIf="IsTypeIsLeave() === false">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Kategori Ijin*</span>
                 </div>
-                <div class="w-75 text-left pl-1">
+                <div class="w-80 text-left pl-1">
                   <mat-radio-group
                     [formControlName]="'permission_category'"
                     aria-label="Select an option"
@@ -234,14 +245,14 @@
               </div>
             </div>
             <div
-              class="mb-2"
+              class="mb-4"
               *ngIf="IsTypeIsLeave() === false && permissionType"
             >
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Bantuan Tiket*</span>
                 </div>
-                <div class="w-75 text-left pl-1">
+                <div class="w-80 text-left pl-1">
                   <mat-radio-group
                     [formControlName]="'is_ticket_supported'"
                     aria-label="Select an option"
@@ -263,13 +274,13 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-center w-1/2 pt-3">
-            <div class="mb-2" *ngIf="IsTypeIsLeave()">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-64 text-left">
+          <div class="flex flex-col items-left w-1/2 pt-3">
+            <div class="mb-4" *ngIf="IsTypeIsLeave()">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Bantuan Tiket*</span>
                 </div>
-                <div class="w-75 text-left pl-1">
+                <div class="w-80 text-left pl-1">
                   <mat-radio-group
                     (change)="SelectTicketSupported()"
                     [formControlName]="'is_ticket_supported'"
@@ -290,13 +301,13 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Status Penerimaan POH</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
                       matInput
                       [formControlName]="'poh_status'"
@@ -306,13 +317,13 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Jabatan</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
                       matInput
                       [formControlName]="'position'"
@@ -322,13 +333,13 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Status Penempatan</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input
                       matInput
                       [formControlName]="'placement_status'"
@@ -338,12 +349,12 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-64 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Membawa Keluarga*</span>
                 </div>
-                <div class="w-75 text-left pl-1">
+                <div class="w-80 text-left pl-1">
                   <mat-radio-group
                     [formControlName]="'is_with_family'"
                     aria-label="Select an option"
@@ -364,12 +375,12 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-64 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>ST Dinas Rutin</span>
                 </div>
-                <div class="w-75 text-left pl-1">
+                <div class="w-80 text-left pl-1">
                   <mat-radio-group
                     [formControlName]="'is_routine_official_letter'"
                     aria-label="Select an option"
@@ -380,9 +391,9 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>{{
                     formType
                       ? "Tempat Tujuan " + formType + "*"
@@ -390,7 +401,7 @@
                   }}</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input matInput [formControlName]="'leave_location'" />
                     <mat-error
                       *ngIf="
@@ -405,12 +416,12 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2" *ngIf="IsTypeIsLeave()">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-64 text-left">
+            <div class="mb-4" *ngIf="IsTypeIsLeave()">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Bantuan Biaya Cuti (Lump Sump)</span>
                 </div>
-                <div class="w-75 text-left pl-1">
+                <div class="w-80 text-left pl-1">
                   <mat-radio-group
                     [formControlName]="'is_lump_sump'"
                     aria-label="Select an option"
@@ -421,13 +432,13 @@
                 </div>
               </div>
             </div>
-            <div class="mb-2" *ngIf="IsTypeIsLeave()">
-              <div class="flex flex-row h-10 mb-5 items-baseline">
-                <div class="w-50 text-left">
+            <div class="mb-4" *ngIf="IsTypeIsLeave()">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
                   <span>Besarnya bantuan Biaya Cuti</span>
                 </div>
                 <div>
-                  <mat-form-field appearance="outline" class="w-75">
+                  <mat-form-field appearance="outline" class="w-80">
                     <input matInput [formControlName]="'lump_sump_amount'" />
                   </mat-form-field>
                 </div>
@@ -452,15 +463,19 @@
       </div>
     </div>
 
+    <div *ngIf="isPreviewMode" class="w-full my-10">
+      <mat-divider></mat-divider>
+    </div>
+
     <!-- Leave Form Section 2 -->
-    <div *ngIf="openDetailRequest" class="flex flex-col justify-between h-full">
+    <div *ngIf="openDetailRequest" class="flex flex-col my-10 justify-between h-full">
       <div *ngIf="!isPreviewMode" class="ml-1 self-start mb-3">
         <button (click)="OpenIdentity()" color="accent" mat-raised-button>
           Kembali
         </button>
       </div>
       <!-- FORM IZIN START -->
-      <form class="p-7" [formGroup]="formLeaveDetailRequest">
+      <form  [formGroup]="formLeaveDetailRequest">
         <!-- Form Section -->
         <div class="flex flex-col">
           <div
@@ -470,9 +485,9 @@
                 formLeaveIdentity.get('is_ticket_supported').value) ||
               permissionType === 'pp'
             "
-            class="flex flex-row h-10 mb-5 items-baseline w-[75%]"
+            class="flex flex-row h-10 mb-6 items-baseline w-[75%]"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tanggal Berangkat (hari off)*</span>
             </div>
             <div>
@@ -483,6 +498,7 @@
                   [formControlName]="'departure_off_day'"
                   [matDatepicker]="pickerdeparture_off_day"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -503,13 +519,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() === false && permissionType === 'pp'"
-            class="flex flex-row h-10 mb-5 items-baseline w-[75%]"
+            class="flex flex-row h-10 mb-6 items-baseline w-[75%]"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-75">
+              <!-- <mat-form-field appearance="outline" class="w-80">
                 <input
                   (focusout)="SelectPermissionType()"
                   matInput
@@ -536,9 +552,9 @@
                   Kolom ini wajib diisi
                 </mat-error>
               </mat-form-field> -->
-              <div class="w-75">
+              <div class="w-80">
                 <ng-select
-                  class="min-w-75"
+                  class="min-w-80"
                   appendTo="body"
                   [items]="permissionList"
                   bindLabel="name"
@@ -562,13 +578,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input matInput formControlName="permission_type" />
                 <mat-error
                   *ngIf="
@@ -584,13 +600,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() === false"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Jumlah Hari Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="ResetFieldAfterInputPermissionAmount()"
@@ -611,9 +627,9 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() === false"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tanggal Ijin</span>
             </div>
             <div class="flex flex-row items-baseline">
@@ -624,6 +640,7 @@
                   [formControlName]="'permission_start_date'"
                   [matDatepicker]="picker_permission_start"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -638,6 +655,7 @@
                   [formControlName]="'permission_end_date'"
                   [matDatepicker]="picker_permission_end"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -653,9 +671,9 @@
               !IsLeaveCategoryIsYearly() &&
               formLeaveIdentity.get('is_ticket_supported').value
             "
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Perjalanan*</span>
             </div>
             <div>
@@ -666,6 +684,7 @@
                   [formControlName]="'travel_date'"
                   [matDatepicker]="pickertravel_date"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -686,13 +705,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Jumlah Hari Cuti Lapangan*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input
                   (focusout)="CalculateLeaveDate('first')"
                   (keypress)="preventNonNumericalInput($event)"
@@ -713,12 +732,12 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-77 pr-1 text-left">
+            <div class="w-70 pr-1 text-left truncate">
               <span>Tanggal Cuti (Waktu Cuti Aktif)*</span>
             </div>
-            <div class="flex flex-row items-baseline">
+            <div class="flex flex-row custom-w items-baseline">
               <mat-form-field appearance="outline" class="testing">
                 <input
                   (dateInput)="CalculateLeaveDate('last')"
@@ -726,6 +745,7 @@
                   [formControlName]="'field_leave_start_date'"
                   [matDatepicker]="picker_leave_date_start"
                   [readonly]="false"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -749,6 +769,7 @@
                   [formControlName]="'field_leave_end_date'"
                   [matDatepicker]="picker_leave_date_end"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -763,12 +784,12 @@
               (IsTypeIsLeave() && !IsLeaveCategoryIsYearly()) ||
               permissionType === 'pp'
             "
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tambah Cuti Tahunan*</span>
             </div>
-            <div class="w-75 text-left pl-1">
+            <div class="w-80 text-left pl-1">
               <mat-radio-group
                 (change)="SelectYealyLeave()"
                 [formControlName]="'is_yearly_leave'"
@@ -790,13 +811,13 @@
           </div>
           <div
             *ngIf="IsYearlySelected()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Jumlah Hari Cuti Tahunan*</span>
             </div>
             <div class="flex flex-row items-baseline">
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input
                   (focusout)="CalculateYearlyLeaveDate()"
                   (keypress)="preventNonNumericalInput($event)"
@@ -841,9 +862,9 @@
           </div>
           <div
             *ngIf="IsYearlySelected()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tanggal Cuti Tahunan</span>
             </div>
             <div class="flex flex-row items-baseline">
@@ -854,6 +875,7 @@
                   [formControlName]="'yearly_leave_start_date'"
                   [matDatepicker]="picker_leave_yearly_start"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -877,6 +899,7 @@
                   [formControlName]="'yearly_leave_end_date'"
                   [matDatepicker]="picker_leave_yearly_end"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -888,12 +911,12 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tambah Ijin*</span>
             </div>
-            <div class="w-75 text-left pl-1">
+            <div class="w-80 text-left pl-1">
               <mat-radio-group
                 (change)="SelectPermission()"
                 [formControlName]="'is_permission'"
@@ -915,13 +938,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-75">
+              <!-- <mat-form-field appearance="outline" class="w-80">
                 <input
                   (focusout)="SelectPermissionType()"
                   matInput
@@ -947,9 +970,9 @@
                   Kolom ini wajib diisi
                 </mat-error>
               </mat-form-field> -->
-              <div class="w-75">
+              <div class="w-80">
                 <ng-select
-                  class="w-75"
+                  class="w-80"
                   appendTo="body"
                   [items]="permissionList"
                   bindLabel="name"
@@ -973,13 +996,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Jumlah Hari Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="CalculatePermissionLeaveDate()"
@@ -1000,9 +1023,9 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tanggal Ijin</span>
             </div>
             <div class="flex flex-row items-baseline">
@@ -1012,6 +1035,7 @@
                   [formControlName]="'permission_start_date'"
                   [matDatepicker]="picker_permission_start"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -1026,6 +1050,7 @@
                   [formControlName]="'permission_end_date'"
                   [matDatepicker]="picker_permission_end"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -1037,12 +1062,12 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()"
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tambah Kompensasi*</span>
             </div>
-            <div class="w-75 text-left pl-1">
+            <div class="w-80 text-left pl-1">
               <mat-radio-group
                 (change)="IsCompensationSelected()"
                 [formControlName]="'is_compensation'"
@@ -1068,13 +1093,13 @@
               !IsLeaveCategoryIsYearly() &&
               IsCompensationSelected()
             "
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Jumlah Hari Kompensasi*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="CalculateCompensationLeaveDate()"
@@ -1099,9 +1124,9 @@
               !IsLeaveCategoryIsYearly() &&
               IsCompensationSelected()
             "
-            class="flex flex-row h-10 mb-5 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-60 text-left">
+            <div class="w-70 text-left">
               <span>Tanggal Kompensasi*</span>
             </div>
             <div class="flex flex-row items-baseline">
@@ -1111,6 +1136,7 @@
                   [formControlName]="'compensation_start_date'"
                   [matDatepicker]="picker_compensation_start"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -1125,6 +1151,7 @@
                   [formControlName]="'compensation_end_date'"
                   [matDatepicker]="picker_compensation_end"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -1153,10 +1180,14 @@
       </div>
     </div>
 
+    <div *ngIf="isPreviewMode" class="w-full my-10">
+      <mat-divider></mat-divider>
+    </div>
+
     <!-- Leave Form Section 3 -->
     <div
       *ngIf="openTicektApproval"
-      class="flex flex-col ml-10 justify-between h-full"
+      class="flex flex-col justify-between h-full my-10"
     >
       <div *ngIf="!isPreviewMode" class="ml-1 self-start mb-3">
         <button (click)="OpenDetailRequest()" color="accent" mat-raised-button>
@@ -1166,8 +1197,8 @@
       <form [formGroup]="formLeaveTicektApproval">
         <!-- Form Section -->
         <div class="mr-5">
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Tanggal Cuti Total</span>
             </div>
             <div class="flex flex-row items-baseline">
@@ -1193,6 +1224,7 @@
                   [formControlName]="'leave_date_end_TicektApproval'"
                   [matDatepicker]="picker_leave_date_end_TicektApproval"
                   [readonly]="true"
+                  [min]="minDate"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -1204,12 +1236,12 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Total (Hari)</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input
                   matInput
                   [formControlName]="'total_leave_amount'"
@@ -1218,12 +1250,12 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Keterangan*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-75">
+              <mat-form-field appearance="outline" class="w-80">
                 <input matInput [formControlName]="'leave_comment'" />
                 <mat-error
                   *ngIf="
@@ -1242,22 +1274,22 @@
           <div formArrayName="travel_tickets">
             <div *ngIf="formLeaveIdentity.get('is_ticket_supported').value">
               <h3 class="mb-1 text-left">Pemesanan Tiket Pesawat/Travel</h3>
-              <h5 class="mt-1 mb-5 text-left">
+              <h5 class="mt-1 mb-6 text-left">
                 *mohon diisi apabila ingin memesan tiket pesawat
               </h5>
               <div
-                class="flex flex-col mb-5 w-max"
+                class="flex flex-col mb-6 w-max"
                 *ngFor="let ticket of ticketsTravel.controls; let i = index"
                 [formGroupName]="i"
               >
-                <div class="flex flex-row h-10 mb-5 items-baseline">
+                <div class="flex flex-row h-10 mb-6 items-baseline">
                   <div class="flex flex-row h-10 mr-5 items-baseline">
                     <div class="w-20 text-left">
                       <span>{{ i + 1 + ". Nama" }}</span>
                     </div>
                     <div>
-                      <mat-form-field class="w-50" appearance="outline">
-                        <input class="w-75" matInput formControlName="name" />
+                      <mat-form-field class="w-70" appearance="outline">
+                        <input class="w-80" matInput formControlName="name" />
                       </mat-form-field>
                     </div>
                   </div>
@@ -1269,7 +1301,7 @@
                       <mat-form-field class="w-43" appearance="outline">
                         <input
                           (keypress)="preventNonNumericalInput($event)"
-                          class="w-75"
+                          class="w-80"
                           matInput
                           formControlName="age"
                         />
@@ -1277,7 +1309,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-row h-10 mb-5 items-baseline">
+                <div class="flex flex-row h-10 mb-6 items-baseline">
                   <div class="w-30 text-left">
                     <span>Berangkat</span>
                   </div>
@@ -1290,45 +1322,18 @@
                         <input
                           [disabled]="true"
                           [readonly]="true"
-                          class="w-75"
+                          class="w-80"
                           matInput
                           formControlName="departure_from"
                         />
                       </mat-form-field>
                     </div>
                   </div>
-                  <div class="flex flex-row h-10 mb-5 items-baseline">
+                  <div class="flex flex-row h-10 mb-6 items-baseline">
                     <div class="w-10 mr-7 text-left">
                       <span>Menuju*</span>
                     </div>
                     <div>
-                      <!-- <mat-form-field class="w-43" appearance="outline">
-                        <input
-                          (focusout)="UpdateAirPortFormArrTo()"
-                          matInput
-                          formControlName="departure_to"
-                          [matAutocomplete]="airportTo"
-                        />
-                        <mat-autocomplete #airportTo="matAutocomplete">
-                          <mat-option
-                            (click)="UpdateAirPortFormArrTo()"
-                            *ngFor="let item of filteredAirPortTo | async"
-                            [value]="item.value"
-                          >
-                            {{ item?.city }} {{ item?.value }}
-                          </mat-option>
-                        </mat-autocomplete>
-                        <mat-error
-                          *ngIf="
-                            ticketsTravel
-                              .at(i)
-                              .get('departure_to')
-                              .hasError('required')
-                          "
-                        >
-                          Kolom ini wajib diisi
-                        </mat-error>
-                      </mat-form-field> -->
                       <ng-select
                         class="w-43"
                         [items]="airPortList"
@@ -1356,7 +1361,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-row h-10 mb-5 items-baseline">
+                <div class="flex flex-row h-10 mb-6 items-baseline">
                   <div class="w-30 text-left">
                     <span>Kembali</span>
                   </div>
@@ -1365,33 +1370,6 @@
                       <span>Dari*</span>
                     </div>
                     <div>
-                      <!-- <mat-form-field class="w-43" appearance="outline">
-                        <input
-                          (focusout)="UpdateAirPortFormArrFrom()"
-                          matInput
-                          formControlName="arrival_from"
-                          [matAutocomplete]="airportFrom"
-                        />
-                        <mat-autocomplete #airportFrom="matAutocomplete">
-                          <mat-option
-                            (click)="UpdateAirPortFormArrFrom()"
-                            *ngFor="let item of filteredAirPortFrom | async"
-                            [value]="item.value"
-                          >
-                            {{ item.city }} {{ item.value }}
-                          </mat-option>
-                        </mat-autocomplete>
-                        <mat-error
-                          *ngIf="
-                            ticketsTravel
-                              .at(i)
-                              .get('arrival_from')
-                              .hasError('required')
-                          "
-                        >
-                          Kolom ini wajib diisi
-                        </mat-error>
-                      </mat-form-field> -->
                       <ng-select
                         class="w-43"
                         appendTo="body"
@@ -1416,7 +1394,7 @@
                     </div>
                   </div>
 
-                  <div class="flex flex-row h-10 mb-5 items-baseline">
+                  <div class="flex flex-row h-10 mb-6 items-baseline">
                     <div class="w-10 mr-7 text-left">
                       <span>Menuju</span>
                     </div>
@@ -1425,7 +1403,7 @@
                         <input
                           [disabled]="true"
                           [readonly]="true"
-                          class="w-75"
+                          class="w-80"
                           matInput
                           formControlName="arrival_to"
                         />
@@ -1468,12 +1446,12 @@
 
           <!-- START PEJABAT PENGGANTI SECTION -->
           <h3 class="text-left my-2">Pejabat Pengganti</h3>
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Pejabat Sementara Selama Cuti*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-75">
+              <!-- <mat-form-field appearance="outline" class="w-80">
                 <input
                   matInput
                   formControlName="substitute_officer"
@@ -1499,7 +1477,7 @@
                   Kolom ini wajib diisi
                 </mat-error>
               </mat-form-field> -->
-              <div class="w-75">
+              <div class="w-80">
                 <ng-select
                   appendTo="body"
                   [items]="substituteOfficerList"
@@ -1522,17 +1500,28 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Daftar Job Pending*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline">
+              <mat-form-field class="w-80 custom-h" appearance="outline">
                 <input
-                  class="w-75"
+                  class="w-80"
                   matInput
                   [formControlName]="'pending_job'"
                 />
+                <!-- <textarea
+                class="w-80"
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                cdkAutosizeMaxCols="3"
+                cols="3"
+                [formControlName]="'pending_job'"
+                ></textarea> -->
                 <mat-error
                   *ngIf="
                     formLeaveTicektApproval
@@ -1549,14 +1538,14 @@
 
           <!-- START PERSETUJUAN CUTI -->
           <h3 class="text-left my-2">Persetujuan Cuti</h3>
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Persetujuan 1*</span>
             </div>
             <div>
               <mat-form-field appearance="outline">
                 <input
-                  class="w-75"
+                  class="w-80"
                   matInput
                   [formControlName]="'approval_id_1'"
                   [disabled]="true"
@@ -1565,14 +1554,14 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Persetujuan 2*</span>
             </div>
             <div>
               <mat-form-field appearance="outline">
                 <input
-                  class="w-75"
+                  class="w-80"
                   matInput
                   [formControlName]="'approval_id_2'"
                   [disabled]="true"
@@ -1581,14 +1570,14 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="flex flex-row h-10 mb-5 items-baseline">
-            <div class="w-50 text-left">
+          <div class="flex flex-row h-10 mb-6 items-baseline">
+            <div class="w-70 text-left">
               <span>Persetujuan 3*</span>
             </div>
             <div>
               <mat-form-field appearance="outline">
                 <input
-                  class="w-75"
+                  class="w-80"
                   matInput
                   [formControlName]="'approval_id_3'"
                   [disabled]="true"
@@ -1600,6 +1589,23 @@
           <!-- END PERSETUJUAN CUTI -->
         </div>
       </form>
+      <!--Reason Start-->
+      <div *ngIf="isRevision || isRejected" class="p-10 w-100 h-50 text-left rounded-lg reason-border my-10">
+        <div>
+          <h3 class="m-0 p-0">
+            Alasan
+          </h3>
+        </div>
+       <div class="my-3">
+        <mat-divider></mat-divider>
+       </div>
+        <div class="mt-5">
+          <span>
+            {{reasonText}}
+          </span>
+        </div>
+      </div>
+      <!--Reason End-->
       <!-- Button Group -->
       <div *ngIf="!isPreviewMode" class="self-end">
         <button (click)="CancelCreateForm()" mat-raised-button color="warn">
@@ -1647,6 +1653,11 @@
           <div *ngIf="ButtonApproveCondition()" class="ml-2">
             <button (click)="ApproveForm()" mat-raised-button color="primary">
               Setuju
+            </button>
+          </div>
+          <div class="ml-2">
+            <button (click)="EditForm()" mat-raised-button color="primary">
+              Edit
             </button>
           </div>
         </div>

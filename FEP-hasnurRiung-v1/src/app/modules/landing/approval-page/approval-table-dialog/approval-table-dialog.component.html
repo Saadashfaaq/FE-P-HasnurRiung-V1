@@ -46,3 +46,7 @@
         </button>
     </div>
 </div>
+<div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
+  <mat-spinner color="primary" [diameter]="100"></mat-spinner>
+</div>
+

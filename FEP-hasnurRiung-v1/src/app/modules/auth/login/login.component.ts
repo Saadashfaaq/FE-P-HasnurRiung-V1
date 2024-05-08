@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 export class LoginComponent implements OnInit,OnChanges, OnDestroy{
   subs: SubSink = new SubSink();
   loginForm : UntypedFormGroup
+  isWaitingForResponse : boolean = false
 
   constructor(
     private _formBuilder: UntypedFormBuilder,
@@ -41,6 +42,7 @@ export class LoginComponent implements OnInit,OnChanges, OnDestroy{
   }
 
   Login(){
+    this.isWaitingForResponse = true
     const nrp = this.loginForm.get('employee_number').value
     const password = this.loginForm.get('password').value
     if(this.loginForm.valid){
@@ -52,15 +54,19 @@ export class LoginComponent implements OnInit,OnChanges, OnDestroy{
             localStorage.setItem('name',resp?.employee?.name)
             localStorage.setItem('isAdmin', resp?.is_admin)
             this.router.navigate(['/permit-leave'])
+            this.isWaitingForResponse = false
           } else{
+            this.isWaitingForResponse = false
             this.InvalidSwalNRP()
           }
         },
         (err)=>{
+          this.isWaitingForResponse = false
           console.error
         }
       )
     } else {
+      this.isWaitingForResponse = false
       this.InvalidSwal()
     }
   }

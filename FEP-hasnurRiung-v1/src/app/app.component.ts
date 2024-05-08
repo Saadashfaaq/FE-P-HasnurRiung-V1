@@ -15,7 +15,7 @@ export class AppComponent {
   @ViewChild('sidebar') sidebar: ElementRef | undefined;
   subs: SubSink = new SubSink();
   firstTime: boolean = true
-  
+
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -32,7 +32,7 @@ export class AppComponent {
           this.changeDetectorRef.detectChanges();
           // this.sidebar.nativeElement.addEventListener('click', (event: MouseEvent) => {
           //   const target = event.target as HTMLElement;
-      
+
           //   if (target && target.classList.contains('bx-menu')) {
           //     this.toggleSidebar();
           //   } else {
@@ -133,7 +133,7 @@ private sidebarClickHandler(event: MouseEvent) {
   }
 
   openForm(formId){
-    this.router.navigate([`/form-leave/${formId}`])
+    this.router.navigate([`/form-leave/preview/${formId}`])
   }
 
   TemporaryLogout() {

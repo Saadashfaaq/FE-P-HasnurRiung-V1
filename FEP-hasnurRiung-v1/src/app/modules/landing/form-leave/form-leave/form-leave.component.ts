@@ -52,6 +52,11 @@ export class FormLeaveComponent implements OnInit {
   formData;
   formStatus;
   currentApprovers;
+  isRevision : boolean = false
+  isRejected : boolean = false
+  reasonText : string = ''
+  pohStatus
+  minDate: Date = new Date();
 
   isAplicationTypeLeave: boolean = null;
   isPermissionPP: boolean = null;
@@ -1107,7 +1112,7 @@ export class FormLeaveComponent implements OnInit {
         this.formLeaveDetailRequest
           .get('is_compensation')
           .setValidators([Validators.required]);
-        if (this.formLeaveIdentity.get('poh_status').value === 'LOKAL') {
+        if (this.pohStatus === 'lokal') {
           this.formLeaveIdentity.get('is_ticket_supported').setValue(false);
           this.formLeaveIdentity.get('is_ticket_supported').disable();
         }
@@ -1131,7 +1136,7 @@ export class FormLeaveComponent implements OnInit {
     if (this.formLeaveIdentity.get('poh_status').value) {
       if (
         this.formLeaveIdentity.get('poh_status').value ===
-        `NON LOKAL PERUMAHAN ${this.poh_location}`
+        `NON LOKAL PERUMAHAN - ${this.poh_location}`
       ) {
         return true;
       } else {
@@ -1159,6 +1164,17 @@ export class FormLeaveComponent implements OnInit {
       return;
     }
   }
+
+  preventNonNumericalInputPhoneNumber(event){
+    const key = event.key;
+
+    // Cegah input jika bukan angka
+    if (!key.match(/^[0-9]+$/)) {
+      event.preventDefault();
+      return;
+    }
+  }
+
   ResetBottomData() {
     this.formLeaveDetailRequest.get('field_leave_duration').setValue(null);
     this.formLeaveDetailRequest.get('field_leave_start_date').setValue(null);
@@ -2064,17 +2080,30 @@ export class FormLeaveComponent implements OnInit {
 
   getParamsId() {
     const getParams = this.route.snapshot.params['id'];
+    const getParamsMode = this.route.snapshot.params['mode'];
     if (getParams) {
       this.subs.sink = this._formLeaveService
         .GetOneApplicationForm(getParams)
         .subscribe(
           (resp) => {
-            this.isPreviewMode = true;
-            this.openIdentity = true;
-            this.openDetailRequest = true;
-            this.openTicektApproval = true;
+            if(getParamsMode === 'preview'){
+              this.isPreviewMode = true;
+              this.openIdentity = true;
+              this.openDetailRequest = true;
+              this.openTicektApproval = true;
+            }
             const data = resp;
             this.formID = getParams;
+            if(resp.form_status){
+              if(resp.form_status === 'revision'){
+                this.isRevision = true
+                this.reasonText = resp.approval[resp.current_approval_index].reason_of_revision
+              } else if(resp.form_status === 'rejected'){
+                this.isRejected  = true
+                this.reasonText = resp.approval[resp.current_approval_index].reason_of_rejection
+              }
+
+            }
             setTimeout(() => {
               this.formStatus = resp.form_status;
               this.currentApprovers = resp.current_approvers;
@@ -2084,6 +2113,19 @@ export class FormLeaveComponent implements OnInit {
             this.patchFormLeaveIdentity(data);
             this.patchFormLeaveDetailRequest(data.leaves);
             this.patchFormLeaveTicketApproval(data);
+            if (resp.approval) {
+              resp.approval.forEach(approval=>{
+                if(approval.approval_index === 1){
+                  this.formLeaveTicektApproval
+                  .get('approval_id_2')
+                  .setValue(approval.approver_id.employee_number + ' - ' + approval.approver_id.name);
+                } else if (approval.approval_index === 3){
+                  this.formLeaveTicektApproval
+                  .get('approval_id_3')
+                  .setValue(approval.approver_id.employee_number + ' - ' + approval.approver_id.name);
+                }
+              })
+            }
           },
           (err) => {
             console.log('err', err);
@@ -2111,47 +2153,50 @@ export class FormLeaveComponent implements OnInit {
       is_routine_official_letter: data?.employee_id?.is_routine_official_letter,
       leave_address: data?.leave_address || null,
       is_lump_sump: data?.employee_id?.is_lump_sump,
-      lump_sump_amount: data?.employee_id?.lump_sump_amount || null,
+      lump_sump_amount: data?.employee_id?.lump_sump_amount ? data?.employee_id?.lump_sump_amount : (data?.employee_id?.lump_sump_amount === 0 ? 0 : null),
       placement_status: data?.employee_id?.placement_status || null,
       leave_category: data?.leaves.leave_category || null,
       permission_category: data?.permission_category || null,
     });
 
     // Iterate through form controls and disable if they have a value
-    Object.keys(this.formLeaveIdentity.controls).forEach((key) => {
-      const control = this.formLeaveIdentity.get(key);
-      if (control?.value !== null && control?.value !== undefined) {
-        control.disable(); // Disable the control if it has a value
-      }
-    });
+    const getParams = this.route.snapshot.params['mode'];
+    if(getParams === 'preview'){
+      Object.keys(this.formLeaveIdentity.controls).forEach((key) => {
+        const control = this.formLeaveIdentity.get(key);
+        if (control?.value !== null && control?.value !== undefined) {
+          control.disable(); // Disable the control if it has a value
+        }
+      });
+    }
   }
 
   patchFormLeaveDetailRequest(data: any) {
     this.formLeaveDetailRequest.patchValue({
       departure_off_day: data?.departure_off_day?.date
-        ? new Date(data.departure_off_day.date).toISOString()
+        ? new Date(this.convertDateFormat(data.departure_off_day.date)).toISOString()
         : null,
       travel_date: data?.travel_date
-        ? new Date(data.travel_date).toISOString()
+        ? new Date(this.convertDateFormat(data.travel_date)).toISOString()
         : null,
       field_leave_duration: data?.field_leave_duration
         ? data.field_leave_duration.toString()
         : null,
       field_leave_start_date: data?.field_leave_start_date
-        ? new Date(data.field_leave_start_date).toISOString()
+        ? new Date(this.convertDateFormat(data.field_leave_start_date)).toISOString()
         : null,
       field_leave_end_date: data?.field_leave_end_date
-        ? new Date(data.field_leave_end_date).toISOString()
+        ? new Date(this.convertDateFormat(data.field_leave_end_date)).toISOString()
         : null,
       is_yearly_leave: data?.is_yearly_leave,
       yearly_leave_duration: data?.yearly_leave_duration
         ? data.yearly_leave_duration.toString()
         : null,
       yearly_leave_start_date: data?.yearly_leave_start_date
-        ? new Date(data.yearly_leave_start_date).toISOString()
+        ? new Date(this.convertDateFormat(data.yearly_leave_start_date)).toISOString()
         : null,
       yearly_leave_end_date: data?.yearly_leave_end_date
-        ? new Date(data.yearly_leave_end_date).toISOString()
+        ? new Date(this.convertDateFormat(data.yearly_leave_end_date)).toISOString()
         : null,
       is_permission: data?.is_permission,
       permission_type: data?.permission_type || null,
@@ -2159,45 +2204,48 @@ export class FormLeaveComponent implements OnInit {
         ? data.permission_duration.toString()
         : null,
       permission_start_date: data?.permission_start_date
-        ? new Date(data.permission_start_date).toISOString()
+        ? new Date(this.convertDateFormat(data.permission_start_date)).toISOString()
         : null,
       permission_end_date: data?.permission_end_date
-        ? new Date(data.permission_end_date).toISOString()
+        ? new Date(this.convertDateFormat(data.permission_end_date)).toISOString()
         : null,
       is_compensation: data?.is_compensation,
       compensation_duration: data?.compensation_duration
         ? data.compensation_duration.toString()
         : null,
       compensation_start_date: data?.compensation_start_date
-        ? new Date(data.compensation_start_date).toISOString()
+        ? new Date(this.convertDateFormat(data.compensation_start_date)).toISOString()
         : null,
       compensation_end_date: data?.compensation_end_date
-        ? new Date(data.compensation_end_date).toISOString()
+        ? new Date(this.convertDateFormat(data.compensation_end_date)).toISOString()
         : null,
       start_date: data?.field_leave_start_date
-        ? new Date(data.field_leave_start_date).toISOString()
+        ? new Date(this.convertDateFormat(data.field_leave_start_date)).toISOString()
         : null,
       end_date: data?.field_leave_end_date
-        ? new Date(data.field_leave_end_date).toISOString()
+        ? new Date(this.convertDateFormat(data.field_leave_end_date)).toISOString()
         : null,
     });
 
-    // Iterate through form controls and disable if they have a value
+    const getParams = this.route.snapshot.params['mode'];
+    if(getParams === 'preview'){
+          // Iterate through form controls and disable if they have a value
     Object.keys(this.formLeaveDetailRequest.controls).forEach((key) => {
       const control = this.formLeaveDetailRequest.get(key);
       if (control?.value !== null && control?.value !== undefined) {
         control.disable(); // Disable the control if it has a value
       }
     });
+    }
   }
 
   patchFormLeaveTicketApproval(data: any) {
     this.formLeaveTicektApproval.patchValue({
       leave_date_start_TicektApproval: data?.start_date
-        ? new Date(data?.start_date).toISOString()
+        ? new Date(this.convertDateFormat(data?.start_date)).toISOString()
         : null,
       leave_date_end_TicektApproval: data?.end_date
-        ? new Date(data?.end_date).toISOString()
+        ? new Date(this.convertDateFormat(data?.end_date)).toISOString()
         : null,
       total_leave_amount: data?.total_leaves || null, // Isi sesuai kebutuhan
       leave_comment: data?.leaves?.leave_comment || null,
@@ -2209,20 +2257,23 @@ export class FormLeaveComponent implements OnInit {
     });
 
     // Patch nilai ke dalam formLeaveTicektApproval.travel_tickets FormArray
-    const ticketTravelArray = this.formLeaveTicektApproval.get(
-      'travel_tickets'
-    ) as FormArray;
-    data?.travel_tickets?.forEach((ticket) => {
-      ticketTravelArray.push(this.initTicketTravelFormArray(ticket, data));
-    });
+    const getParams = this.route.snapshot.params['mode'];
+    if(getParams === 'preview'){
+      const ticketTravelArray = this.formLeaveTicektApproval.get(
+        'travel_tickets'
+      ) as FormArray;
+      data?.travel_tickets?.forEach((ticket) => {
+        ticketTravelArray.push(this.initTicketTravelFormArray(ticket, data));
+      });
 
-    // Iterate through form controls and disable if they have a value
+          // Iterate through form controls and disable if they have a value
     Object.keys(this.formLeaveTicektApproval.controls).forEach((key) => {
       const control = this.formLeaveTicektApproval.get(key);
       if (control?.value !== null && control?.value !== undefined) {
         control.disable(); // Disable the control if it has a value
       }
     });
+    }
   }
 
   initTicketTravelFormArray(ticket: any, data) {
@@ -2256,6 +2307,7 @@ export class FormLeaveComponent implements OnInit {
             this.filterSubituteOfficer();
             this.poh_location = resp?.poh_location;
             this.PohConfig(resp);
+            this.pohStatus = resp?.poh_status
             this.InitStartDateDatailRequestBackup();
             this.isWaitingForResponse = false
           }
@@ -2267,30 +2319,36 @@ export class FormLeaveComponent implements OnInit {
   }
 
   PohConfig(resp) {
+    console.log("CHECKING", resp)
     if (resp.poh_status === 'lokal') {
       // this.formLeaveIdentity.get('poh_status').setValue('LOKAL')
       this.formLeaveIdentity
         .get('poh_status')
-        .setValue(`LOKAL ${this.poh_location}`);
+        .setValue(`LOKAL - ${this.poh_location}`);
       this.formLeaveIdentity.get('is_with_family').setValue(false);
       this.formLeaveIdentity.get('is_with_family').disable();
+      this.formLeaveIdentity.get('is_ticket_supported').setValue(false);
+      this.formLeaveIdentity.get('is_ticket_supported').disable();
+      this.changeDetectorRef.detectChanges()
     } else if (resp.poh_status === 'non_lokal') {
       this.formLeaveIdentity
         .get('poh_status')
-        .setValue(`NON LOKAL ${this.poh_location}`);
+        .setValue(`NON LOKAL - ${this.poh_location}`);
       this.formLeaveIdentity.get('is_with_family').setValue(false);
       this.formLeaveIdentity.get('is_with_family').disable();
+      this.changeDetectorRef.detectChanges()
     } else if (resp.poh_status === 'non_lokal_perumahan') {
       this.formLeaveIdentity
         .get('poh_status')
-        .setValue(`NON LOKAL PERUMAHAN ${this.poh_location}`);
+        .setValue(`NON LOKAL PERUMAHAN - ${this.poh_location}`);
+        this.changeDetectorRef.detectChanges()
     }
   }
 
   SelectTicketSupported() {
     if (
       this.formLeaveIdentity.get('poh_status').value ===
-      `NON LOKAL PERUMAHAN ${this.poh_location}`
+      `NON LOKAL PERUMAHAN - ${this.poh_location}`
     ) {
       if (!this.IsTypeIsLeave()) {
         this.formLeaveIdentity.get('is_with_family').setValue(false);
@@ -2326,14 +2384,19 @@ export class FormLeaveComponent implements OnInit {
   }
 
   GetAllApprovalGroups() {
-    this.subs.sink = this._formLeaveService
+    const getParams = this.route.snapshot.params['mode'];
+    if(getParams === 'preview' ||getParams === 'edit' ){
+      return
+    } else {
+      this.subs.sink = this._formLeaveService
       .GetAllApprovalGroups(this.employeeId)
       .subscribe(
         (resp) => {
           if (resp) {
+            console.log("RESP", resp)
             this.formLeaveTicektApproval
             .get('approval_id_2')
-            .setValue(  resp[0].approvals[0]?.default_approver?.employee_number + ' - ' + resp[0].approvals[0]?.default_approver?.name);
+            .setValue( resp[0].approvals[0]?.default_approver?.employee_number + ' - ' + resp[0].approvals[0]?.default_approver?.name);
             console.log()
           this.formLeaveTicektApproval
             .get('approval_id_3')
@@ -2345,6 +2408,7 @@ export class FormLeaveComponent implements OnInit {
           console.log('err', err);
         }
       );
+    }
   }
 
   validateOption(options): ValidatorFn {
@@ -2446,6 +2510,8 @@ export class FormLeaveComponent implements OnInit {
               allowOutsideClick: false,
               confirmButtonText: 'Iya',
             }).then(() => {
+              const url = `https://daunsalam.online/approval`
+              window.open(url, '_self');
               this.router.navigate(['/approval']);
               console.log('success');
             });
@@ -2489,5 +2555,28 @@ export class FormLeaveComponent implements OnInit {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
+  }
+
+
+  EditForm(){
+    const url = `https://daunsalam.online/form-leave/edit/${this.formID}`
+    window.open(url, '_self');
+    // this.router.navigate([`/form-leave/edit/${this.formID}`])
+  }
+
+  convertDateFormat(date: string): string {
+    // Split the date into parts using "/" as a delimiter
+    const parts = date.split('/');
+
+    // Ensure there are exactly three parts (day, month, year)
+    if (parts.length !== 3) {
+      throw new Error('Invalid date format. Expected "dd/mm/yyyy".');
+    }
+
+    // Rearrange the parts from [day, month, year] to [month, day, year]
+    const [day, month, year] = parts;
+    const newFormat = `${month}/${day}/${year}`;
+
+    return newFormat;
   }
 }

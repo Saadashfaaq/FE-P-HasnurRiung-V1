@@ -5,143 +5,374 @@
         <button class="mr-1" color="primary" mat-raised-button>Cabut Cuti</button>
         <button color="accent" mat-raised-button>Hapus</button>
       </div>
-      <div>
-        <button  color="primary" mat-raised-button>Export</button>
+      <div class="flex flex-row">
+        <div>
+          <button  color="primary" mat-raised-button>Export</button>
+        </div>
+        <div class="ml-1">
+          <button color="none" (click)="resetTable()" mat-raised-button>
+            <mat-icon>refresh</mat-icon>
+            <span>Reset</span>
+          </button>
+        </div>
       </div>
     </div>
-    <table class="mat-elevation-z8" mat-table [dataSource]="dataSource">
-        <!-- <ng-container class="leftBottom sticky" matColumnDef="checkbox_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
-          </ng-container> -->
-
-          <ng-container class="leftBottom sticky" matColumnDef="employee_number_filter" sticky>
+    <div class="mat-elevation-z8 horizontal">
+      <table class="mat-elevation-z8" mat-table [dataSource]="dataSource">
+        <ng-container class="leftBottom sticky" matColumnDef="checkbox_filter" sticky>
             <th mat-header-cell *matHeaderCellDef></th>
           </ng-container>
 
-          <ng-container class="sticky" matColumnDef="name_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
+          <ng-container class="sticky" matColumnDef="leave_letter_number_filter" sticky>
+                      <th mat-header-cell *matHeaderCellDef>
+                        <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                          <input
+                          placeholder="Cari"
+                            matInput
+                            [formControl]="formControls.leave_letter_number_ctrl"
+                          />
+                        </mat-form-field>
+                      </th>
           </ng-container>
 
-          
-          <ng-container class="sticky" matColumnDef="position_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
-          </ng-container>
-          
-          <ng-container class="sticky" matColumnDef="department_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
-          </ng-container>
-
-          <ng-container matColumnDef="created_date_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
-          </ng-container>
-
-          <!-- <ng-container class="sticky" matColumnDef="leave_letter_number_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
-          </ng-container>
-          
           <ng-container class="sticky" matColumnDef="employee_number_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.employee_number_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
-          
+
           <ng-container class="sticky" matColumnDef="name_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.employee_name_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container class="sticky" matColumnDef="position_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.position_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
-          
+
           <ng-container class="sticky" matColumnDef="department_filter" sticky>
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.department_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
-          
+
           <ng-container matColumnDef="poh_status_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <ng-select
+              class="mx-auto"
+              appendTo="body"
+              [items]="pohStatusList"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Filter Kolom"
+              [formControl]="formControls.poh_status_ctrl"
+            >
+            </ng-select>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="application_type_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <ng-select
+              class="mx-auto"
+              appendTo="body"
+              [items]="applicationFormTypeList"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Filter Kolom"
+              [formControl]="formControls.application_type_ctrl"
+            >
+            </ng-select>
+            </th>
           </ng-container>
 
-          <ng-container matColumnDef="departure_off_day_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+          <ng-container matColumnDef="departure_date_filter">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto">
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.departure_date_ctrl"
+                  [matDatepicker]="departure_date_filter"
+                  [readonly]="true"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="departure_date_filter"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #departure_date_filter></mat-datepicker>
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="start_date_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto">
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.start_date_ctrl"
+                  [matDatepicker]="start_date_filter"
+                  [readonly]="true"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="start_date_filter"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #start_date_filter></mat-datepicker>
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="field_leave_duration_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.field_leave_duration_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="yearly_leave_duration_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.yearly_leave_duration_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="permission_duration_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.permission_duration_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="compensation_duration_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.compensation_duration_ctrl"
+                />
+              </mat-form-field>
+            </th>
+          </ng-container>
+
+          <ng-container matColumnDef="total_leaves_filter">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls?.total_leaves_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="end_date_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto">
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.end_date_ctrl"
+                  [matDatepicker]="end_date_filter"
+                  [readonly]="true"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="end_date_filter"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #end_date_filter></mat-datepicker>
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="leave_location_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.leave_location_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
 
-          <ng-container matColumnDef="leave_location_2_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+          <ng-container matColumnDef="leave_destination_filter">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.leave_destination_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
-          
-          <ng-container matColumnDef="lump_sump_amount_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+
+          <ng-container matColumnDef="lump_sump_filter">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.lump_sump_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
-          
+
           <ng-container matColumnDef="remaining_yearly_leaves_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.remaining_yearly_leaves_ctrl"
+                />
+              </mat-form-field>
+            </th>
           </ng-container>
 
           <ng-container matColumnDef="created_date_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto">
+                <input
+                placeholder="Cari"
+                  matInput
+                  [formControl]="formControls.created_date_ctrl"
+                  [matDatepicker]="created_date_filter"
+                  [readonly]="true"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="created_date_filter"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #created_date_filter></mat-datepicker>
+              </mat-form-field>
+            </th>
           </ng-container>
-          
+
           <ng-container matColumnDef="leave_comment_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
-          </ng-container> -->
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+                <input
+                placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls.leave_comment_ctrl"
+                />
+              </mat-form-field>
+            </th>
+          </ng-container>
 
           <ng-container matColumnDef="form_status_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <ng-select
+              class="mx-auto"
+              appendTo="body"
+              [items]="formStatusList"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Filter Kolom"
+              [formControl]="formControls.form_status_ctrl"
+            >
+            </ng-select>
+            </th>
           </ng-container>
-          
+
           <ng-container matColumnDef="pdf_application_form_filter">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+              <ng-select
+              class="mx-auto"
+              appendTo="body"
+              [items]="pdfStatusList"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Filter Kolom"
+              [formControl]="formControls.pdf_application_form_ctrl"
+            >
+            </ng-select>
+            </th>
           </ng-container>
 
           <ng-container class="rightBottom" matColumnDef="action_filter" stickyEnd>
             <th mat-header-cell *matHeaderCellDef></th>
           </ng-container>
 
-        <!-- <ng-container class="leftTop sticky" matColumnDef="checkbox" sticky>
+        <ng-container class="leftTop sticky" matColumnDef="checkbox" sticky>
             <th mat-header-cell *matHeaderCellDef >  </th>
             <td mat-cell *matCellDef="let element"> </td>
-          </ng-container> -->
+          </ng-container>
 
-          <ng-container class="leftTop sticky" matColumnDef="employee_number" sticky>
-            <th mat-header-cell *matHeaderCellDef> NRP</th>
-            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.employee_number }} </td>
-          </ng-container> 
+          <ng-container class="sticky" matColumnDef="leave_letter_number" sticky>
+            <th mat-header-cell *matHeaderCellDef> No Cuti </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.leave_letter_number }} </td>
+          </ng-container>
 
-          <ng-container class="sticky" matColumnDef="name" sticky>
-            <th mat-header-cell *matHeaderCellDef> Nama</th>
-            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.name }} </td>
-          </ng-container> 
-  
+        <ng-container class="sticky" matColumnDef="employee_number" sticky>
+          <th mat-header-cell *matHeaderCellDef> NRP</th>
+          <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.employee_number }} </td>
+        </ng-container>
+
+        <ng-container class="sticky" matColumnDef="name" sticky>
+          <th mat-header-cell *matHeaderCellDef> Nama</th>
+          <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.name }} </td>
+        </ng-container>
+
         <ng-container class="sticky" matColumnDef="position" sticky>
           <th mat-header-cell *matHeaderCellDef> Posisi </th>
           <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.position?.name }} </td>
@@ -152,40 +383,9 @@
           <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.position?.department }} </td>
         </ng-container>
 
-        <ng-container matColumnDef="created_date">
-          <th mat-header-cell *matHeaderCellDef> Tanggal Pengajuan </th>
-          <td mat-cell *matCellDef="let element"> {{ element?.created_date }} </td>
-        </ng-container>
-        
-
-          <!-- <ng-container class="sticky" matColumnDef="leave_letter_number" sticky>
-            <th mat-header-cell *matHeaderCellDef> No Cuti </th>
-            <td mat-cell *matCellDef="let element"> {{ element?.leave_letter_number }} </td>
-          </ng-container>
-
-        <ng-container class="sticky" matColumnDef="employee_number" sticky>
-          <th mat-header-cell *matHeaderCellDef> NRP</th>
-          <td mat-cell *matCellDef="let element"> {{ element?.employee_number }} </td>
-        </ng-container> 
-        
-        <ng-container class="sticky" matColumnDef="name" sticky>
-          <th mat-header-cell *matHeaderCellDef> Nama</th>
-          <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.name }} </td>
-        </ng-container> 
-
-        <ng-container class="sticky" matColumnDef="position" sticky>
-          <th mat-header-cell *matHeaderCellDef> Posisi </th>
-          <td mat-cell *matCellDef="let element"> {{ element?.position?.name }} </td>
-        </ng-container>
-
-        <ng-container class="sticky" matColumnDef="department" sticky>
-          <th mat-header-cell *matHeaderCellDef> Departemen </th>
-          <td mat-cell *matCellDef="let element"> {{ element?.position?.department }} </td>
-        </ng-container>
-          
           <ng-container matColumnDef="poh_status">
             <th mat-header-cell *matHeaderCellDef> Status POH </th>
-            <td mat-cell *matCellDef="let element"> {{ element?.poh_status }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.poh_status }} </td>
           </ng-container>
 
           <ng-container matColumnDef="application_type">
@@ -193,9 +393,9 @@
             <td mat-cell *matCellDef="let element"> {{ element?.application_type }} </td>
           </ng-container>
 
-          <ng-container matColumnDef="departure_off_day">
+          <ng-container matColumnDef="departure_date">
             <th mat-header-cell *matHeaderCellDef> Tanggal Berangkat</th>
-            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.departure_off_day?.date }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element?.leaves?.departure_date?.date }} </td>
           </ng-container>
 
           <ng-container matColumnDef="start_date">
@@ -223,6 +423,11 @@
             <td mat-cell *matCellDef="let element"> {{ element?.leaves?.compensation_duration }} </td>
           </ng-container>
 
+          <ng-container matColumnDef="total_leaves">
+            <th mat-header-cell *matHeaderCellDef> Total </th>
+            <td mat-cell *matCellDef="let element"> {{ element?.total_leaves }} </td>
+          </ng-container>
+
           <ng-container matColumnDef="end_date">
             <th mat-header-cell *matHeaderCellDef> Tanggal Akhir </th>
             <td mat-cell *matCellDef="let element"> {{ element?.end_date }} </td>
@@ -233,35 +438,35 @@
             <td mat-cell *matCellDef="let element"> {{ element?.leave_location }} </td>
           </ng-container>
 
-          <ng-container matColumnDef="leave_location_2">
+          <ng-container matColumnDef="leave_destination">
             <th mat-header-cell *matHeaderCellDef> Kembali Dari </th>
             <td mat-cell *matCellDef="let element"> {{ element?.leave_location }} </td>
           </ng-container>
-          
-          <ng-container matColumnDef="lump_sump_amount">
+
+          <ng-container matColumnDef="lump_sump">
             <th mat-header-cell *matHeaderCellDef>Lumpsump </th>
-            <td mat-cell *matCellDef="let element"> {{ element?.lump_sump_amount }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.lump_sump }} </td>
           </ng-container>
-          
+
           <ng-container matColumnDef="remaining_yearly_leaves">
             <th mat-header-cell *matHeaderCellDef> Sisa Cuti Tahunan </th>
-            <td mat-cell *matCellDef="let element"> {{ element?.remaining_yearly_leaves }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.remaining_yearly_leaves }} </td>
           </ng-container>
 
           <ng-container matColumnDef="created_date">
             <th mat-header-cell *matHeaderCellDef> Tanggal Pengajuan </th>
             <td mat-cell *matCellDef="let element"> {{ element?.created_date }} </td>
           </ng-container>
-          
+
           <ng-container matColumnDef="leave_comment">
             <th mat-header-cell *matHeaderCellDef> Keterangan </th>
             <td mat-cell *matCellDef="let element"> {{ element?.leaves?.leave_comment }} </td>
-          </ng-container> -->
-          
+          </ng-container>
+
           <ng-container matColumnDef="form_status">
             <th mat-header-cell *matHeaderCellDef> Status Formulir </th>
-            <td mat-cell *matCellDef="let element"> 
-              <button 
+            <td mat-cell *matCellDef="let element">
+              <button
               (click)=" OpenDialogTimeline(element?._id)"
               [matTooltip]="getStatusTooltip(element?.form_status)"
               mat-icon-button
@@ -270,10 +475,10 @@
             </button>
             </td>
           </ng-container>
-          
+
           <ng-container matColumnDef="pdf_application_form">
             <th mat-header-cell *matHeaderCellDef> Formulir Permohonan </th>
-            <td mat-cell *matCellDef="let element"> 
+            <td mat-cell *matCellDef="let element">
               <button (click)="OpenPdfApplicationForm(element?.pdf_application_form)" *ngIf="element.pdf_application_form" mat-icon-button>
                 <mat-icon class="cursor-pointer" class="text-green-700" >picture_as_pdf</mat-icon>
               </button>
@@ -285,9 +490,9 @@
 
           <ng-container class="rightTop" matColumnDef="action" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef > Action </th>
-                <td mat-cell *matCellDef="let element"> 
+                <td mat-cell *matCellDef="let element">
                   <div class="flex flex-row jusify-center align-center gap-1">
-                    <button [routerLink]="['/form-leave',element?._id]" mat-icon-button>
+                    <button [routerLink]="['/form-leave/preview',element?._id]" mat-icon-button>
                       <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
                     </button>
                     <button *ngIf="element.pdf_application_form" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>
@@ -301,9 +506,11 @@
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-header-row *matHeaderRowDef="filterCols"></tr>
-         
+
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    </div>
+
 
     <div *ngIf="(noData | async)" class="no-records" data-cy="no-data">
       Data Tidak Ditemukan

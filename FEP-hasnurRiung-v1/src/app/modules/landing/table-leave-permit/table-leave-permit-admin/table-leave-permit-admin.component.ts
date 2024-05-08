@@ -133,7 +133,7 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
   }
 
   OpenFormToCreate(){
-    this.router.navigate(['/form-leave'])
+    this.router.navigate(['/form-leave/preview'])
   }
 
   OpenPdfApplicationForm(url: string){
@@ -183,7 +183,7 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
             return '#000000'; // hitam jika status tidak diketahui
         }
       }
-    
+
       // Fungsi untuk mendapatkan teks tooltip sesuai dengan status
       getStatusTooltip(status: string): string {
         switch (status) {

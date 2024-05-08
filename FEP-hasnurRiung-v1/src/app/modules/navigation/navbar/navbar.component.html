@@ -23,22 +23,22 @@
             mat-menu-item
           >
             <div
-              class="flex flex-row items-center p-1 items-center justify-around gap-1"
+              class="flex flex-row items-center p-1 items-center gap-1"
             >
-              <div>
+              <div class="w-10">
                 <img
                   class="w-8 h-8 rounded-full"
                   src="../../../../assets/images/60111.jpg"
                   alt="User profile"
                 />
               </div>
-              <div class="text-sm font-semibold w-40 truncate text-black">
+              <div class="text-sm font-semibold w-30 truncate text-black">
                 <p>
-                  {{ notif?.application_form_id?.employee_id?.name }}
+                  {{ notif?.from?.name }}
                 </p>
               </div>
-              <div class="text-xs mx-3 text-black text-sm">
-                <p>Membutuhkan Persetujuan Anda</p>
+              <div class="text-xs mx-3 text-black w-60 text-sm">
+                <p>{{notif.text}}</p>
               </div>
               <div *ngIf="notif.is_read === false" class="ml-2 text-green-700">
                 <i class="bx bxs-circle"></i>

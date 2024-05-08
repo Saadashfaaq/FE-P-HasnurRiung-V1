@@ -51,6 +51,6 @@ export class NavbarComponent {
           this.getAllNotificationList();
         }
       });
-    this.router.navigate([`/form-leave/${formId}`]);
+    this.router.navigate([`/form-leave/preview/${formId}`]);
   }
 }
