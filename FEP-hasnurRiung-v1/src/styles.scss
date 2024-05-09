@@ -138,7 +138,7 @@
     will-change: transform, opacity;
   }
 
-  .mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+.mat-mdc-menu-content#mat-menu-panel-0, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     white-space: normal;
@@ -148,11 +148,25 @@
     letter-spacing: var(--mat-menu-item-label-text-tracking);
     font-weight: var(--mat-menu-item-label-text-weight);
     width: 500px !important;
-    padding-top: 0px!important;
+    padding-top: 0px !important;
     max-height: 300px !important;
     overflow-x: hidden;
   }
 
+// .mat-mdc-menu-content#mat-menu-panel-1, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+//     -moz-osx-font-smoothing: grayscale;
+//     -webkit-font-smoothing: antialiased;
+//     white-space: normal;
+//     font-family: var(--mat-menu-item-label-text-font);
+//     line-height: var(--mat-menu-item-label-text-line-height);
+//     font-size: var(--mat-menu-item-label-text-size);
+//     letter-spacing: var(--mat-menu-item-label-text-tracking);
+//     font-weight: var(--mat-menu-item-label-text-weight);
+//     width: 250px !important;
+//     padding-top: 0px !important;
+//     max-height: 300px !important;
+//     overflow-x: hidden;
+//   }
   .ng-select.ng-select-single .ng-select-container {
     height: 45px;
     min-height: 45px;
@@ -214,7 +228,8 @@
     overflow-y: auto;
     position: relative;
     display: block;
-    width: fit-content !important;
+    min-width: fit-content !important;
+    width: 100% !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -252,6 +267,19 @@
 //   .mat-form-field-disabled{
 //     background-color: #015BAB;
 //   }
+
+.mat-mdc-paginator {
+  display: block;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  color: var(--mat-paginator-container-text-color);
+  background-color: transparent !important;
+  font-family: var(--mat-paginator-container-text-font);
+  line-height: var(--mat-paginator-container-text-line-height);
+  font-size: var(--mat-paginator-container-text-size);
+  font-weight: var(--mat-paginator-container-text-weight);
+  letter-spacing: var(--mat-paginator-container-text-tracking);
+}
 
 
 

@@ -1,6 +1,12 @@
 <div
-  class="flex z-[1000] flex-row bg-white items-center gap-3 justify-end p-1 ml-2"
+  class="flex z-[1000] flex-row bg-white items-center gap-3 justify-between p-1 ml-2"
 >
+<div class="ml-2">
+  <span class="text-md font-semibold">
+    {{pageTitle}}
+  </span>
+</div>
+<div class="flex flex-row">
   <div class="mr-3">
     <button [matMenuTriggerFor]="menu" mat-icon-button>
       <i class="bx bxs-bell"></i>
@@ -58,10 +64,46 @@
     </mat-menu>
   </div>
   <div class="mr-2">
-    <img
+    <button [matMenuTriggerFor]="profile" mat-icon-button>
+      <img
       class="w-10 h-10 rounded-full"
       src="../../../../assets/images/60111.jpg"
       alt="User profile"
     />
+    </button>
+    <div>
+      <mat-menu class="w-70 custom-item-meu" class="relative" #profile="matMenu">
+        <div class="flex flex-row cursor-custom" mat-menu-item>
+          <div class="justify-center flex items-center">
+            <img
+            class="w-20 h-20 rounded-full"
+            src="../../../../assets/images/60111.jpg"
+            alt="User profile"
+          />
+          </div>
+        </div>
+        <div class="my-2 cursor-custom">
+          <mat-divider></mat-divider>
+        </div>
+        <div  mat-menu-item class="flex flex-col text-center items-center items-center cursor-custom">
+          <div class="text-center">
+            <span class="text-md font-semibold">
+              {{employeeName}}
+            </span>
+          </div>
+          <div class="my-2 text-center">
+            <span class="text-md font-semibold">
+              {{employeeNumber}}
+            </span>
+          </div>
+          <div class="text-center">
+            <span class="text-md font-semibold">
+              {{employeeDepartement}}
+            </span>
+          </div>
+        </div>
+      </mat-menu>
+    </div>
   </div>
+</div>
 </div>

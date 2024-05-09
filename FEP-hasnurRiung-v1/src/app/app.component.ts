@@ -1,29 +1,41 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
-import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 import { FormLeaveService } from './services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'STOPLESS';
   showSideBar: boolean = true;
-  userName : string = ''
+  userName: string = '';
   @ViewChild('sidebar') sidebar: ElementRef | undefined;
-  subs: SubSink = new SubSink();
-  firstTime: boolean = true
+  @ViewChild('iconButtonOpen') iconButtonOpen: ElementRef | undefined;
 
+  subs: SubSink = new SubSink();
+  firstTime: boolean = true;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private _formLeaveService : FormLeaveService) {
+    private _formLeaveService: FormLeaveService
+  ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        console.log("NavigationStart", event)
+        console.log('NavigationStart', event);
         if (event.url.includes('auth') || event.url.includes('barcode-form')) {
           this.showSideBar = false;
           this.changeDetectorRef.detectChanges();
@@ -41,51 +53,54 @@ export class AppComponent {
           // });
         }
       }
-
-      if (event instanceof NavigationEnd) {
-        console.log("NavigationEnd", event)
-      }
-
-      if (event instanceof NavigationError) {
-        console.log("NavigationError", event)
-        console.log(event.error);
-      }
     });
   }
 
-ngOnInit(): void {
-  this.employeeId = localStorage.getItem('userProfile');
-  this.userName = localStorage.getItem('name');
+  ngOnInit(): void {
+    this.employeeId = localStorage.getItem('userProfile');
+    this.userName = localStorage.getItem('name');
 
-  if (this.showSideBar) {
-    this.changeDetectorRef.detectChanges();
-    this.sidebar.nativeElement.removeEventListener('click', this.sidebarClickHandler);
-    this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
-    this.sidebar.nativeElement.addEventListener('click', this.sidebarClickHandler);
+    if (this.showSideBar) {
+      this.changeDetectorRef.detectChanges();
+      this.iconButtonOpen.nativeElement.removeEventListener(
+        'click',
+        this.sidebarClickHandler
+      );
+      this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
+      this.iconButtonOpen.nativeElement.addEventListener(
+        'click',
+        this.sidebarClickHandler
+      );
+    }
   }
-}
 
-ngAfterViewInit() {
-  if (this.sidebar) {
-    this.changeDetectorRef.detectChanges();
-    this.sidebar.nativeElement.removeEventListener('click', this.sidebarClickHandler);
-    this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
-    this.sidebar.nativeElement.addEventListener('click', this.sidebarClickHandler);
+  ngAfterViewInit() {
+    if (this.sidebar) {
+      this.changeDetectorRef.detectChanges();
+      this.iconButtonOpen.nativeElement.removeEventListener(
+        'click',
+        this.sidebarClickHandler
+      );
+      this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
+      this.iconButtonOpen.nativeElement.addEventListener(
+        'click',
+        this.sidebarClickHandler
+      );
+    }
   }
-}
 
-private sidebarClickHandler(event: MouseEvent) {
-  const target = event.target as HTMLElement;
-
-  if (target && target.classList.contains('bx-menu')) {
-    this.toggleSidebar();
-  } else {
-    this.toggleSidebar();
+  private sidebarClickHandler(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    console.log('target.classList', target.classList);
+    if (target && target.classList.contains('bx-menu')) {
+      this.toggleSidebar();
+    } else {
+      this.toggleSidebar();
+    }
   }
-}
 
-  Init(){
-    console.log("ngAfterViewInit called");
+  Init() {
+    console.log('ngAfterViewInit called');
     if (this.sidebar) {
       const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
       const searchBtn = this.sidebar.nativeElement.querySelector('.bx-search');
@@ -98,10 +113,10 @@ private sidebarClickHandler(event: MouseEvent) {
 
   toggleSidebar() {
     if (this.sidebar) {
-      console.log("toggleSidebar called");
+      console.log('toggleSidebar called');
       this.sidebar.nativeElement.classList.toggle('open');
       this.menuBtnChange();
-      console.log("3")
+      console.log('3');
     }
   }
 
@@ -109,38 +124,43 @@ private sidebarClickHandler(event: MouseEvent) {
     if (this.sidebar && this.sidebar.nativeElement.classList.contains('open')) {
       const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
       closeBtn.classList.replace('bx-menu', 'bx-menu-alt-right');
-      console.log("A1")
-    } else  {
-      const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu-alt-right');
+      console.log('A1');
+    } else {
+      const closeBtn =
+        this.sidebar.nativeElement.querySelector('.bx-menu-alt-right');
       closeBtn.classList.replace('bx-menu-alt-right', 'bx-menu');
-      console.log("A2")
+      console.log('A2');
     }
   }
 
-  notifList
-  employeeId
+  notifList;
+  employeeId;
 
-  getAllNotificationList(){
-    this.subs.sink = this._formLeaveService.GetAllNotifications(this.employeeId)
-     .subscribe(
-      (resp)=>{
-        this.notifList = resp
-      },
-      (err)=>{
-        console.error(err)
-      }
-     )
+  getAllNotificationList() {
+    this.subs.sink = this._formLeaveService
+      .GetAllNotifications(this.employeeId)
+      .subscribe(
+        (resp) => {
+          this.notifList = resp;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
   }
 
-  openForm(formId){
-    this.router.navigate([`/form-leave/preview/${formId}`])
+  openForm(formId) {
+    this.router.navigate([`/form-leave/preview/${formId}`]);
+  }
+
+  pageChange(rutePage){
+    this.router.navigate([rutePage]);
   }
 
   TemporaryLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userProfile');
     localStorage.removeItem('name');
-    this.router.navigate(['/auth/login'])
+    this.router.navigate(['/auth/login']);
   }
-
 }

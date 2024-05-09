@@ -18,7 +18,6 @@ table{
           max-width: 80px;
           .mat-form-field {
             width: 100%;
-
           }
         }
 
@@ -346,8 +345,8 @@ table{
 
 .mat-mdc-raised-button.mat-none {
   --mdc-protected-button-container-color: #888888;
-  --mdc-protected-button-label-text-color: #ffffff;
-  --mat-protected-button-state-layer-color: #ffffff;
+  --mdc-protected-button-label-text-color: #fffff;
+  --mat-protected-button-state-layer-color: #fffff;
   --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
   font-weight: 600;
 }

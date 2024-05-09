@@ -552,9 +552,9 @@
                   Kolom ini wajib diisi
                 </mat-error>
               </mat-form-field> -->
-              <div class="w-80">
+              <div class="w-160">
                 <ng-select
-                  class="min-w-80"
+                  class="min-w-160"
                   appendTo="body"
                   [items]="permissionList"
                   bindLabel="name"
@@ -584,7 +584,7 @@
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input matInput formControlName="permission_type" />
                 <mat-error
                   *ngIf="
@@ -606,7 +606,7 @@
               <span>Jumlah Hari Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="ResetFieldAfterInputPermissionAmount()"
@@ -711,7 +711,7 @@
               <span>Jumlah Hari Cuti Lapangan*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input
                   (focusout)="CalculateLeaveDate('first')"
                   (keypress)="preventNonNumericalInput($event)"
@@ -734,7 +734,7 @@
             *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
-            <div class="w-70 pr-1 text-left truncate">
+            <div class="w-70 min-w-70 pr-1 truncate text-left">
               <span>Tanggal Cuti (Waktu Cuti Aktif)*</span>
             </div>
             <div class="flex flex-row custom-w items-baseline">
@@ -789,7 +789,7 @@
             <div class="w-70 text-left">
               <span>Tambah Cuti Tahunan*</span>
             </div>
-            <div class="w-80 text-left pl-1">
+            <div class="w-160 text-left pl-1">
               <mat-radio-group
                 (change)="SelectYealyLeave()"
                 [formControlName]="'is_yearly_leave'"
@@ -811,13 +811,13 @@
           </div>
           <div
             *ngIf="IsYearlySelected()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Jumlah Hari Cuti Tahunan*</span>
             </div>
             <div class="flex flex-row items-baseline">
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input
                   (focusout)="CalculateYearlyLeaveDate()"
                   (keypress)="preventNonNumericalInput($event)"
@@ -855,14 +855,14 @@
                   Kolom ini wajib diisi
                 </mat-error>
               </mat-form-field>
-              <div class="rounded py-2 px-1 ml-2 primary w-full">
+              <div class="rounded py-2 px-1 ml-2 primary w-48">
                 Sisa Cuti Tahunan: {{ remainingYearlyLeaves }}
               </div>
             </div>
           </div>
           <div
             *ngIf="IsYearlySelected()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tanggal Cuti Tahunan</span>
@@ -916,7 +916,7 @@
             <div class="w-70 text-left">
               <span>Tambah Ijin*</span>
             </div>
-            <div class="w-80 text-left pl-1">
+            <div class="w-160 text-left pl-1">
               <mat-radio-group
                 (change)="SelectPermission()"
                 [formControlName]="'is_permission'"
@@ -944,7 +944,7 @@
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-80">
+              <!-- <mat-form-field appearance="outline" class="w-160">
                 <input
                   (focusout)="SelectPermissionType()"
                   matInput
@@ -970,9 +970,9 @@
                   Kolom ini wajib diisi
                 </mat-error>
               </mat-form-field> -->
-              <div class="w-80">
+              <div class="w-160">
                 <ng-select
-                  class="w-80"
+                  class="w-160"
                   appendTo="body"
                   [items]="permissionList"
                   bindLabel="name"
@@ -1002,7 +1002,7 @@
               <span>Jumlah Hari Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="CalculatePermissionLeaveDate()"
@@ -1067,7 +1067,7 @@
             <div class="w-70 text-left">
               <span>Tambah Kompensasi*</span>
             </div>
-            <div class="w-80 text-left pl-1">
+            <div class="w-160 text-left pl-1">
               <mat-radio-group
                 (change)="IsCompensationSelected()"
                 [formControlName]="'is_compensation'"
@@ -1099,7 +1099,7 @@
               <span>Jumlah Hari Kompensasi*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="CalculateCompensationLeaveDate()"
@@ -1241,7 +1241,7 @@
               <span>Total (Hari)</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input
                   matInput
                   [formControlName]="'total_leave_amount'"
@@ -1255,7 +1255,7 @@
               <span>Keterangan*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-80">
+              <mat-form-field appearance="outline" class="w-160">
                 <input matInput [formControlName]="'leave_comment'" />
                 <mat-error
                   *ngIf="
@@ -1289,7 +1289,7 @@
                     </div>
                     <div>
                       <mat-form-field class="w-70" appearance="outline">
-                        <input class="w-80" matInput formControlName="name" />
+                        <input class="w-160" matInput formControlName="name" />
                       </mat-form-field>
                     </div>
                   </div>
@@ -1301,7 +1301,7 @@
                       <mat-form-field class="w-43" appearance="outline">
                         <input
                           (keypress)="preventNonNumericalInput($event)"
-                          class="w-80"
+                          class="w-160"
                           matInput
                           formControlName="age"
                         />
@@ -1322,7 +1322,7 @@
                         <input
                           [disabled]="true"
                           [readonly]="true"
-                          class="w-80"
+                          class="w-160"
                           matInput
                           formControlName="departure_from"
                         />
@@ -1403,7 +1403,7 @@
                         <input
                           [disabled]="true"
                           [readonly]="true"
-                          class="w-80"
+                          class="w-160"
                           matInput
                           formControlName="arrival_to"
                         />
@@ -1451,7 +1451,7 @@
               <span>Pejabat Sementara Selama Cuti*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-80">
+              <!-- <mat-form-field appearance="outline" class="w-160">
                 <input
                   matInput
                   formControlName="substitute_officer"
@@ -1477,7 +1477,7 @@
                   Kolom ini wajib diisi
                 </mat-error>
               </mat-form-field> -->
-              <div class="w-80">
+              <div class="w-160">
                 <ng-select
                   appendTo="body"
                   [items]="substituteOfficerList"
@@ -1489,6 +1489,8 @@
                 >
                 </ng-select>
                 <mat-error
+                style="text-align: left;
+                margin-left: 20px;"
                   *ngIf="
                     formLeaveTicektApproval
                       .get('substitute_officer')
@@ -1505,14 +1507,14 @@
               <span>Daftar Job Pending*</span>
             </div>
             <div>
-              <mat-form-field class="w-80 custom-h" appearance="outline">
+              <mat-form-field class="w-160" appearance="outline">
                 <input
-                  class="w-80"
+                  class="w-160"
                   matInput
                   [formControlName]="'pending_job'"
                 />
                 <!-- <textarea
-                class="w-80"
+                class="w-160"
                 matInput
                 cdkTextareaAutosize
                 #autosize="cdkTextareaAutosize"
@@ -1543,9 +1545,9 @@
               <span>Persetujuan 1*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline">
+              <mat-form-field class="w-160" appearance="outline">
                 <input
-                  class="w-80"
+                  class="w-160"
                   matInput
                   [formControlName]="'approval_id_1'"
                   [disabled]="true"
@@ -1559,9 +1561,9 @@
               <span>Persetujuan 2*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline">
+              <mat-form-field class="w-160" appearance="outline">
                 <input
-                  class="w-80"
+                  class="w-160"
                   matInput
                   [formControlName]="'approval_id_2'"
                   [disabled]="true"
@@ -1575,9 +1577,9 @@
               <span>Persetujuan 3*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline">
+              <mat-form-field class="w-160" appearance="outline">
                 <input
-                  class="w-80"
+                  class="w-160"
                   matInput
                   [formControlName]="'approval_id_3'"
                   [disabled]="true"

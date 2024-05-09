@@ -23,6 +23,10 @@ export class UserService {
                 _id
                 name
                 is_admin
+                employee_number
+                position {
+                  department
+                }
               }
             }
           }

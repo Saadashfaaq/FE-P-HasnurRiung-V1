@@ -27,7 +27,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always'
   },
   {
-    path: 'approval',
+    path: 'approval-table',
     loadChildren:()=> import('./modules/landing/approval-page/approval-page.module').then((m)=>m.ApprovalPageModule),
     canActivate: [AuthGuard],
     runGuardsAndResolvers: 'always'

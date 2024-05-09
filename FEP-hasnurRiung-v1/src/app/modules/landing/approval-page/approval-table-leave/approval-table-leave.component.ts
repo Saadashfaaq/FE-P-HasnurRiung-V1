@@ -162,7 +162,7 @@ filteredValue = {
   lump_sump: null,
   remaining_yearly_leaves: null,
   application_type: null,
-  departure_date: null,
+  // departure_date: null,
   field_leave_duration: null,
   yearly_leave_duration: null,
   permission_duration: null,

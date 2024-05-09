@@ -2,10 +2,6 @@
   position: fixed
 }
 
-.w-70 {
-  width: 17.5rem
-}
-
 .absolute {
   position: absolute
 }
@@ -199,10 +195,6 @@
   margin-top: 1.5rem
 }
 
-.mt-60 {
-  margin-top: 15rem
-}
-
 .flex {
   display: flex
 }
@@ -284,6 +276,10 @@
   width: 4rem
 }
 
+.w-160 {
+  width: 40rem
+}
+
 .w-2\/3 {
   width: 66.666667%
 }
@@ -304,6 +300,10 @@
   width: 8rem
 }
 
+.w-48{
+  width: 12rem;
+}
+
 .w-60 {
   width: 15rem
 }
@@ -314,6 +314,18 @@
 
 .w-80 {
   width: 20rem
+}
+
+.w-70 {
+  width: 17.5rem
+}
+
+.min-w-70 {
+  width: 17.5rem
+}
+
+.w-160{
+  width: 33rem !important;
 }
 
 .w-\[75\%\] {

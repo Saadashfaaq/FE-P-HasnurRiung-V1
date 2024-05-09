@@ -53,6 +53,8 @@ export class LoginComponent implements OnInit,OnChanges, OnDestroy{
             localStorage.setItem('userProfile', resp?.employee?._id);
             localStorage.setItem('name',resp?.employee?.name)
             localStorage.setItem('isAdmin', resp?.is_admin)
+            localStorage.setItem('employee_number', resp?.employee?.employee_number)
+            localStorage.setItem('department', resp?.employee?.position?.department)
             this.router.navigate(['/permit-leave'])
             this.isWaitingForResponse = false
           } else{

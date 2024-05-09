@@ -606,13 +606,6 @@ export class FormLeaveComponent implements OnInit {
     return this.formLeaveTicektApproval.get('travel_tickets') as FormArray;
   }
 
-  // UpdateTicketTravel (ticketDatas : any[]){
-  //   const ticketTravelArray = this.formLeaveTicektApproval.get('travel_tickets') as FormArray
-  //   ticketDatas.forEach((ticketData)=>{
-  //     ticketTravelArray.push(this.InitTicketTravelFormArray())
-  //   })
-  // }
-
   InisiateFirstIndexFormArray() {
     const newTicketFormGroup = this.InitTicketTravelFormArray();
     this.ticketsTravel.push(newTicketFormGroup);
@@ -795,7 +788,6 @@ export class FormLeaveComponent implements OnInit {
   }
 
   SaveDetailRequest() {
-    console.log('INIIII', this.formLeaveDetailRequest);
     Object.keys(this.formLeaveDetailRequest.controls).forEach((key) => {
       this.formLeaveDetailRequest.get(key).markAsDirty();
       this.formLeaveDetailRequest.get(key).markAsTouched();
@@ -948,15 +940,11 @@ export class FormLeaveComponent implements OnInit {
       current_step_index: 1,
     };
 
-    console.log('leaves', leaves);
     // Perulangan untuk memeriksa setiap field dalam objek leaves
     for (const key in leaves) {
-      console.log('RILLLLL', key);
       if (leaves.hasOwnProperty(key)) {
-        console.log('APAKAH LOLOS SELEKSI SIR?', key);
         // Periksa apakah nilai field ada dan tidak null
         if (leaves[key] != null && leaves[key] !== '') {
-          console.log('cek lagi deh', key);
           // Jika ya, tambahkan field ke dalam payload
           if (key === 'departure_off_day') {
             // Jika field departure_off_day, tambahkan objek date ke dalam payload
@@ -965,7 +953,6 @@ export class FormLeaveComponent implements OnInit {
               time: '', // Kosongkan nilai time
             };
           } else if (key.includes('date')) {
-            console.log('masuk sini ga?', key);
             // Jika field berisi tanggal lain, konversi format tanggal dan tambahkan ke dalam payload
             payload.leaves[key] = formatDate(
               leaves[key],
@@ -978,7 +965,6 @@ export class FormLeaveComponent implements OnInit {
           } else {
             // Jika bukan tanggal atau duration, langsung tambahkan ke dalam payload
             payload.leaves[key] = leaves[key];
-            console.log('NOER CONSOLE', key);
           }
         }
       }
@@ -2024,12 +2010,10 @@ export class FormLeaveComponent implements OnInit {
       (officer) => officer._id === subtituteOfficer
     );
 
-    console.log('subtituteOfficer', subtituteOfficer);
-    console.log('selectedOfficer', selectedOfficer);
     if (selectedOfficer) {
       this.formLeaveTicektApproval
         .get('approval_id_1')
-        .setValue(selectedOfficer.name);
+        .setValue(` ${selectedOfficer.employee_number} - ${selectedOfficer.name}`);
     } else {
       this.formLeaveTicektApproval.get('substitute_officer').setValue(null);
     }
@@ -2119,7 +2103,7 @@ export class FormLeaveComponent implements OnInit {
                   this.formLeaveTicektApproval
                   .get('approval_id_2')
                   .setValue(approval.approver_id.employee_number + ' - ' + approval.approver_id.name);
-                } else if (approval.approval_index === 3){
+                } else if (approval.approval_index === 2){
                   this.formLeaveTicektApproval
                   .get('approval_id_3')
                   .setValue(approval.approver_id.employee_number + ' - ' + approval.approver_id.name);
@@ -2251,7 +2235,7 @@ export class FormLeaveComponent implements OnInit {
       leave_comment: data?.leaves?.leave_comment || null,
       substitute_officer: data?.approval[0].approver_id?._id, // Isi sesuai kebutuhan
       pending_job: data?.pending_job || null,
-      approval_id_1: data?.approval[0].approver_id?.name, // Isi sesuai kebutuhan
+      approval_id_1: `${data?.approval[0].approver_id?.employee_number} - ${data?.approval[0].approver_id?.name}`, // Isi sesuai kebutuhan
       approval_id_2: data?.approval?.[0]?.approver_id?.name || null, // Menggunakan nama approver pertama jika tersedia
       approval_id_3: data?.approval?.[1]?.approver_id?.name || null, // Menggunakan nama approver kedua jika tersedia
     });

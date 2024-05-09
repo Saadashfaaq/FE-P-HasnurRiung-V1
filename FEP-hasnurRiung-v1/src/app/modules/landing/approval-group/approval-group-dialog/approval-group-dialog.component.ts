@@ -258,7 +258,7 @@ export class ApprovalGroupDialogComponent {
 
     openSwalSave(department){
       Swal.fire({
-        title: `Grup Approval Departemen ${department} berhasil di perbaru`,
+        title: `Grup Approval Departemen ${department} berhasil di perbarui`,
         icon: 'success',
         confirmButtonColor: '#3085d6',
         allowEnterKey: false,

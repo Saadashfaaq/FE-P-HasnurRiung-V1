@@ -5,13 +5,8 @@
     <div class="flex flex-row justify-between mb-2">
       <div class="flex flex-row">
         <button (click)="OpenFormToCreate()" class="mr-1" color="primary" mat-raised-button>+ Ajukan Permohohan</button>
-        <button class="mr-1" color="primary" mat-raised-button>Cabut Cuti</button>
-        <button color="accent" mat-raised-button>Hapus</button>
       </div>
       <div class="flex flex-row">
-        <div>
-          <button  color="primary" mat-raised-button>Export</button>
-        </div>
         <div class="ml-1">
           <button color="none" (click)="resetTable()" mat-raised-button>
             <mat-icon>refresh</mat-icon>
@@ -27,7 +22,7 @@
 
           <ng-container  matColumnDef="created_date_filter" sticky>
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto">
+              <mat-form-field appearance="outline"  class="w-full mx-auto">
                 <input
                 placeholder="Cari"
                   matInput
@@ -76,7 +71,7 @@
 
           <ng-container  matColumnDef="departure_off_day_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+              <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
                   matInput
@@ -95,7 +90,7 @@
 
           <ng-container  matColumnDef="start_date_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+              <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
                   matInput
@@ -114,7 +109,7 @@
 
           <ng-container  matColumnDef="field_leave_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+              <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
@@ -127,7 +122,7 @@
 
           <ng-container  matColumnDef="yearly_leave_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+              <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
@@ -140,7 +135,7 @@
 
           <ng-container  matColumnDef="permission_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+              <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
@@ -153,7 +148,7 @@
 
           <ng-container  matColumnDef="compensation_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" >
+              <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
                   (keypress)="preventNonNumericalInput($event)"
@@ -166,7 +161,7 @@
 
           <ng-container  matColumnDef="end_date_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full w-full mx-auto" class="w-full w">
+              <mat-form-field appearance="outline"  class="w-full mx-auto" class="w-full w">
                 <input
                 placeholder="Cari"
                   matInput
@@ -313,10 +308,10 @@
     </table>
     </div>
 
-    <div class="my-3" *ngIf="(noData | async)" class="no-records" data-cy="no-data">
-      Data Tidak Ditemukan
+    <div style="text-align: center !important; margin: 20px !important;" class="my-10 text-center w-full" *ngIf="(noData | async)" class="no-records">
+      <span class="text-md text-center text-gray-700 font-semibold">Data Tidak Ditemukan</span>
     </div>
-    <div [ngClass]="{ hide: noData | async }">
+    <div [ngClass]="{'hidden': noData | async  }"  >
       <mat-paginator
         [ngClass]="{ 'hide-pagination-buttons': paginator.length <= 10 }"
         [length]="dataCount"
