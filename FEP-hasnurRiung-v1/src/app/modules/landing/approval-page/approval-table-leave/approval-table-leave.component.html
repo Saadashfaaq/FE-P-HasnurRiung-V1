@@ -384,7 +384,7 @@
 
           <ng-container matColumnDef="poh_status">
             <th mat-header-cell *matHeaderCellDef> Status POH </th>
-            <td mat-cell *matCellDef="let element"> {{ element?.employee_id?.poh_status }} </td>
+            <td mat-cell *matCellDef="let element"> {{ PohConfigReturn(element?.employee_id?.poh_status)  }} </td>
           </ng-container>
 
           <ng-container matColumnDef="application_type">
@@ -490,18 +490,20 @@
           <ng-container class="rightTop" matColumnDef="action" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef > Action </th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="flex flex-row jusify-center align-center gap-1">
-                    <button [routerLink]="['/form-leave/preview',element?._id]" mat-icon-button>
-                      <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
-                    </button>
-                    <button *ngIf="element.pdf_application_form" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>
-                      <mat-icon  class="cursor-pointer text-indigo-900" >picture_as_pdf</mat-icon>
-                    </button>
+                  <div style="justify-content: center !important;" class="flex flex-row jusify-center align-center gap-1">
+                    <div>
+                      <button [routerLink]="['/form-leave/preview',element?._id, element.employee_id._id]" mat-icon-button>
+                        <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
+                      </button>
+                    </div>
+                    <div>
+                      <button *ngIf="element?.form_status === 'completed'" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>
+                        <mat-icon  class="cursor-pointer text-indigo-900" >picture_as_pdf</mat-icon>
+                      </button>
+                    </div>
                   </div>
                 </td>
           </ng-container>
-
-
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-header-row *matHeaderRowDef="filterCols"></tr>

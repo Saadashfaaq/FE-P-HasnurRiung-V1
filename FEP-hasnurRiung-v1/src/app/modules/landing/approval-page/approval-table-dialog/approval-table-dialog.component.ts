@@ -65,9 +65,7 @@ export class ApprovalTableDialogComponent {
             confirmButtonText:'Iya',
           }).then(()=>{
             this.dialogRef.close();
-            const url = `https://daunsalam.online/approval`
-            window.open(url, '_self');
-            console.log("success")
+            this.router.navigate(['/approval-table']);
           })
         }
 

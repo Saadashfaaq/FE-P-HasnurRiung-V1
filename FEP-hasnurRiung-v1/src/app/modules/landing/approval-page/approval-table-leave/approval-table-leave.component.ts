@@ -399,4 +399,16 @@ resetTable() {
   }
 }
 
+PohConfigReturn(resp) {
+  if (resp === 'lokal') {
+    return `LOKAL`
+  } else if (resp === 'non_lokal') {
+    return `NON LOKAL`
+  } else if (resp === 'non_lokal_perumahan') {
+    return `NON LOKAL PERUMAHAN`
+  } else {
+    return null
+  }
+}
+
 }

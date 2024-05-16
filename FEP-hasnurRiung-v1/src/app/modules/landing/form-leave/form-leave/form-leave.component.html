@@ -525,33 +525,6 @@
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-80">
-                <input
-                  (focusout)="SelectPermissionType()"
-                  matInput
-                  formControlName="permission_type"
-                  [matAutocomplete]="permissionList"
-                />
-                <mat-autocomplete #permissionList="matAutocomplete">
-                  <mat-option
-                    (click)="SelectPermissionType()"
-                    *ngFor="let item of filteredPermission | async"
-                    [value]="item.name"
-                  >
-                    {{ item.name }}
-                  </mat-option>
-                </mat-autocomplete> -->
-              <!--
-                <mat-error
-                  *ngIf="
-                    formLeaveDetailRequest
-                      .get('permission_type')
-                      .hasError('required')
-                  "
-                >
-                  Kolom ini wajib diisi
-                </mat-error>
-              </mat-form-field> -->
               <div class="w-160">
                 <ng-select
                   class="min-w-160"
@@ -1130,7 +1103,7 @@
               <span>Tanggal Kompensasi*</span>
             </div>
             <div class="flex flex-row items-baseline">
-              <mat-form-field class="w-43" appearance="outline" class="testing">
+              <mat-form-field class="w-44 min-w-44" appearance="outline" class="testing">
                 <input
                   matInput
                   [formControlName]="'compensation_start_date'"
@@ -1145,7 +1118,7 @@
                 <mat-datepicker #picker_compensation_start></mat-datepicker>
               </mat-form-field>
               <span class="mx-1">s/d</span>
-              <mat-form-field class="w-43" appearance="outline" class="testing">
+              <mat-form-field class="w-44 min-w-44" appearance="outline" class="testing">
                 <input
                   matInput
                   [formControlName]="'compensation_end_date'"
@@ -1298,7 +1271,7 @@
                       <span>Usia</span>
                     </div>
                     <div>
-                      <mat-form-field class="w-43" appearance="outline">
+                      <mat-form-field class="w-44 min-w-44" appearance="outline">
                         <input
                           (keypress)="preventNonNumericalInput($event)"
                           class="w-160"
@@ -1318,7 +1291,7 @@
                       <span>Dari</span>
                     </div>
                     <div>
-                      <mat-form-field class="w-43" appearance="outline">
+                      <mat-form-field class="w-44 min-w-44" appearance="outline">
                         <input
                           [disabled]="true"
                           [readonly]="true"
@@ -1335,7 +1308,7 @@
                     </div>
                     <div>
                       <ng-select
-                        class="w-43"
+                        class="w-44 min-w-44"
                         [items]="airPortList"
                         appendTo="body"
                         bindLabel="name"
@@ -1371,7 +1344,7 @@
                     </div>
                     <div>
                       <ng-select
-                        class="w-43"
+                        class="w-44 min-w-44"
                         appendTo="body"
                         [items]="airPortList"
                         bindLabel="name"
@@ -1399,7 +1372,7 @@
                       <span>Menuju</span>
                     </div>
                     <div>
-                      <mat-form-field class="w-43" appearance="outline">
+                      <mat-form-field class="w-44 min-w-44" appearance="outline">
                         <input
                           [disabled]="true"
                           [readonly]="true"
@@ -1421,7 +1394,7 @@
                   class="self-end"
                 >
                   <button
-                    *ngIf="i > 0"
+                    *ngIf="i > 0  && !isPreviewMode"
                     (click)="RemoveTicket(i)"
                     class="py-1 px-2 text-xs"
                     mat-raised-button
@@ -1430,7 +1403,7 @@
                     hapus
                   </button>
                   <button
-                    *ngIf="i <= 3"
+                    *ngIf="i <= 3 && !isPreviewMode"
                     (click)="CreateTicketTravelArray()"
                     class="ml-2 py-1 px-2 text-xs"
                     mat-raised-button
@@ -1451,32 +1424,6 @@
               <span>Pejabat Sementara Selama Cuti*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-160">
-                <input
-                  matInput
-                  formControlName="substitute_officer"
-                  [matAutocomplete]="substitute_officer"
-                  (focusout)="selectSubtituteOfficer()"
-                />
-                <mat-autocomplete #substitute_officer="matAutocomplete">
-                  <mat-option
-                    (click)="selectSubtituteOfficer()"
-                    *ngFor="let item of filteredSubtituteOfficer | async"
-                    [value]="item.name"
-                  >
-                    {{ item?.employee_number }} {{ item?.name }}
-                  </mat-option>
-                </mat-autocomplete>
-                <mat-error
-                  *ngIf="
-                    formLeaveTicektApproval
-                      .get('substitute_officer')
-                      .hasError('required')
-                  "
-                >
-                  Kolom ini wajib diisi
-                </mat-error>
-              </mat-form-field> -->
               <div class="w-160">
                 <ng-select
                   appendTo="body"
@@ -1513,17 +1460,6 @@
                   matInput
                   [formControlName]="'pending_job'"
                 />
-                <!-- <textarea
-                class="w-160"
-                matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"
-                cdkAutosizeMaxCols="3"
-                cols="3"
-                [formControlName]="'pending_job'"
-                ></textarea> -->
                 <mat-error
                   *ngIf="
                     formLeaveTicektApproval
@@ -1657,7 +1593,7 @@
               Setuju
             </button>
           </div>
-          <div class="ml-2">
+          <div *ngIf="editCondition()" class="ml-2">
             <button (click)="EditForm()" mat-raised-button color="primary">
               Edit
             </button>
@@ -1671,13 +1607,3 @@
         <mat-spinner class="text-white" aria-label="Loading"></mat-spinner>
     </div>     -->
 </div>
-
-<!-- <div class="flex flex-col p-5 text-center ">
-    <div>
-        content
-    </div>
-
-    <div>
-        <mat-spinner></mat-spinner>
-    </div>
-</div> -->

@@ -119,6 +119,7 @@ export class TableLeavePermitEmployeeComponent {
   ]
 
   displayedColumns: string[] = [
+    "none",
     "created_date",
     "application_type",
     "is_ticket_supported",
@@ -294,6 +295,7 @@ export class TableLeavePermitEmployeeComponent {
       }
     }
 
+
     OpenDialogTimeline(formId){
       const dialogRef = this.dialog.open(TimelineDialogComponent, {
         data:formId,
@@ -348,5 +350,6 @@ export class TableLeavePermitEmployeeComponent {
       }
     }
   }
+
 
 }

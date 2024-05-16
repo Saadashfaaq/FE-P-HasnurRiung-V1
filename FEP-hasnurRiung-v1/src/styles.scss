@@ -281,6 +281,15 @@
   letter-spacing: var(--mat-paginator-container-text-tracking);
 }
 
+.mdc-text-field--disabled {
+  background-color:rgba(0,0,0,0.0525);
+  pointer-events: none;
+}
+
+.mdc-text-field--outlined.mdc-text-field--disabled .mdc-text-field__input {
+  color: black !important;
+}
+
 
 
 

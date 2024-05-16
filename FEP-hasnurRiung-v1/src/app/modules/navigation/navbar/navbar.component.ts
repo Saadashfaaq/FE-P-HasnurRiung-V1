@@ -30,7 +30,7 @@ export class NavbarComponent {
       if (event instanceof NavigationStart) {
         console.log("NavigationStart", event)
         if (event.url.includes('form-leave')) {
-          this.pageTitle = 'Formulir Permohonan Istirahat'
+          this.pageTitle = 'Formulir ST Istirahat'
           this.changeDetectorRef.detectChanges();
         } else if (event.url.includes('approval-group')) {
           this.pageTitle = 'Approval Group'
@@ -40,6 +40,12 @@ export class NavbarComponent {
           this.changeDetectorRef.detectChanges();
         } else if (event.url.includes('permit-leave')) {
           this.pageTitle = 'Tugas Istirahat'
+          this.changeDetectorRef.detectChanges();
+        } else if (event.url.includes('permit-work')){
+          this.pageTitle = 'Tugas Lapangan'
+          this.changeDetectorRef.detectChanges();
+        } else if (event.url.includes('form-work')){
+          this.pageTitle = 'Formulir ST Lapangan'
           this.changeDetectorRef.detectChanges();
         }
       }
@@ -71,7 +77,7 @@ export class NavbarComponent {
         }
       );
   }
-  openForm(formId, notifId) {
+  openForm(formId, notifId, employeeId) {
     this.subs.sink = this._formLeaveService
       .UpdateNotification(notifId, true)
       .subscribe((resp) => {
@@ -79,6 +85,6 @@ export class NavbarComponent {
           this.getAllNotificationList();
         }
       });
-    this.router.navigate([`/form-leave/preview/${formId}`]);
+    this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`]);
   }
 }

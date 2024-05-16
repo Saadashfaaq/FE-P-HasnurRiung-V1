@@ -20,9 +20,15 @@
 
         <!-- Fillter Section -->
 
-          <ng-container  matColumnDef="created_date_filter" sticky>
+        <ng-container matColumnDef="none_filter">
+          <th mat-header-cell *matHeaderCellDef>
+
+          </th>
+        </ng-container>
+
+          <ng-container  matColumnDef="created_date_filter">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-form-field appearance="outline"  class="w-full mx-auto">
+              <mat-form-field appearance="outline" class="w-full mx-auto">
                 <input
                 placeholder="Cari"
                   matInput
@@ -112,7 +118,6 @@
               <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
-                  (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.field_leave_duration_ctrl"
                 />
@@ -125,7 +130,6 @@
               <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
-                  (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.yearly_leave_duration_ctrl"
                 />
@@ -138,7 +142,6 @@
               <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
-                  (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.permission_duration_ctrl"
                 />
@@ -151,7 +154,6 @@
               <mat-form-field appearance="outline"  class="w-full mx-auto" >
                 <input
                 placeholder="Cari"
-                  (keypress)="preventNonNumericalInput($event)"
                   matInput
                   [formControl]="formControls.compensation_duration_ctrl"
                 />
@@ -214,7 +216,12 @@
 
           <!--Data Section-->
 
-          <ng-container  matColumnDef="created_date" sticky>
+          <ng-container  matColumnDef="none">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element"> </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="created_date">
             <th mat-header-cell *matHeaderCellDef> Tanggal Pengajuan</th>
             <td mat-cell *matCellDef="let element"> {{ element?.created_date }} </td>
           </ng-container>
@@ -290,15 +297,19 @@
 
           <ng-container  matColumnDef="action" stickyEnd>
             <th mat-header-cell *matHeaderCellDef> Action </th>
-            <td mat-cell *matCellDef="let element">
-                <div class="flex flex-row jusify-center align-center gap-1">
-                    <button [routerLink]="['/form-leave/preview',element?._id]" mat-icon-button>
+            <td class="jusify-center" mat-cell *matCellDef="let element">
+                <div style="justify-content: center !important;" class="flex flex-row jusify-center align-center gap-1">
+                  <div>
+                    <button [routerLink]="['/form-leave/preview',element?._id ,element.employee_id._id ]" mat-icon-button>
                       <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
                     </button>
-                    <button *ngIf="element.pdf_leave_letter" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>
+                  </div>
+                  <div>
+                    <button *ngIf="element?.form_status === 'completed'" (click)="OpenPDFLeaveLetter(element?.pdf_leave_letter)" mat-icon-button>
                       <mat-icon  class="cursor-pointer text-indigo-900" >picture_as_pdf</mat-icon>
                     </button>
                   </div>
+                 </div>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

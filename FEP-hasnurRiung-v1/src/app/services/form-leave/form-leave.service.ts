@@ -8,7 +8,7 @@ import { map } from 'rxjs';
 export class FormLeaveService {
   constructor(private _apollo: Apollo) {}
 
-  CreateFormIdentity(payload) {
+  CreateFormLeave(payload) {
     return this._apollo
       .mutate({
         mutation: gql`
@@ -126,6 +126,7 @@ export class FormLeaveService {
                 poh_location
                 placement_status
                 name
+                age
                 lump_sump_amount
                 is_routine_official_letter
                 is_lump_sump
@@ -289,6 +290,7 @@ export class FormLeaveService {
             ) {
               leave_letter_number
               employee_id {
+                _id
                 employee_number
                 name
                 position {
@@ -390,6 +392,9 @@ export class FormLeaveService {
               pdf_application_form
               pdf_leave_letter
               count_document
+              employee_id {
+                _id
+              }
               _id
             }
           }
@@ -525,6 +530,7 @@ export class FormLeaveService {
               application_form_id {
                 _id
                 employee_id {
+                  _id
                   name
                 }
               }

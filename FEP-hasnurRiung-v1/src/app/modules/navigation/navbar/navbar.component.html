@@ -25,7 +25,7 @@
       <div>
         <div *ngFor="let notif of notifList">
           <button
-            (click)="openForm(notif.application_form_id._id, notif?._id)"
+            (click)="openForm(notif.application_form_id._id, notif?._id, notif.application_form_id.employee_id._id)"
             mat-menu-item
           >
             <div
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div *ngIf="notifList.length === 0">
-        <div mat-menu-item>
+        <div class="cursor-custom" [disabled]="true" mat-menu-item>
           <span class="text-xs font-semibold"> Belum Ada Notifikasi </span>
         </div>
       </div>

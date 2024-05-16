@@ -1,0 +1,261 @@
+<div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
+  <mat-spinner color="primary" [diameter]="100"></mat-spinner>
+</div>
+
+<div
+  [ngClass]="{ hidden: isWaitingForResponse }"
+  class="flex flex-col p-5 text-center"
+>
+  <h2 class="mt-1">Form Tugas Lapangan</h2>
+
+  <!--Page Container -->
+  <div
+    style="background-color: white"
+    class="flex flex-col items-left customBorder"
+  >
+    <!-- Leave Form Section 1 -->
+    <div class="flex flex-col justify-between h-full">
+      <form [formGroup]="permitFormGroup">
+        <!-- Form Section -->
+        <div class="flex flex-row">
+          <div class="flex flex-col items-left w-1/2 pt-3 mr-2">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>NRP</span>
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="w-80">
+                    <input
+                      class="w-80"
+                      matInput
+                      [formControlName]="'employee_number'"
+                      [disabled]="true"
+                      [readonly]="true"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>Nama</span>
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="w-80">
+                    <input
+                      class="w-80"
+                      matInput
+                      [formControlName]="'name'"
+                      [disabled]="true"
+                      [readonly]="true"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>Jabatan</span>
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="w-80">
+                    <input
+                      class="w-80"
+                      matInput
+                      [formControlName]="'position'"
+                      [disabled]="true"
+                      [readonly]="true"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>Departemen</span>
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="w-80">
+                    <input
+                      class="w-80"
+                      matInput
+                      [formControlName]="'department'"
+                      [disabled]="true"
+                      [readonly]="true"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col items-left w-1/2 pt-3">
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>Tanggal Awal Dinas*</span>
+                </div>
+                <div class="w-80">
+                  <mat-form-field style="width: 320px;" appearance="outline" class="w-80 testing">
+                    <input
+                      matInput
+                      [formControlName]="'start_date_dinas'"
+                      [matDatepicker]="pickerstart_date_dinas"
+                      [readonly]="true"
+                      [min]="minDate"
+                      (dateInput)="calculatePermitDay()"
+                    />
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerstart_date_dinas"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerstart_date_dinas></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>Jumlah Hari Kerja</span>
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="w-80">
+                    <input
+                      class="w-80"
+                      matInput
+                      [formControlName]="'total_work_days'"
+                      [disabled]="true"
+                      [readonly]="true"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>Akhir Dinas</span>
+                </div>
+                <div>
+                  <mat-form-field style="width: 320px;" appearance="outline" class="w-80 testing">
+                    <input
+                      matInput
+                      [formControlName]="'end_date_dinas'"
+                      [matDatepicker]="pickerend_date_dinas"
+                      [readonly]="true"
+                      [min]="minDate"
+                    />
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerend_date_dinas"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerend_date_dinas></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="flex flex-row h-10 mb-6 items-baseline">
+                <div class="w-70 text-left">
+                  <span>Tanggal Matang Cuti</span>
+                </div>
+                <div>
+                  <mat-form-field style="width: 320px;" appearance="outline" class="w-80" class="testing">
+                    <input
+                      matInput
+                      [formControlName]="'date_of_eligible_for_leave'"
+                      [matDatepicker]="pickerdate_of_eligible_for_leave"
+                      [readonly]="true"
+                      [min]="minDate"
+                    />
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="pickerdate_of_eligible_for_leave"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #pickerdate_of_eligible_for_leave></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-left mt-10">
+          <h3 class="text-left my-2">Persetujuan Pemberi Tugas</h3>
+        </div>
+        <div class="w-full mt-5 mb-10">
+            <mat-divider></mat-divider>
+        </div>
+        <!-- START PERSETUJUAN CUTI -->
+        <h3 class="text-left my-2">Persetujuan Cuti</h3>
+        <div class="flex flex-row h-10 mb-6 items-baseline">
+          <div class="w-70 text-left">
+            <span>Persetujuan 1</span>
+          </div>
+          <div>
+            <mat-form-field class="w-160" appearance="outline">
+              <input
+                class="w-160"
+                matInput
+                [formControlName]="'first_approval'"
+                [disabled]="true"
+                [readonly]="true"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="flex flex-row h-10 mb-6 items-baseline">
+          <div class="w-70 text-left">
+            <span>Persetujuan 2</span>
+          </div>
+          <div>
+            <mat-form-field class="w-160" appearance="outline">
+              <input
+                class="w-160"
+                matInput
+                [formControlName]="'second_approval'"
+                [disabled]="true"
+                [readonly]="true"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <!-- Button Group -->
+      <div *ngIf="!isPreviewMode" class="self-end">
+        <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
+        <button (click)="submitForm()" class="ml-2" mat-raised-button color="primary">Ajukan Permohonan</button>
+      </div>
+      <!-- <div *ngIf="isPreviewMode && !isEditMode" class="self-end">
+        <button (click)="edit()" class="ml-2" mat-raised-button color="primary">Edit</button>
+      </div> -->
+      <div *ngIf="isPreviewMode && !isEditMode" class="flex flex-row self-end">
+        <div *ngIf="ButtonApproveCondition()">
+          <button
+            (click)="OpenDialogApproval('cancel')"
+            mat-raised-button
+            color="warn"
+          >
+            Tolak
+          </button>
+        </div>
+        <div *ngIf="ButtonApproveCondition()" class="ml-2">
+          <button
+            (click)="OpenDialogApproval('revision')"
+            mat-raised-button
+            color="accent"
+          >
+            Revisi
+          </button>
+        </div>
+        <div *ngIf="ButtonApproveCondition()" class="ml-2">
+          <button (click)="ApproveForm()" mat-raised-button color="primary">
+            Setuju
+          </button>
+        </div>
+        <div class="ml-2">
+          <button (click)="edit()"  mat-raised-button color="primary">
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

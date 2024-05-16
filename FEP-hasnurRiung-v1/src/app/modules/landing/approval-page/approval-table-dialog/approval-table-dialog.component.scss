@@ -3,3 +3,11 @@ height: 120px !important;
 max-height: fit-content !important;
 overflow: hidden !important;
 }
+
+.mat-mdc-raised-button.mat-accent {
+  --mdc-protected-button-container-color: #FFF138;
+  --mdc-protected-button-label-text-color: #000000;
+  --mat-protected-button-state-layer-color: #000000;
+  --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+}

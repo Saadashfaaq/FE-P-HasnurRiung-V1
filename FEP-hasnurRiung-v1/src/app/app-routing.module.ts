@@ -10,6 +10,12 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always'
   },
   {
+    path: 'form-permit',
+    loadChildren:()=> import('./modules/landing/form-permit/form-permit.module').then((m)=>m.FormPermitModule),
+    canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always'
+  },
+  {
     path: 'auth',
     loadChildren:()=> import('./modules/auth/auth.module').then((m)=>m.AuthModule),
 
