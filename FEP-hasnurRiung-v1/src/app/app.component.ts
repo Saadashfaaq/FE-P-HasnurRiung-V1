@@ -35,7 +35,6 @@ export class AppComponent {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        console.log('NavigationStart', event);
         if (event.url.includes('auth') || event.url.includes('barcode-form')) {
           this.showSideBar = false;
           this.changeDetectorRef.detectChanges();
@@ -91,7 +90,6 @@ export class AppComponent {
 
   private sidebarClickHandler(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    console.log('target.classList', target.classList);
     if (target && target.classList.contains('bx-menu')) {
       this.toggleSidebar();
     } else {
@@ -100,7 +98,6 @@ export class AppComponent {
   }
 
   Init() {
-    console.log('ngAfterViewInit called');
     if (this.sidebar) {
       const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
       const searchBtn = this.sidebar.nativeElement.querySelector('.bx-search');
@@ -113,10 +110,8 @@ export class AppComponent {
 
   toggleSidebar() {
     if (this.sidebar) {
-      console.log('toggleSidebar called');
       this.sidebar.nativeElement.classList.toggle('open');
       this.menuBtnChange();
-      console.log('3');
     }
   }
 
@@ -124,12 +119,10 @@ export class AppComponent {
     if (this.sidebar && this.sidebar.nativeElement.classList.contains('open')) {
       const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
       closeBtn.classList.replace('bx-menu', 'bx-menu-alt-right');
-      console.log('A1');
     } else {
       const closeBtn =
         this.sidebar.nativeElement.querySelector('.bx-menu-alt-right');
       closeBtn.classList.replace('bx-menu-alt-right', 'bx-menu');
-      console.log('A2');
     }
   }
 

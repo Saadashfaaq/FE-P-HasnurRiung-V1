@@ -527,6 +527,7 @@ export class FormLeaveService {
           query GetAllNotifications($filter: NotificationFilter) {
             GetAllNotifications(filter: $filter) {
               _id
+              letter_type
               application_form_id {
                 _id
                 employee_id {

@@ -256,7 +256,6 @@ export class FormLeaveComponent implements OnInit {
 
   ngOnInit(): void {
     const getParamsEmployeeId = this.route.snapshot.params['employeeId'];
-    console.log("getParamsEmployeeId", getParamsEmployeeId)
     this.employeeId =  getParamsEmployeeId !== undefined ? getParamsEmployeeId : localStorage.getItem('userProfile');
     this.localStorageUser = localStorage.getItem('userProfile')
     this.checkRouterParamsId();
@@ -615,15 +614,12 @@ export class FormLeaveComponent implements OnInit {
   }
 
   CreateTicketTravelArray() {
-    console.log("testung")
-
     if (
       this.ticketsTravel.at(0).get('departure_to').value &&
       this.ticketsTravel.at(0).get('arrival_from').value ||
       this.ticketsTravel.at(0).get('departure_to').getRawValue() &&
       this.ticketsTravel.at(0).get('arrival_from').getRawValue()
     ) {
-      console.log("kemana")
       const newTicketFormGroup = this._formBuilder.group({
         name: [''],
         age: [''],
@@ -676,10 +672,6 @@ export class FormLeaveComponent implements OnInit {
     const selectedArrivalFrom = this.airPortListBackUp.find(
       (airport) => airport.name === arrivalFrom
     );
-
-    console.log('arrivalFrom', arrivalFrom);
-    console.log('selectedArrivalFrom', selectedArrivalFrom);
-
     if (!selectedArrivalFrom) {
       this.ticketsTravel.at(0).get('arrival_from').setValue(null);
     }
@@ -690,9 +682,6 @@ export class FormLeaveComponent implements OnInit {
     const selectedDepartureTo = this.airPortListBackUp.find(
       (airport) => airport.name === departureTo
     );
-
-    console.log('departureTo', departureTo);
-    console.log('selectedDepartureTo', selectedDepartureTo);
 
     if (!selectedDepartureTo) {
       this.ticketsTravel.at(0).get('departure_to').setValue(null);
@@ -770,7 +759,6 @@ export class FormLeaveComponent implements OnInit {
           this.IsTypeIsLeave() &&
           this.formLeaveIdentity.get('leave_category').value !== 'tahunan'
         ) {
-          console.log('kesini?');
           this.formLeaveDetailRequest
             .get('field_leave_start_date')
             .setValidators([Validators.required]);
@@ -1008,12 +996,6 @@ export class FormLeaveComponent implements OnInit {
     return payload;
   }
 
-  consoleLOG() {
-    console.log('1', this.formLeaveIdentity);
-    console.log('2', this.formLeaveDetailRequest);
-    console.log('3', this.formLeaveTicektApproval);
-  }
-
   // Section Form Condition
   IsTypeIsLeave(): boolean {
     if (this.formLeaveIdentity.get('application_type').value) {
@@ -1249,19 +1231,6 @@ export class FormLeaveComponent implements OnInit {
         this.formLeaveDetailRequest
           .get('field_leave_end_date')
           .setValue(resultEnd);
-        console.log(
-          "this.formLeaveDetailRequest.get('field_leave_end_date'):",
-          this.formLeaveDetailRequest.get('field_leave_end_date').value
-        );
-
-        console.log(
-          "this.formLeaveDetailRequest.get('field_leave_end_date') 2:",
-          this.formLeaveDetailRequest.get('field_leave_end_date').value
-        );
-        console.log(
-          "this.formLeaveDetailRequest.get('field_leave_end_date') 3:",
-          this.formLeaveDetailRequest.getRawValue()
-        );
       } else {
         console.error('Travel date is invalid.');
       }
@@ -1283,19 +1252,6 @@ export class FormLeaveComponent implements OnInit {
         this.formLeaveDetailRequest
           .get('field_leave_end_date')
           .setValue(resultEnd);
-        console.log(
-          "this.formLeaveDetailRequest.get('field_leave_end_date'):",
-          this.formLeaveDetailRequest.get('field_leave_end_date').value
-        );
-
-        console.log(
-          "this.formLeaveDetailRequest.get('field_leave_end_date') 2:",
-          this.formLeaveDetailRequest.get('field_leave_end_date').value
-        );
-        console.log(
-          "this.formLeaveDetailRequest.get('field_leave_end_date') 3:",
-          this.formLeaveDetailRequest.getRawValue()
-        );
       } else {
         return;
       }
@@ -2124,7 +2080,6 @@ export class FormLeaveComponent implements OnInit {
               this.currentApprovers = resp.current_approvers;
               this.changeDetectorRef.detectChanges();
             }, 10);
-            console.log('resp.form_status', resp.form_status);
             this.patchFormLeaveIdentity(data);
             this.patchFormLeaveDetailRequest(data.leaves);
             this.patchFormLeaveTicketApproval(data);
@@ -2278,7 +2233,6 @@ export class FormLeaveComponent implements OnInit {
         'travel_tickets'
       ) as FormArray;
       data?.travel_tickets?.forEach((ticket, index) => {
-        console.log("ticket", ticket)
         ticketTravelArray.push(this.initTicketTravelFormArray(ticket, data,  index));
       });
 
@@ -2338,7 +2292,6 @@ export class FormLeaveComponent implements OnInit {
   }
 
   PohConfigReturn(resp) {
-    console.log("kepanggil", resp.poh_status)
     if (resp.poh_status === 'lokal') {
       return `LOKAL - ${this.poh_location}`
     } else if (resp.poh_status === 'non_lokal') {
@@ -2350,7 +2303,6 @@ export class FormLeaveComponent implements OnInit {
     }
   }
   PohConfig(resp) {
-    console.log("kepanggil", resp.poh_status)
     if (resp.poh_status === 'lokal') {
       // this.formLeaveIdentity.get('poh_status').setValue('LOKAL')
       this.formLeaveIdentity
@@ -2424,11 +2376,9 @@ export class FormLeaveComponent implements OnInit {
       .subscribe(
         (resp) => {
           if (resp) {
-            console.log("RESP", resp)
             this.formLeaveTicektApproval
             .get('approval_id_2')
             .setValue( resp[0].approvals[0]?.default_approver?.employee_number + ' - ' + resp[0].approvals[0]?.default_approver?.name);
-            console.log()
           this.formLeaveTicektApproval
             .get('approval_id_3')
             .setValue(resp[0].approvals[1]?.default_approver?.employee_number + ' - ' + resp[0].approvals[1]?.default_approver?.name);
@@ -2463,7 +2413,6 @@ export class FormLeaveComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'Tidak',
     }).then((resp) => {
-      console.log('resp', resp);
       if (resp.isConfirmed) {
         this.router.navigate(['/permit-leave']);
       } else {
@@ -2514,7 +2463,6 @@ export class FormLeaveComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'Tidak',
     }).then((resp) => {
-      console.log('resp', resp);
       if (resp.isConfirmed) {
         this.isWaitingForResponse = false
         this.SendApproveForm(this.formID);
@@ -2546,10 +2494,6 @@ export class FormLeaveComponent implements OnInit {
               confirmButtonText: 'Iya',
             }).then(() => {
               this.router.navigate(['/approval-table']);
-              // const url = `https://www.daunsalam.online/approval-table`
-              // window.open(url, '_self');
-              // // this.router.navigate(['/approval']);
-              // // console.log('success');
             });
           }
         },

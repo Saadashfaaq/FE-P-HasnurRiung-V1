@@ -218,6 +218,23 @@
           </div>
         </div>
       </form>
+            <!--Reason Start-->
+            <div *ngIf="isRevision || isRejected" class="p-10 w-100 h-50 text-left rounded-lg reason-border my-10">
+              <div>
+                <h3 class="m-0 p-0">
+                  Alasan
+                </h3>
+              </div>
+             <div class="my-3">
+              <mat-divider></mat-divider>
+             </div>
+              <div class="mt-5">
+                <span>
+                  {{reasonText}}
+                </span>
+              </div>
+            </div>
+            <!--Reason End-->
       <!-- Button Group -->
       <div *ngIf="!isPreviewMode" class="self-end">
         <button (click)="CancelCreateForm()" mat-raised-button color="warn">Batalkan</button>
@@ -250,7 +267,7 @@
             Setuju
           </button>
         </div>
-        <div class="ml-2">
+        <div *ngIf="editCondition() && !ButtonApproveCondition()" class="ml-2">
           <button (click)="edit()"  mat-raised-button color="primary">
             Edit
           </button>

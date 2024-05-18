@@ -28,7 +28,6 @@ export class NavbarComponent {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        console.log("NavigationStart", event)
         if (event.url.includes('form-leave')) {
           this.pageTitle = 'Formulir ST Istirahat'
           this.changeDetectorRef.detectChanges();
@@ -73,11 +72,11 @@ export class NavbarComponent {
           this.changeDetectorRef.detectChanges();
         },
         (err) => {
-          console.error(err);
+          // console.error(err);
         }
       );
   }
-  openForm(formId, notifId, employeeId) {
+  openForm(formId, notifId, employeeId, letterType) {
     this.subs.sink = this._formLeaveService
       .UpdateNotification(notifId, true)
       .subscribe((resp) => {
@@ -85,6 +84,16 @@ export class NavbarComponent {
           this.getAllNotificationList();
         }
       });
-    this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`]);
+    if(letterType === 'work'){
+      this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`]);
+      if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
+        location.reload()
+     }
+    } else {
+      this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`]);
+      if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
+        location.reload()
+     }
+    }
   }
 }

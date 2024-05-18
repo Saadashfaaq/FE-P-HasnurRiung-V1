@@ -174,7 +174,7 @@
       <ng-container matColumnDef="date_of_eligible_for_leave">
         <th mat-header-cell *matHeaderCellDef>Matang Cuti</th>
         <td mat-cell *matCellDef="let element">
-          {{ element?.employee_id?.date_of_eligible_for_leave.date }}
+          {{ element?.date_of_eligible_for_leave }}
         </td>
       </ng-container>
 
@@ -219,7 +219,7 @@
             </div>
             <div>
               <button
-                *ngIf="element.pdf_application_form"
+                *ngIf="element.form_status === 'completed'"
                 (click)="OpenPDFLeaveLetter(element?.pdf_work_letter)"
                 mat-icon-button
               >

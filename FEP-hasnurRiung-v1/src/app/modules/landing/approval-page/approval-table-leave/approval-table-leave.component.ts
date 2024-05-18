@@ -241,6 +241,7 @@ filteredValue = {
     const filter = {
       employee_id: this.employeeId,
       is_for_approval: true,
+      letter_type: 'leave',
       ...this.filteredValue
     }
 
@@ -285,7 +286,6 @@ filteredValue = {
     this.subs.sink = this._formLeaveService.UpdateApprovalApplicationForm(id,approver).subscribe(
       (resp)=>{
         this.GetAllApplicationForms()
-        console.log("success")
       },
       (err)=>{
         console.error(err)

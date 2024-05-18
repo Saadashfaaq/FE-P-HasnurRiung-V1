@@ -56,7 +56,6 @@ export class TableWorkPermitEmployeeComponent implements OnInit {
     this.GetAllApplicationFormsEmployee()
     this.initFilter()
     this.SetDatePickerFormat()
-    console.log("HOLLA")
   }
 
   displayedColumns: string[] = [
@@ -124,13 +123,13 @@ GetAllApplicationFormsEmployee(){
 
   const filter = {
     employee_id: this.employeeId,
+    letter_type: 'work',
     ...this.filteredValue
   }
 
   this.subs.sink = this.formPermitService.GetAllApplicationFormsEmployee(filter,this.sortValue,pagination)
   .subscribe(
     (resp)=>{
-      console.log("RESP", resp)
       if(resp && resp.length){
         this.dataSource.data = resp
         this.paginator.length = resp[0].count_document;

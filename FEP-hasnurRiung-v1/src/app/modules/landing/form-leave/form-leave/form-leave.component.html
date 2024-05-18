@@ -1553,7 +1553,7 @@
           class="ml-2"
           mat-raised-button
           color="primary"
-          (click)="consoleLOG(); SaveTicektApproval()"
+          (click)="SaveTicektApproval()"
         >
           Ajukan Permohonan
         </button>
@@ -1593,7 +1593,7 @@
               Setuju
             </button>
           </div>
-          <div *ngIf="editCondition()" class="ml-2">
+          <div *ngIf="editCondition() && !ButtonApproveCondition()" class="ml-2">
             <button (click)="EditForm()" mat-raised-button color="primary">
               Edit
             </button>

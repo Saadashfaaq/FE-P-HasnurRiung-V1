@@ -39,7 +39,6 @@ export class ApprovalTableDialogComponent {
   }
 
   onSubmit(){
-    console.log(this.summary)
     this.SendApproveForm(this.data.formID)
   }
 

@@ -54,6 +54,9 @@ export class FormPermitComponent {
   employeeData;
   minDate: Date = new Date();
   currentApprovers
+  isRevision : boolean = false
+  isRejected : boolean = false
+  reasonText : string = ''
 
   isEditMode = false;
 
@@ -94,6 +97,17 @@ export class FormPermitComponent {
       (resp)=>{
         if(resp){
           this.currentApprovers = resp.current_approvers;
+          this.formStatus = resp.form_status
+          if(resp.form_status){
+            if(resp.form_status === 'revision'){
+              this.isRevision = true
+              this.reasonText = resp.approval[resp.current_approval_index].reason_of_revision
+            } else if(resp.form_status === 'rejected'){
+              this.isRejected  = true
+              this.reasonText = resp.approval[resp.current_approval_index].reason_of_rejection
+            }
+          }
+
           this.permitFormGroup.patchValue({
             start_date_dinas: new Date(this.convertDateFormat(resp.work_start_date)).toISOString() ,
             end_date_dinas: new Date(this.convertDateFormat(resp.work_end_date)).toISOString(),
@@ -226,9 +240,7 @@ export class FormPermitComponent {
     const leaveStartDate = new Date(
       this.permitFormGroup.get('start_date_dinas').getRawValue()
     );
-    console.log("HOLAA 0", this.permitFormGroup.getRawValue())
     const leaveEndDate = new Date(leaveStartDate);
-    console.log("leaveEndDate", leaveEndDate)
     const positionTypeNumber = parseInt(this.permitFormGroup.get('total_work_days').getRawValue())
     leaveEndDate.setDate(leaveStartDate.getDate() + positionTypeNumber);
     this.permitFormGroup.get('end_date_dinas').setValue(leaveEndDate);
@@ -236,7 +248,6 @@ export class FormPermitComponent {
     const dateForEligible = new Date(leaveStartDate);
     dateForEligible.setDate(dateForEligible.getDate()+ positionTypeNumber + 1)
     this.permitFormGroup.get('date_of_eligible_for_leave').setValue(dateForEligible);
-    console.log("HOLAA", this.permitFormGroup.getRawValue())
     this.changeDetectorRef.detectChanges();
   }
 
@@ -396,13 +407,10 @@ export class FormPermitComponent {
 
   ButtonApproveCondition(): boolean {
     if (this.currentApprovers) {
-      console.log("this.currentApprovers", this.currentApprovers);
       const isApprover = this.currentApprovers.some(approver => {
         if (approver._id === this.localStorageUser) {
-          console.log("INI");
           return true;
         } else {
-          console.log("itu");
           return false;
         }
       });
@@ -428,6 +436,17 @@ export class FormPermitComponent {
         }
       });
   }
+
+  editCondition() : boolean{
+    if(this.formStatus === 'revision'){
+      return true
+    } else if (this.formStatus === 'waiting_for_approval_1'){
+      return true
+    } else {
+      return false
+    }
+  }
+
 
 
   getFormIdFromUrl(url: string): string {

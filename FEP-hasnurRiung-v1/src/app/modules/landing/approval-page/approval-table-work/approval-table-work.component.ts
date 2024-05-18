@@ -90,7 +90,6 @@ filteredValue = {
   // date_of_eligible_for_leave: null,
   // work_letter_date: null,
   // form_status: null,
-
 }
 
   formControls = {

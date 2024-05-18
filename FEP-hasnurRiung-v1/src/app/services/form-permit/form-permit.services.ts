@@ -142,12 +142,23 @@ export class FormPermitService {
               work_start_date
               work_end_date
               _id
+              form_status
               current_approval_index
               approval {
                 approval_index
               }
               current_approvers {
                 _id
+              }
+              approval {
+                reason_of_approval
+                reason_of_rejection
+                reason_of_revision
+                approval_index
+                approver_id {
+                  employee_number
+                  name
+                }
               }
             }
           }
@@ -230,7 +241,9 @@ export class FormPermitService {
               work_letter_application_date
               work_end_date
               work_duration
+              date_of_eligible_for_leave
               form_status
+              count_document
               _id
             }
           }
