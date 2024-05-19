@@ -6,3 +6,12 @@
   cursor: default !important;
 }
 
+.custom-flex{
+  display: flex!important;
+  flex-direction: row !important;
+}
+
+.custom-button{
+  border-width: 0px;
+  background-color: transparent;
+}

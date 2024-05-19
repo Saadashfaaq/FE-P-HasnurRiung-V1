@@ -282,4 +282,46 @@ export class FormPermitService {
       })
       .pipe(map((resp) => resp?.data['UpdateApprovalApplicationForm']));
   }
+
+  GetOneApplicationFormForTimeline(payload) {
+    return this._apollo
+      .query({
+        query: gql`
+          query GetOneApplicationForm($_id: ID) {
+            GetOneApplicationForm(_id: $_id) {
+              approval {
+                approver_id {
+                  name
+                  position {
+                    name
+                    department
+                  }
+                }
+                approval_status
+                date_of_approval {
+                  date
+                  time
+                }
+                date_of_rejection {
+                  date
+                  time
+                }
+                date_of_revision {
+                  date
+                  time
+                }
+                reason_of_approval
+                reason_of_revision
+                reason_of_rejection
+              }
+            }
+          }
+        `,
+        variables: {
+          _id: payload,
+        },
+        fetchPolicy: 'network-only',
+      })
+      .pipe(map((resp) => resp.data['GetOneApplicationForm']));
+  }
 }

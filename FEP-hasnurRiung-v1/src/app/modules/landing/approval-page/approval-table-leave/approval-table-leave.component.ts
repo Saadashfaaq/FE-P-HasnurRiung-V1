@@ -348,8 +348,8 @@ filteredValue = {
       OpenDialogTimeline(formId){
         const dialogRef = this.dialog.open(TimelineDialogComponent, {
           data:formId,
-          width: '600px',
-          height: '340px',
+          width: '900px',
+          height: '540px',
           disableClose: true,
         });
 
@@ -357,7 +357,6 @@ filteredValue = {
           console.log('The dialog was closed');
         });
       }
-
 
     initFilter() {
       Object.keys(this.formControls).forEach((key,index) => {

@@ -1,0 +1,156 @@
+<div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
+  <mat-spinner color="primary" [diameter]="100"></mat-spinner>
+</div>
+<div [ngClass]="{'hidden': isWaitingForResponse}" class="px-8 pt-4 pb-2">
+  <div class="flex flex-row items-start justify-between">
+    <div>
+      <h2 class="text-gray-900">Timeline</h2>
+    </div>
+    <div>
+      <button (click)="openSwalCancel()" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div
+    class="flex flex-row gap-4 mb-2 w-full"
+  >
+
+  <div class="mt-6">
+    <mat-stepper>
+      <div *ngFor="let approval of approvalData; let i = index">
+        <mat-step [label]="'Approval ' + (i + 1)">
+          <!-- For Approved Step -->
+          <div *ngIf="approval?.approval_status === 'approved'">
+            <div class="max-w-sm md:max-w-2xl">
+              <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+              <div class="flex flex-row">
+                <div class="p-4 min-w-70">
+                  <h3>Approver Data</h3>
+                  <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                    {{formatDate(approval.date_of_approval)}}
+                  </div>
+                  <div class="block mt-1 text-lg leading-tight font-medium text-black">
+                    {{formatTime(approval.date_of_approval)}}
+                  </div>
+                  <div class="mt-5 text-gray-500">
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-lg text-gray-900">{{approval.approver_id.name}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.department}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.name}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+           <!-- For revision Step -->
+          <div *ngIf="approval?.approval_status === 'revision'">
+            <div class="max-w-sm md:max-w-2xl">
+              <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+              <div class="flex flex-row">
+                <div class="p-4 min-w-70">
+                  <h3>Approver Data</h3>
+                  <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                    {{formatDate(approval.date_of_revision)}}
+                  </div>
+                  <div class="block mt-1 text-lg leading-tight font-medium text-black">
+                    {{formatTime(approval.date_of_revision)}}
+                  </div>
+                  <div class="mt-5 text-gray-500">
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-lg text-gray-900">{{approval.approver_id.name}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.department}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.name}}</span>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider [vertical]="true"></mat-divider>
+                <div class="p-4 w-100 ">
+                  <h3 class="text-gray-900">Alasan Revisi</h3>
+                  <span class="text-gray-900">
+                    {{approval?.reason_of_revision}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+           <!-- For rejected Step -->
+          <div *ngIf="approval?.approval_status === 'rejected'">
+            <div class="max-w-sm md:max-w-2xl">
+              <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+              <div class="flex flex-row">
+                <div class="p-4 min-w-70">
+                  <h3>Approver Data</h3>
+                  <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                    {{formatDate(approval.date_of_rejection)}}
+                  </div>
+                  <div class="block mt-1 text-lg leading-tight font-medium text-black">
+                    {{formatTime(approval.date_of_rejection)}}
+                  </div>
+                  <div class="mt-5 text-gray-500">
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-lg text-gray-900">{{approval.approver_id.name}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.department}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.name}}</span>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider [vertical]="true"></mat-divider>
+                <div class="p-4 w-100 ">
+                  <h3 class="text-gray-900">Alasan Ditolak</h3>
+                  <span class="text-gray-900">
+                    {{approval?.reason_of_rejection}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+           <!-- For waiting_for_approval Step -->
+          <div *ngIf="approval?.approval_status === 'waiting_for_approval'">
+            <div class="max-w-sm md:max-w-2xl">
+              <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+              <div class="flex flex-row">
+                <div class="p-4 min-w-70">
+                  <h3>Approver Data</h3>
+                  <div class="mt-5 text-gray-500">
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-lg text-gray-900">{{approval.approver_id.name}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.department}}</span>
+                    </div>
+                    <div class="flex items-center mt-2">
+                      <span class="ml-1 text-gray-700">{{approval.approver_id.position.name}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-step>
+      </div>
+      <!-- Icon overrides. -->
+      <!-- <ng-template matStepperIcon="lens">
+        <mat-icon>lens</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="chat">
+        <mat-icon>forum</mat-icon>
+      </ng-template> -->
+    </mat-stepper>
+  </div>
+  </div>
+</div>

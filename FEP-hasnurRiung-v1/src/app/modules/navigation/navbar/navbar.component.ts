@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,11 +21,13 @@ export class NavbarComponent {
   notifList;
   employeeId;
   pageTitle
+  profilePicture
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private _formLeaveService: FormLeaveService
+    private _formLeaveService: FormLeaveService,
+    private _userService: UserService
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
@@ -54,8 +57,10 @@ export class NavbarComponent {
   employeeName
   employeeNumber
   employeeDepartement
+  employeeData
 
   ngOnInit(): void {
+    this.employeeData =  JSON.parse(localStorage.getItem('userData'))
     this.employeeId = localStorage.getItem('userProfile');
     this.employeeName = localStorage.getItem('name');
     this.employeeNumber = localStorage.getItem('employee_number');
@@ -96,4 +101,49 @@ export class NavbarComponent {
      }
     }
   }
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      const validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!validExtensions.includes(file.type)) {
+        alert('Invalid file type. Only JPEG, JPG, and PNG files are allowed.');
+        return;
+      }
+
+//       var fd = new FormData()
+// fd.append('operations', JSON.stringify(operations))
+// fd.append('map', JSON.stringify(_map))
+// fd.append('file', file, file.name)
+
+// var fd = new FormData()
+// fd.append('operations', JSON.stringify(operations))
+// fd.append('map', JSON.stringify(_map))
+// fd.append('file', file, file.name)
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        const payload = base64String
+        console.log("hallo",payload )
+        this.updateProfilePicture(payload);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  updateProfilePicture(payload): void {
+    console.log("this.employeeData.employee_id", this.employeeData)
+    this.subs.sink = this._userService.UpdateEmployee(payload, this.employeeData._id).subscribe(
+      (resp: any) => {
+        if (resp && resp.profilePictureUrl) {
+          this.profilePicture = resp.profilePictureUrl; // Assuming the response contains the URL of the updated profile picture
+          console.log('Profile updated successfully:', resp);
+        }
+      },
+      (error: any) => {
+        console.error('Error updating profile:', error);
+      }
+    );
+  }
+
 }

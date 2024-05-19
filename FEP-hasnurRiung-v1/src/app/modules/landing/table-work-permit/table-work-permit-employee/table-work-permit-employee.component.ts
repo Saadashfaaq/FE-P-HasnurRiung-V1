@@ -13,6 +13,7 @@ import { debounceTime, map } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormPermitService } from 'src/app/services/form-permit/form-permit.services';
 import { SubSink } from 'subsink';
+import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.component';
 
 @Component({
   selector: 'app-table-work-permit-employee',
@@ -234,7 +235,16 @@ GetAllApplicationFormsEmployee(){
     window.open(url, '_blank');
   }
 
+  OpenDialogTimeline(formId){
+    const dialogRef = this.dialog.open(TimelineDialogComponent, {
+      data:formId,
+      width: '900px',
+      height: '540px',
+      disableClose: true,
+    });
 
-
-
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 }

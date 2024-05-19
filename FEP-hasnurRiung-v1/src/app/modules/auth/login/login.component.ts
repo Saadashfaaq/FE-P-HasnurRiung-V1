@@ -49,6 +49,9 @@ export class LoginComponent implements OnInit,OnChanges, OnDestroy{
       this.subs.sink = this.userService.Login(nrp, password).subscribe(
         (resp)=>{
           if(resp){
+            const  userData = resp
+            console.log("resp login",resp.employee)
+            localStorage.setItem('userData', JSON.stringify(userData.employee) )
             localStorage.setItem('token', resp.token);
             localStorage.setItem('userProfile', resp?.employee?._id);
             localStorage.setItem('name',resp?.employee?.name)

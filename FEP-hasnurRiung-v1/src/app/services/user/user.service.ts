@@ -20,12 +20,17 @@ export class UserService {
             Login(employee_number: $employeeNumber, password: $password) {
               token
               employee {
+                profile_picture
+                date_of_eligible_for_leave {
+                  date
+                }
                 _id
                 name
                 is_admin
                 employee_number
                 position {
                   department
+                  name
                 }
               }
             }
@@ -39,4 +44,26 @@ export class UserService {
       })
       .pipe(map((resp) => resp?.data['Login'])); // Memetakan respons ke hasil login
   }
+
+
+  UpdateEmployee(payload, id) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation UploadFile($file: Upload!, $employee_id: ID) {
+            UploadFile(file: $file, employee_id: $employee_id) {
+              profile_picture
+            }
+          }
+        `,
+        variables: {
+          file: payload,
+          employee_id: id,
+        },
+        errorPolicy: 'all',
+      })
+      .pipe(map((resp) => resp?.data['UploadFile']))
+  }
+
+
 }

@@ -72,36 +72,115 @@
     />
     </button>
     <div>
-      <mat-menu class="w-70 custom-item-meu" class="relative" #profile="matMenu">
+      <mat-menu class=" custom-item-meu" class="relative" #profile="matMenu">
         <div class="flex flex-row cursor-custom" mat-menu-item>
           <div class="justify-center flex items-center">
             <img
-            class="w-20 h-20 rounded-full"
-            src="../../../../assets/images/60111.jpg"
-            alt="User profile"
-          />
+              class="w-20 h-20 rounded-full"
+              [src]="profilePicture ? profilePicture : '../../../../assets/images/60111.jpg'"
+              alt="User profile"
+            />
+            <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
+            <div class="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+              <mat-icon class="cursor-pointer" (click)="fileInput.click()">camera_enhance</mat-icon>
+            </div>
           </div>
         </div>
         <div class="my-2 cursor-custom">
           <mat-divider></mat-divider>
         </div>
-        <div  mat-menu-item class="flex flex-col text-center items-center items-center cursor-custom">
-          <div class="text-center">
-            <span class="text-md font-semibold">
-              {{employeeName}}
-            </span>
+        <button class="custom-button">
+          <div mat-menu-item class="flex flex-col w-full text-center p-2 items-center cursor-custom">
+            <div   class="pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{'Nama Karyawan'}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.name}}
+                </span>
+              </div>
+            </div>
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{'NIK'}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.employee_number}}
+                </span>
+              </div>
+            </div>
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{"Departemen"}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.position.department}}
+                </span>
+              </div>
+            </div>
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{"Jabatan"}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.position.name}}
+                </span>
+              </div>
+            </div>
+            <div class="my-2 w-full cursor-custom">
+              <mat-divider></mat-divider>
+            </div>
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{"Tanggal Matang Cuti"}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.date_of_eligible_for_leave.date}}
+                </span>
+              </div>
+            </div>
           </div>
-          <div class="my-2 text-center">
-            <span class="text-md font-semibold">
-              {{employeeNumber}}
-            </span>
-          </div>
-          <div class="text-center">
-            <span class="text-md font-semibold">
-              {{employeeDepartement}}
-            </span>
-          </div>
-        </div>
+        </button>
       </mat-menu>
     </div>
   </div>
