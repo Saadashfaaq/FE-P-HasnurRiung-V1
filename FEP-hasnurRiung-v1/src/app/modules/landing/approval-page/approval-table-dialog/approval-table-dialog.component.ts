@@ -23,6 +23,7 @@ export class ApprovalTableDialogComponent {
   employeeId
   summary = new UntypedFormControl('', [Validators.required])
   isWaitingForResponse : boolean = false
+  previousPage
   constructor(
     public dialogRef: MatDialogRef<ApprovalTableDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,6 +32,7 @@ export class ApprovalTableDialogComponent {
   ) {}
 
   ngOnInit(): void {
+    this.previousPage = localStorage.getItem('previousPage')
     this.employeeId = localStorage.getItem('userProfile');
   }
 
@@ -64,7 +66,7 @@ export class ApprovalTableDialogComponent {
             confirmButtonText:'Iya',
           }).then(()=>{
             this.dialogRef.close();
-            this.router.navigate(['/approval-table']);
+            this.router.navigate([this.previousPage]);
           })
         }
 

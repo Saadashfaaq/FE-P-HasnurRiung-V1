@@ -35,7 +35,7 @@ export class AppComponent {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        if (event.url.includes('auth') || event.url.includes('barcode-form')) {
+        if (event.url.includes('auth') || event.url.includes('data-validation')) {
           this.showSideBar = false;
           this.changeDetectorRef.detectChanges();
         } else {

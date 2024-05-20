@@ -1,132 +1,100 @@
 <div class="h-ful p-5 flex-col text-center flex items-center">
   <h2 style="font-weight: 800; color: #015BAB;">STOPLESS</h2>
   <div class="h-ful flex-col flex items-center customBorder">
-    <div class="my-3 customBorder">
-      <h3 style="font-weight: 800" class="m-1">STOPLESS VALIDATION DOCUMENT SYSTEM</h3>
-    </div>
-    <div>
-      <mat-icon class="w-16 h-16 text-green-900">check_circle</mat-icon>
-    </div>
-    <div class="self-start mt-15">
-
-      <div class="flex flex-row  my-6">
-        <div class='w-100 text-left'>
-          <span class="font-semibold text-sm">
-            Jenis Dokumen
-          </span>
-        </div>
-        <div class="mr-6">
-          <span class="font-semibold text-sm">
-            :
-          </span>
-        </div>
-        <div>
-          <span class="font-semibold text-sm">
-            Formulir Surat Tugas Istirahat
-          </span>
-        </div>
+      <div class="my-3 customBorder">
+          <h3 style="font-weight: 800" class="m-1">STOPLESS VALIDATION DOCUMENT SYSTEM</h3>
       </div>
-
-      <div class="flex flex-row  my-6">
-        <div class='w-100 text-left'>
-          <span class="font-semibold text-sm">
-            Diajukan Oleh
-          </span>
-        </div>
-        <div class="mr-6">
-          <span class="font-semibold text-sm">
-            :
-          </span>
-        </div>
-        <div>
-          <span class="font-semibold text-sm">
-            {{employeeData?.employee_id?.name}}
-          </span>
-        </div>
+      <div>
+          <mat-icon class="w-16 h-16 text-green-900">check_circle</mat-icon>
       </div>
-
-      <div class="flex flex-row  my-6">
-        <div class='w-100 text-left'>
-          <span class="font-semibold text-sm">
-            NRP
-          </span>
-        </div>
-        <div class="mr-6">
-          <span class="font-semibold text-sm">
-            :
-          </span>
-        </div>
-        <div>
-          <span class="font-semibold text-sm">
-            {{employeeData?.employee_id?.employee_number}}
-          </span>
-        </div>
-      </div>
-
-      <div class="flex flex-row  my-6">
-        <div class='w-100 text-left'>
-          <span class="font-semibold text-sm">
-            Tanggal Pengajuan
-          </span>
-        </div>
-        <div class="mr-6">
-          <span class="font-semibold text-sm">
-            :
-          </span>
-        </div>
-        <div>
-          <span class="font-semibold text-sm">
-            {{ubahFormatTanggal(employeeData?.created_date) }}
-          </span>
-        </div>
-      </div>
-
-      <div class="flex flex-row  my-6">
-        <div class='w-100 text-left'>
-          <span class="font-semibold text-sm">
-            Tanggal Diterbitkan
-          </span>
-        </div>
-        <div class="mr-6">
-          <span class="font-semibold text-sm">
-            :
-          </span>
-        </div>
-        <div>
-          <span class="font-semibold text-sm">
-            {{ubahFormatTanggal(employeeData?.date_of_approval) }}
-          </span>
-        </div>
-      </div>
-
-      <div class="flex flex-row  my-6">
-        <div class='w-100 text-left'>
-          <span class="font-semibold text-sm">
-            Disetujui Oleh
-          </span>
-        </div>
-        <div class="mr-6">
-          <span class="font-semibold text-sm">
-            :
-          </span>
-        </div>
-      </div>
-
-      <div *ngFor="let approval of employeeData.approval;  let i = index">
-        <div [ngClass]="{'hidden': i >= 3}" class="flex flex-row my-6">
-          <div class='w-100 text-left'>
-            <span class="font-semibold text-sm">
-              {{ i+1 + '. ' + approval?.approver_id?.name + ' ' +  approval?.approver_id?.position.name}}
-            </span>
+      <div class="self-start mt-15">
+          <div class="flex flex-row my-6">
+              <div class='w-100 text-left'>
+                  <span class="font-semibold text-sm">Jenis Dokumen</span>
+              </div>
+              <div class="mr-6">
+                  <span class="font-semibold text-sm">:</span>
+              </div>
+              <div>
+                  <span class="font-semibold text-sm">Formulir Surat Tugas {{formType === 'work'? 'Lapangn': 'Istirahat'}}</span>
+              </div>
           </div>
-          <div class="mr-6">
-            <span class="font-semibold text-sm">
-              {{ubahFormatTanggal(approval?.date_of_approval.date)}}
-            </span>
+          <div class="flex flex-row my-6">
+              <div class='w-100 text-left'>
+                  <span class="font-semibold text-sm">Diajukan Oleh</span>
+              </div>
+              <div class="mr-6">
+                  <span class="font-semibold text-sm">:</span>
+              </div>
+              <div>
+                  <span class="font-semibold text-sm">{{employeeData?.employee_id?.name}}</span>
+              </div>
           </div>
-        </div>
+          <div class="flex flex-row my-6">
+              <div class='w-100 text-left'>
+                  <span class="font-semibold text-sm">NRP</span>
+              </div>
+              <div class="mr-6">
+                  <span class="font-semibold text-sm">:</span>
+              </div>
+              <div>
+                  <span class="font-semibold text-sm">{{employeeData?.employee_id?.employee_number}}</span>
+              </div>
+          </div>
+          <div class="flex flex-row my-6">
+              <div class='w-100 text-left'>
+                  <span class="font-semibold text-sm">Tanggal Pengajuan</span>
+              </div>
+              <div class="mr-6">
+                  <span class="font-semibold text-sm">:</span>
+              </div>
+              <div>
+                  <span class="font-semibold text-sm">{{ubahFormatTanggal(employeeData?.created_date) }}</span>
+              </div>
+          </div>
+          <div class="flex flex-row my-6">
+              <div class='w-100 text-left'>
+                  <span class="font-semibold text-sm">Tanggal Diterbitkan</span>
+              </div>
+              <div class="mr-6">
+                  <span class="font-semibold text-sm">:</span>
+              </div>
+              <div>
+                  <span class="font-semibold text-sm">{{ubahFormatTanggal(employeeData?.date_of_approval) }}</span>
+              </div>
+          </div>
+          <div class="flex flex-row my-6">
+              <div class='w-100 text-left'>
+                  <span class="font-semibold text-sm">Disetujui Oleh</span>
+              </div>
+              <div class="mr-6">
+                  <span class="font-semibold text-sm">:</span>
+              </div>
+          </div>
+          <div *ngIf="formType === 'form'">
+              <div *ngFor="let approval of employeeData.approval;  let i = index">
+                  <div [ngClass]="{'hidden': i >= 3}" class="flex flex-row my-6">
+                      <div class='w-100 text-left'>
+                          <span class="font-semibold text-sm">{{ i+1 + '. ' + approval?.approver_id?.name + ' ' +  approval?.approver_id?.position.name}}</span>
+                      </div>
+                      <div class="mr-6">
+                          <span class="font-semibold text-sm">{{ubahFormatTanggal(approval?.date_of_approval.date)}}</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div *ngIf="formType !== 'form'">
+              <div *ngFor="let approval of employeeData.approval;  let i = index">
+                  <div class="flex flex-row my-6">
+                      <div class='w-100 text-left'>
+                          <span class="font-semibold text-sm">{{ i+1 + '. ' + approval?.approver_id?.name + ' ' +  approval?.approver_id?.position.name}}</span>
+                      </div>
+                      <div class="mr-6">
+                          <span class="font-semibold text-sm">{{ubahFormatTanggal(approval?.date_of_approval.date)}}</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-
-    </div>
   </div>
 </div>

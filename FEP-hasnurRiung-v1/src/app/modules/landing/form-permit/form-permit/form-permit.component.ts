@@ -35,6 +35,7 @@ export class FormPermitComponent {
   routerSubscription: Subscription;
   employeeId: any;
   localStorageUser: string;
+  previousPage
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
@@ -63,7 +64,9 @@ export class FormPermitComponent {
   isWaitingForResponse: boolean = false;
   permitFormGroup: UntypedFormGroup;
 
+
   ngOnInit(): void {
+    this.previousPage = localStorage.getItem('previousPage')
     this.SetDatePickerFormat();
     const getParamsEmployeeId = this.route.snapshot.params['employeeId'];
     const getParamsFormId = this.route.snapshot.params['id'];
@@ -261,7 +264,9 @@ export class FormPermitComponent {
       .subscribe((resp) => {
         if(resp){
           this.isWaitingForResponse = false
-          this.router.navigate(['/permit-work']);
+          this.router.navigate([
+            this.previousPage
+          ]);
         }
       }),
       (err) => {
@@ -273,7 +278,9 @@ export class FormPermitComponent {
         .subscribe((resp) => {
           if(resp){
             this.isWaitingForResponse = false
-            this.router.navigate(['/permit-work']);
+            this.router.navigate([
+              this.previousPage
+            ]);
           }
         }),
         (err) => {
@@ -324,7 +331,9 @@ export class FormPermitComponent {
       cancelButtonText: 'Tidak',
     }).then((resp) => {
       if (resp.isConfirmed) {
-        this.router.navigate(['/permit-work']);
+        this.router.navigate([
+          this.previousPage
+        ]);
       } else {
         return;
       }
@@ -395,7 +404,7 @@ export class FormPermitComponent {
               allowOutsideClick: false,
               confirmButtonText: 'Iya',
             }).then(() => {
-              this.router.navigate(['/approval-table']);
+              this.router.navigate([this.previousPage]);
             });
           }
         },
@@ -447,7 +456,9 @@ export class FormPermitComponent {
     }
   }
 
-
+  backPreviousPage(){
+    this.router.navigate([this.previousPage]);
+  }
 
   getFormIdFromUrl(url: string): string {
     const parts = url.split('/');

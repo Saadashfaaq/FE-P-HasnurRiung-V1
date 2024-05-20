@@ -22,6 +22,7 @@ export class NavbarComponent {
   employeeId;
   pageTitle
   profilePicture
+  notificationCount: number = 5;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -31,25 +32,31 @@ export class NavbarComponent {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        if (event.url.includes('form-leave')) {
-          this.pageTitle = 'Formulir ST Istirahat'
-          this.changeDetectorRef.detectChanges();
-        } else if (event.url.includes('approval-group')) {
-          this.pageTitle = 'Approval Group'
-          this.changeDetectorRef.detectChanges();
-        } else if (event.url.includes('approval-table')) {
-          this.pageTitle = 'Approval'
-          this.changeDetectorRef.detectChanges();
-        } else if (event.url.includes('permit-leave')) {
-          this.pageTitle = 'Tugas Istirahat'
-          this.changeDetectorRef.detectChanges();
-        } else if (event.url.includes('permit-work')){
-          this.pageTitle = 'Tugas Lapangan'
-          this.changeDetectorRef.detectChanges();
-        } else if (event.url.includes('form-work')){
-          this.pageTitle = 'Formulir ST Lapangan'
-          this.changeDetectorRef.detectChanges();
-        }
+          if (event.url.includes('form-leave')) {
+            this.pageTitle = 'Formulir ST Istirahat'
+            this.changeDetectorRef.detectChanges();
+          } else if (event.url.includes('approval-group')) {
+            this.pageTitle = 'Approval Group'
+            this.changeDetectorRef.detectChanges();
+          } else if (event.url === '/approval-table') {
+            this.pageTitle = 'Approval ST Istirahat'
+            this.changeDetectorRef.detectChanges();
+          } else if (event.url.includes('approval-table/work')) {
+            this.pageTitle = 'Approval ST Dinas'
+            this.changeDetectorRef.detectChanges();
+          } else if (event.url.includes('permit-leave')) {
+            this.pageTitle = 'ST Istirahat'
+            this.changeDetectorRef.detectChanges();
+          } else if (event.url.includes('permit-work')){
+            this.pageTitle = 'ST Dinas'
+            this.changeDetectorRef.detectChanges();
+          } else if (event.url.includes('form-work')){
+            this.pageTitle = 'Formulir ST Dinas'
+            this.changeDetectorRef.detectChanges();
+          } else if (event.url.includes('data-validation')){
+            this.pageTitle = 'barcode'
+            this.changeDetectorRef.detectChanges();
+          }
       }
     });
   }
@@ -60,6 +67,7 @@ export class NavbarComponent {
   employeeData
 
   ngOnInit(): void {
+    this.pageTitle = 'ST Istirahat'
     this.employeeData =  JSON.parse(localStorage.getItem('userData'))
     this.employeeId = localStorage.getItem('userProfile');
     this.employeeName = localStorage.getItem('name');
@@ -144,6 +152,14 @@ export class NavbarComponent {
         console.error('Error updating profile:', error);
       }
     );
+  }
+
+
+  checkingConditonForUnfoundedDataNotif():boolean{
+     if(this.notifList.lenght){
+      return false
+    }
+    return true
   }
 
 }

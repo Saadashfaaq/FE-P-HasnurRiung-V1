@@ -97,7 +97,7 @@ export class TimelineDialogComponent implements OnInit {
         case 'rejected':
           return 'Ditolak';
         case 'completed':
-          return 'Selesai';
+          return 'Disetujui';
         case 'approved':
           return 'Disetujui';
         case 'cancelled':

@@ -48,9 +48,9 @@ const routes: Routes = [
     path: 'data-validation',
     loadChildren:()=> import('./modules/landing/barcode/barcode.module').then((m)=>m.BarcodeModule)
   },
-  { path: '404', loadChildren:()=> import('./modules/landing/form-leave/form-leave.module').then((m)=>m.FormLeaveModule), pathMatch: 'full' },
-  { path: '**', loadChildren:()=> import('./modules/landing/form-leave/form-leave.module').then((m)=>m.FormLeaveModule), pathMatch: 'full' },
-  { path: '404', loadChildren:()=> import('./modules/landing/form-leave/form-leave.module').then((m)=>m.FormLeaveModule), pathMatch: 'full' },
+  { path: '404', loadChildren:()=> import('./modules/landing/table-leave-permit/table-leave-permit.module').then((m)=>m.TableLeavePermitModule), pathMatch: 'full' },
+  { path: '**', loadChildren:()=> import('./modules/landing/table-leave-permit/table-leave-permit.module').then((m)=>m.TableLeavePermitModule), pathMatch: 'full' },
+  { path: '404', loadChildren:()=> import('./modules/landing/table-leave-permit/table-leave-permit.module').then((m)=>m.TableLeavePermitModule), pathMatch: 'full' },
 ];
 
 

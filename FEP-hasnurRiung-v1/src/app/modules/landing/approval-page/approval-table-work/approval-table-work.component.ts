@@ -225,7 +225,7 @@ filteredValue = {
           case 'rejected':
             return 'Ditolak';
           case 'completed':
-            return 'Selesai';
+            return 'Disetujui';
           case 'approved':
             return 'Disetujui';
           case 'cancelled':
@@ -301,5 +301,10 @@ PohConfigReturn(resp) {
   } else {
     return null
   }
+}
+
+OpenFormToPreview(formId, employeeId){
+  localStorage.setItem("previousPage", '/permit-work')
+  this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`])
 }
 }

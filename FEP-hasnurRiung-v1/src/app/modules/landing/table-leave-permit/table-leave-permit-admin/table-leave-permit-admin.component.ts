@@ -193,7 +193,7 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
           case 'rejected':
             return 'Ditolak';
           case 'completed':
-            return 'Selesai';
+            return 'Disetujui';
           case 'approved':
             return 'Disetujui';
           case 'cancelled':

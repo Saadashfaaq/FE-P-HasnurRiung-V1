@@ -191,7 +191,7 @@ GetAllApplicationFormsEmployee(){
         case 'rejected':
           return 'Ditolak';
         case 'completed':
-          return 'Selesai';
+          return 'Disetujui';
         case 'approved':
           return 'Disetujui';
         case 'cancelled':
@@ -224,6 +224,7 @@ GetAllApplicationFormsEmployee(){
   }
 
   OpenFormToCreate(){
+    localStorage.setItem("previousPage", '/permit-work')
     this.router.navigate(['/form-permit'])
   }
 
@@ -246,5 +247,10 @@ GetAllApplicationFormsEmployee(){
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  OpenFormToPreview(formId, employeeId){
+    localStorage.setItem("previousPage", '/permit-work')
+    this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`])
   }
 }

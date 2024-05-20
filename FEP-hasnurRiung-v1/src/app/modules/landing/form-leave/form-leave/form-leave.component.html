@@ -139,17 +139,6 @@
                 <div>
                   <mat-form-field appearance="outline" class="w-80">
                     <input matInput [formControlName]="'leave_address'" />
-                    <!-- <textarea
-                    class="w-80"
-                    matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"
-                    cdkAutosizeMaxCols="3"
-                    cols="3"
-                    [formControlName]="'leave_address'"
-                    ></textarea> -->
                     <mat-error
                       *ngIf="
                         formLeaveIdentity
@@ -1456,7 +1445,6 @@
             <div>
               <mat-form-field class="w-160" appearance="outline">
                 <input
-                  class="w-160"
                   matInput
                   [formControlName]="'pending_job'"
                 />
@@ -1559,14 +1547,22 @@
         </button>
       </div>
       <div *ngIf="isPreviewMode" class="flex flex-row justify-between">
-        <div class="self-end gap-3">
+        <div *ngIf="!isPreviewMode" class="self-end gap-3">
           <button
             (click)="CancelCreateForm()"
-            class="ml-2"
             color="warn"
             mat-raised-button
           >
             Batalkan
+          </button>
+        </div>
+        <div *ngIf="isPreviewMode" class="self-end gap-3">
+          <button
+            (click)="backPreviousPage()"
+            color="accent"
+            mat-raised-button
+          >
+            Kembali
           </button>
         </div>
         <div class="flex flex-row self-end">
@@ -1602,8 +1598,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="absolute inset-0 flex items-center justify-center">
-        <mat-spinner class="text-white" aria-label="Loading"></mat-spinner>
-    </div>     -->
 </div>

@@ -66,6 +66,7 @@ export class FormLeaveComponent implements OnInit {
 
   formType: string;
   isWaitingForResponse = false
+  previousPage
 
   ChangeAplication() {
     const applicationType =
@@ -255,6 +256,7 @@ export class FormLeaveComponent implements OnInit {
   isSection3Submited: boolean = false;
 
   ngOnInit(): void {
+    this.previousPage = localStorage.getItem('previousPage')
     const getParamsEmployeeId = this.route.snapshot.params['employeeId'];
     this.employeeId =  getParamsEmployeeId !== undefined ? getParamsEmployeeId : localStorage.getItem('userProfile');
     this.localStorageUser = localStorage.getItem('userProfile')
@@ -826,7 +828,7 @@ export class FormLeaveComponent implements OnInit {
   }
 
   SaveTicektApproval() {
-    this.isWaitingForResponse = false
+    this.isWaitingForResponse = true
     Object.keys(this.formLeaveTicektApproval.controls).forEach((key) => {
       this.formLeaveTicektApproval.get(key).markAsDirty();
       this.formLeaveTicektApproval.get(key).markAsTouched();
@@ -852,8 +854,7 @@ export class FormLeaveComponent implements OnInit {
     .subscribe(
       (resp) => {
         if (resp) {
-          this.isWaitingForResponse = false
-          this.router.navigate(['/permit-leave']);
+          this.swalSuccess()
         }
       },
       (err) => {
@@ -869,8 +870,7 @@ export class FormLeaveComponent implements OnInit {
     .subscribe(
       (resp) => {
         if (resp) {
-          this.isWaitingForResponse = false
-          this.router.navigate(['/permit-leave']);
+          this.swalSuccess()
         }
       },
       (err) => {
@@ -2049,6 +2049,25 @@ export class FormLeaveComponent implements OnInit {
     });
   }
 
+  swalSuccess(){
+    Swal.fire({
+      title: 'Permohonan Berhasil Diajukan',
+      icon: 'success',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText: 'Oke',
+    }).then(
+      (resp)=>{
+        if(resp.isConfirmed){
+          this.isWaitingForResponse = false
+          this.router.navigate([this.previousPage]);
+        }
+      }
+    )
+  }
+
   getParamsId() {
     const getParams = this.route.snapshot.params['id'];
     const getParamsMode = this.route.snapshot.params['mode'];
@@ -2414,11 +2433,15 @@ export class FormLeaveComponent implements OnInit {
       cancelButtonText: 'Tidak',
     }).then((resp) => {
       if (resp.isConfirmed) {
-        this.router.navigate(['/permit-leave']);
+        this.router.navigate([this.previousPage]);
       } else {
         return;
       }
     });
+  }
+
+  backPreviousPage(){
+    this.router.navigate([this.previousPage]);
   }
 
   formatDatePayload(date) {
@@ -2451,7 +2474,6 @@ export class FormLeaveComponent implements OnInit {
   }
 
   ApproveForm() {
-    this.isWaitingForResponse = true
     Swal.fire({
       title: 'Apakah Anda yakin untuk Menyetujui permohonan?',
       icon: 'warning',
@@ -2464,16 +2486,15 @@ export class FormLeaveComponent implements OnInit {
       cancelButtonText: 'Tidak',
     }).then((resp) => {
       if (resp.isConfirmed) {
-        this.isWaitingForResponse = false
         this.SendApproveForm(this.formID);
       } else {
-        this.isWaitingForResponse = false
         return;
       }
     });
   }
 
   SendApproveForm(id: string) {
+    this.isWaitingForResponse = true
     const approver = {
       approval_status: 'approved',
       approver_id: this.localStorageUser,
@@ -2493,7 +2514,7 @@ export class FormLeaveComponent implements OnInit {
               allowOutsideClick: false,
               confirmButtonText: 'Iya',
             }).then(() => {
-              this.router.navigate(['/approval-table']);
+              this.router.navigate([this.previousPage]);
             });
           }
         },
@@ -2531,9 +2552,12 @@ export class FormLeaveComponent implements OnInit {
   }
 
   EditForm(){
-    const url = `https://daunsalam.online/form-leave/edit/${this.formID}/${this.employeeId}`
-    window.open(url, '_self');
-    // this.router.navigate([`/form-leave/edit/${this.formID}`])
+    // const url = `https://daunsalam.online/form-leave/edit/${this.formID}/${this.employeeId}`
+    // window.open(url, '_self');
+    this.router.navigate([`/form-leave/edit/${this.formID}/${this.employeeId}`])
+    setTimeout(() => {
+      location.reload()
+    }, 10);
   }
 
   convertDateFormat(date: string): string {

@@ -243,34 +243,47 @@
       <!-- <div *ngIf="isPreviewMode && !isEditMode" class="self-end">
         <button (click)="edit()" class="ml-2" mat-raised-button color="primary">Edit</button>
       </div> -->
-      <div *ngIf="isPreviewMode && !isEditMode" class="flex flex-row self-end">
-        <div *ngIf="ButtonApproveCondition()">
-          <button
-            (click)="OpenDialogApproval('cancel')"
-            mat-raised-button
-            color="warn"
-          >
-            Tolak
-          </button>
+      <div *ngIf="isPreviewMode && !isEditMode" class="flex flex-row justify-between">
+        <div>
+          <div >
+            <button
+              (click)="backPreviousPage()"
+              mat-raised-button
+              color="accent"
+            >
+              Kembali
+            </button>
+          </div>
         </div>
-        <div *ngIf="ButtonApproveCondition()" class="ml-2">
-          <button
-            (click)="OpenDialogApproval('revision')"
-            mat-raised-button
-            color="accent"
-          >
-            Revisi
-          </button>
-        </div>
-        <div *ngIf="ButtonApproveCondition()" class="ml-2">
-          <button (click)="ApproveForm()" mat-raised-button color="primary">
-            Setuju
-          </button>
-        </div>
-        <div *ngIf="editCondition() && !ButtonApproveCondition()" class="ml-2">
-          <button (click)="edit()"  mat-raised-button color="primary">
-            Edit
-          </button>
+        <div>
+          <div *ngIf="ButtonApproveCondition()">
+            <button
+              (click)="OpenDialogApproval('cancel')"
+              mat-raised-button
+              color="warn"
+            >
+              Tolak
+            </button>
+          </div>
+          <div *ngIf="ButtonApproveCondition()" class="ml-2">
+            <button
+              (click)="OpenDialogApproval('revision')"
+              mat-raised-button
+              color="accent"
+            >
+              Revisi
+            </button>
+          </div>
+          <div *ngIf="ButtonApproveCondition()" class="ml-2">
+            <button (click)="ApproveForm()" mat-raised-button color="primary">
+              Setuju
+            </button>
+          </div>
+          <div *ngIf="editCondition() && !ButtonApproveCondition()" class="ml-2">
+            <button (click)="edit()"  mat-raised-button color="primary">
+              Edit
+            </button>
+          </div>
         </div>
       </div>
     </div>

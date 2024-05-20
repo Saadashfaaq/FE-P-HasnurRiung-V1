@@ -8,7 +8,7 @@
       <div>
         <button color="none" (click)="resetTable()" mat-raised-button>
           <mat-icon>refresh</mat-icon>
-          <span>Reset</span>
+          <span>Hapus Filter</span>
         </button>
       </div>
       <div class="ml-1">
@@ -207,11 +207,7 @@
           >
             <div>
               <button
-                [routerLink]="[
-                  '/form-permit/preview',
-                  element?._id,
-                  element.employee_id._id
-                ]"
+              (click)="OpenFormToPreview(element?._id ,element.employee_id._id)"
                 mat-icon-button
               >
                 <mat-icon class="cursor-pointer">remove_red_eye</mat-icon>

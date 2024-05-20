@@ -1,4 +1,5 @@
 <div
+[ngClass]="{'hidden': pageTitle === 'barcode'}"
   class="flex z-[1000] flex-row bg-white items-center gap-3 justify-between p-1 ml-2"
 >
 <div class="ml-2">
@@ -8,9 +9,19 @@
 </div>
 <div class="flex flex-row">
   <div class="mr-3">
-    <button [matMenuTriggerFor]="menu" mat-icon-button>
-      <i class="bx bxs-bell"></i>
-    </button>
+    <div class="relative">
+      <button [matMenuTriggerFor]="menu" mat-icon-button class="relative">
+        <i class="bx bxs-bell"></i>
+        <!-- Indikator Angka -->
+        <span
+          *ngIf="notificationCount > 0"
+          class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
+        >
+          {{ notificationCount }}
+        </span>
+      </button>
+    </div>
+
     <mat-menu class="relative" #menu="matMenu">
       <div
         class="z-50 fixed top-0 left-0 right-0 flex notification-header-background text-left h-10 text-white items-center"
@@ -56,7 +67,7 @@
           </button>
         </div>
       </div>
-      <div *ngIf="notifList.length === 0">
+      <div *ngIf="notifList.lenght === 0">
         <div class="cursor-custom" [disabled]="true" mat-menu-item>
           <span class="text-xs font-semibold"> Belum Ada Notifikasi </span>
         </div>

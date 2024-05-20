@@ -21,6 +21,7 @@ export class FormBarcodeComponent {
   employeeData
   routerSubscription: Subscription;
   formID
+  formType
 constructor(
   private _formLeaveService: FormLeaveService,
   private router: Router,
@@ -29,6 +30,8 @@ constructor(
 
 }
 ngOnInit(): void {
+  this.formType = this.route.snapshot.params['type'];
+  this.formID = this.route.snapshot.params['id'];
   this.getOneFormUser()
 }
 
@@ -54,9 +57,8 @@ getFormIdFromUrl(url: string): string {
 }
 
 getOneFormUser(){
-  const getParams = this.route.snapshot.params['id'];
   this.subs.sink = this._formLeaveService
-  .getOneFormUserBarcode(getParams)
+  .getOneFormUserBarcode(this.formID)
   .subscribe(
     (resp) => {
       if(resp){

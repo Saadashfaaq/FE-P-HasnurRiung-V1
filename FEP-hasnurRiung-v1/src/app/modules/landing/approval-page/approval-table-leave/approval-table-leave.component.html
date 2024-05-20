@@ -8,7 +8,7 @@
         <div>
           <button color="none" (click)="resetTable()" mat-raised-button>
             <mat-icon>refresh</mat-icon>
-            <span>Reset</span>
+            <span>Hapus Filter</span>
           </button>
         </div>
         <div class="ml-1">
@@ -492,7 +492,7 @@
                 <td mat-cell *matCellDef="let element">
                   <div style="justify-content: center !important;" class="flex flex-row jusify-center align-center gap-1">
                     <div>
-                      <button [routerLink]="['/form-leave/preview',element?._id, element.employee_id._id]" mat-icon-button>
+                      <button (click)="OpenFormToPreview(element?._id ,element.employee_id._id)" mat-icon-button>
                         <mat-icon  class="cursor-pointer">remove_red_eye</mat-icon>
                       </button>
                     </div>

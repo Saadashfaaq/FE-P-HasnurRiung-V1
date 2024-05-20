@@ -88,7 +88,7 @@ export class TableLeavePermitEmployeeComponent {
       value: 'rejected',
     },
     {
-      name: 'Selesai',
+      name: 'Disetujui',
       value: 'completed',
     },
     {
@@ -137,16 +137,16 @@ export class TableLeavePermitEmployeeComponent {
   filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 
   filteredValue = {
-    // created_date: null,
+    created_date: null,
     application_type: null,
     is_ticket_supported: null,
-    // departure_off_day: null,
-    // start_date: null,
+    departure_off_day: null,
+    start_date: null,
     field_leave_duration: null,
     yearly_leave_duration: null,
     permission_duration: null,
     compensation_duration: null,
-    // end_date: null,
+    end_date: null,
     form_status: null,
     pdf_application_form: null
   }
@@ -176,7 +176,7 @@ export class TableLeavePermitEmployeeComponent {
 
 
   SetDatePickerFormat() {
-    this._locale = 'en-GB';
+    this._locale = 'id-ID';
     this._adapter.setLocale(this._locale);
   }
 
@@ -232,7 +232,13 @@ export class TableLeavePermitEmployeeComponent {
   }
 
   OpenFormToCreate(){
-    this.router.navigate(['/form-leave/preview'])
+    localStorage.setItem("previousPage", '/permit-leave')
+    this.router.navigate(['/form-leave'])
+  }
+
+  OpenFormToPreview(formId, employeeId){
+    localStorage.setItem("previousPage", '/permit-leave')
+    this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`])
   }
 
   OpenPdfApplicationForm(url: string){
@@ -283,7 +289,7 @@ export class TableLeavePermitEmployeeComponent {
         case 'rejected':
           return 'Ditolak';
         case 'completed':
-          return 'Selesai';
+          return 'Disetujui';
         case 'approved':
           return 'Disetujui';
         case 'cancelled':

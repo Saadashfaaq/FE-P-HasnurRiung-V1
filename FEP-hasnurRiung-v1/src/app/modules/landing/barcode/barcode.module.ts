@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes : Routes = [
   {path: '', component:FormBarcodeComponent},
-  {path: ':id', component:FormBarcodeComponent}
+  {path: ':type/:id', component:FormBarcodeComponent}
 ]
 
 @NgModule({
