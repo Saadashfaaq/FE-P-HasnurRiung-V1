@@ -138,7 +138,7 @@
     will-change: transform, opacity;
   }
 
-.mat-mdc-menu-content#mat-menu-panel-0, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+  .mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     white-space: normal;
@@ -147,7 +147,8 @@
     font-size: var(--mat-menu-item-label-text-size);
     letter-spacing: var(--mat-menu-item-label-text-tracking);
     font-weight: var(--mat-menu-item-label-text-weight);
-    width: 600px !important;
+    width: 500px !important;
+    max-width: 500px !important;
     padding-top: 0px !important;
     max-height: 300px !important;
     overflow-x: hidden;
@@ -162,10 +163,10 @@
 //     font-size: var(--mat-menu-item-label-text-size);
 //     letter-spacing: var(--mat-menu-item-label-text-tracking);
 //     font-weight: var(--mat-menu-item-label-text-weight);
-//     width: 250px !important;
+//     width: 600px !important;
 //     padding-top: 0px !important;
 //     max-height: 300px !important;
-//     overflow-x: hidden;
+//     // overflow-x: hidden;
 //   }
   .ng-select.ng-select-single .ng-select-container {
     height: 45px;

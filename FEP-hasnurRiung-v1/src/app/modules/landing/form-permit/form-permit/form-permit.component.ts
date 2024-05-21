@@ -84,8 +84,6 @@ export class FormPermitComponent {
     } else {
        this.getOneEmployeeData();
     }
-
-    this.GetAllApprovalGroups();
     this.InitPermitFormGroup();
     this.changeDetectorRef.detectChanges();
   }
@@ -122,6 +120,7 @@ export class FormPermitComponent {
             date_of_eligible_for_leave: new Date(this.convertDateFormat(resp.date_of_eligible_for_leave)).toISOString(),
           })
           this.permitFormGroup.get('start_date_dinas').disable()
+          this.GetAllApprovalGroups();
           this.changeDetectorRef.detectChanges();
         }
       }
@@ -136,6 +135,7 @@ export class FormPermitComponent {
         (resp) => {
           this.employeeData = resp;
             this.InitPermitFormGroup();
+            this.GetAllApprovalGroups();
             this.changeDetectorRef.detectChanges();
             this.isWaitingForResponse = false
         },

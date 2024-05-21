@@ -255,6 +255,7 @@
 .w-1\/2 {
   width: 50%
 }
+
 .max-w-5 {
   width: 1.5rem
 }
@@ -262,9 +263,11 @@
 .w-10 {
   width: 2.5rem
 }
+
 .w-30 {
   width: 7.5rem
 }
+
 .w-40 {
   width: 10rem
 }
@@ -331,14 +334,6 @@
 
 .min-w-44{
   width: 11rem;
-}
-
-.w-70 {
-  width: 17.5rem
-}
-
-.min-w-70 {
-  width: 17.5rem
 }
 
 .w-160{
@@ -455,9 +450,9 @@
 }
 
 .truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important
 }
 
 .rounded {
@@ -703,4 +698,35 @@
 
 .w-4\10{
   width: 40%;
+}
+
+.inline-flex {
+  display: inline-flex
+}
+
+.font-bold {
+  font-weight: 700
+}
+
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity))
+}
+
+.text-red-100 {
+  --tw-text-opacity: 1;
+  color: rgb(254 226 226 / var(--tw-text-opacity))
+}
+
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity))
+}
+
+.w-70 {
+  width: 17.5rem
+}
+
+.min-w-70 {
+  width: 17.5rem
 }

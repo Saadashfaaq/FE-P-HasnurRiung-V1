@@ -14,10 +14,10 @@
         <i class="bx bxs-bell"></i>
         <!-- Indikator Angka -->
         <span
-          *ngIf="notificationCount > 0"
+          *ngIf="notifList.length> 0"
           class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
         >
-          {{ notificationCount }}
+          {{ notifList.length }}
         </span>
       </button>
     </div>
@@ -49,13 +49,16 @@
                   alt="User profile"
                 />
               </div>
-              <div class="text-sm font-semibold w-30 truncate text-black">
-                <p>
+              <div
+              matTooltipPosition="above"
+              [matTooltip]="notif?.from?.name"
+              class="text-sm truncate font-semibold w-30 text-black">
+                <span>
                   {{ notif?.from?.name }}
-                </p>
+                </span>
               </div>
               <div class="text-xs mx-3 text-black w-60 text-sm">
-                <p>{{notif.text}}</p>
+                <span>{{notif.text}}</span>
               </div>
               <div *ngIf="notif.is_read === false" class="ml-2 text-green-700">
                 <i class="bx bxs-circle"></i>
@@ -82,8 +85,7 @@
       alt="User profile"
     />
     </button>
-    <div>
-      <mat-menu class=" custom-item-meu" class="relative" #profile="matMenu">
+      <mat-menu  #profile="matMenu">
         <div class="flex flex-row cursor-custom" mat-menu-item>
           <div class="justify-center flex items-center">
             <img
@@ -91,10 +93,10 @@
               [src]="profilePicture ? profilePicture : '../../../../assets/images/60111.jpg'"
               alt="User profile"
             />
-            <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
-            <div class="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+            <!-- <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden"> -->
+            <!-- <div class="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <mat-icon class="cursor-pointer" (click)="fileInput.click()">camera_enhance</mat-icon>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="my-2 cursor-custom">
@@ -170,9 +172,9 @@
                 </span>
               </div>
             </div>
-            <div class="my-2 w-full cursor-custom">
+            <!-- <div class="my-2 cursor-custom">
               <mat-divider></mat-divider>
-            </div>
+            </div> -->
             <div  class="my-2 pl-3 custom-flex">
               <div class="w-40 text-left">
                 <span class="text-md font-semibold">
@@ -193,7 +195,6 @@
           </div>
         </button>
       </mat-menu>
-    </div>
   </div>
 </div>
 </div>

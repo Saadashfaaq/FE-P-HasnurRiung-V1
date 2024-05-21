@@ -51,6 +51,82 @@ export class ApprovalTableWorkComponent {
 
   }
 
+  pohStatusList = [
+    {
+      name: 'Lokal',
+      value: 'lokal',
+    },
+    {
+      name: 'Non Lokal',
+      value: 'non_lokal',
+    },
+    {
+      name: 'Non Lokal Perumahan',
+      value: 'non_lokal_perumahan',
+    }
+  ]
+
+  positionType = [
+    {
+      name: 'Staff',
+      value: 'staff'
+    },
+    {
+      name: 'Non Staff',
+      value: 'non_staff'
+    }
+  ]
+
+  familyStatus = [
+    { name: "K/0", value: "K0" },
+    { name: "K/1", value: "K1" },
+    { name: "K/2", value: "K2" },
+    { name: "K/3", value: "K3" },
+    { name: "TK/0", value: "TK0" },
+    { name: "TK/1", value: "TK1" },
+    { name: "TK/2", value: "TK2" },
+    { name: "TK/3", value: "TK3" }
+  ]
+
+  workDuration = [
+    { name: "84", value: "84" },
+    { name: "56", value: "56" },
+  ]
+
+  formStatusList = [
+    {
+      name: 'Menunggu Persetujuan 1',
+      value: 'waiting_for_approval_1',
+    },
+    {
+      name: 'Menunggu Persetujuan 2',
+      value: 'waiting_for_approval_2',
+    },
+    {
+      name: 'Menunggu Persetujuan 3',
+      value: 'waiting_for_approval_3',
+    },
+    {
+      name: 'Menunggu Persetujuan 4',
+      value: 'waiting_for_approval_4',
+    },
+    {
+      name: 'Menunggu Persetujuan 5',
+      value: 'waiting_for_approval_5',
+    },
+    {
+      name: 'Ditolak',
+      value: 'rejected',
+    },
+    {
+      name: 'Disetujui',
+      value: 'completed',
+    },
+    {
+      name: 'Revisi',
+      value: 'revision',
+    },
+  ]
 
 
 displayedColumns: string[] = [
@@ -75,21 +151,21 @@ displayedColumns: string[] = [
 filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 
 filteredValue = {
-  // work_letter_number: null,
-  // work_letter_month: null,
-  // work_letter_year: null,
+  work_letter_number: null,
+  work_letter_month: null,
+  work_letter_year: null,
   // name: null,
-  // position: null,
-  // position_type: null
-  // department: null,
-  // family_status: null,
+  position: null,
+  position_type: null,
+  department: null,
+  family_status: null,
   // date_of_registration: null,
-  // work_start_date: null,
-  // work_duration: null,
-  // work_end_date: null,
+  work_start_date: null,
+  work_duration: null,
+  work_end_date: null,
   // date_of_eligible_for_leave: null,
-  // work_letter_date: null,
-  // form_status: null,
+  work_letter_date: null,
+  form_status: null,
 }
 
   formControls = {
@@ -305,6 +381,6 @@ PohConfigReturn(resp) {
 
 OpenFormToPreview(formId, employeeId){
   localStorage.setItem("previousPage", '/permit-work')
-  this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`])
+  this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`])
 }
 }

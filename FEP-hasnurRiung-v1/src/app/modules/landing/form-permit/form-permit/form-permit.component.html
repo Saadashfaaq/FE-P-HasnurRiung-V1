@@ -184,7 +184,6 @@
             <mat-divider></mat-divider>
         </div>
         <!-- START PERSETUJUAN CUTI -->
-        <h3 class="text-left my-2">Persetujuan Cuti</h3>
         <div class="flex flex-row h-10 mb-6 items-baseline">
           <div class="w-70 text-left">
             <span>Persetujuan 1</span>
@@ -255,7 +254,7 @@
             </button>
           </div>
         </div>
-        <div>
+        <div class="flex flex-row">
           <div *ngIf="ButtonApproveCondition()">
             <button
               (click)="OpenDialogApproval('cancel')"

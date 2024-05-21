@@ -99,14 +99,21 @@ export class NavbarComponent {
       });
     if(letterType === 'work'){
       this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`]);
-      if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
+      setTimeout(() => {
         location.reload()
-     }
+      }, 100);
+
+    //   if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
+    //     location.reload()
+    //  }
     } else {
       this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`]);
-      if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
+      setTimeout(() => {
         location.reload()
-     }
+      }, 100);
+    //   if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
+    //     location.reload()
+    //  }
     }
   }
   onFileSelected(event: any): void {
