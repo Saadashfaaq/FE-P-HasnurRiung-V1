@@ -16,7 +16,7 @@
         </h4>
         <div class="p-2">
             <mat-form-field class="h-max" appearance="outline" class="w-full">
-                <textarea 
+                <textarea
                 matInput
                 cdkTextareaAutosize
                 #autosize="cdkTextareaAutosize"
@@ -27,7 +27,7 @@
                 [formControl]="summary"
                 ></textarea>
                 <!-- <mat-error
-                
+
                 >
                 Kolom ini wajib diisi
                 </mat-error> -->
@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="flex flex-row justify-end">
-        <button color="warn" mat-raised-button>
+        <button  (click)="OnClose()" color="warn" mat-raised-button>
             Batalkan
         </button>
         <button [disabled]="summary.invalid" (click)=" onSubmit()" *ngIf="data.order === 'cancel'" class="ml-2" color="accent" mat-raised-button>
@@ -46,3 +46,7 @@
         </button>
     </div>
 </div>
+<div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
+  <mat-spinner color="primary" [diameter]="100"></mat-spinner>
+</div>
+

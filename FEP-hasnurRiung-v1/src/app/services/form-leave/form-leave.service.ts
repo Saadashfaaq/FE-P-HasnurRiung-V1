@@ -8,7 +8,7 @@ import { map } from 'rxjs';
 export class FormLeaveService {
   constructor(private _apollo: Apollo) {}
 
-  CreateFormIdentity(payload) {
+  CreateFormLeave(payload) {
     return this._apollo
       .mutate({
         mutation: gql`
@@ -126,6 +126,7 @@ export class FormLeaveService {
                 poh_location
                 placement_status
                 name
+                age
                 lump_sump_amount
                 is_routine_official_letter
                 is_lump_sump
@@ -158,6 +159,16 @@ export class FormLeaveService {
               form_status
               current_approvers {
                 _id
+              }
+              approval {
+                reason_of_approval
+                reason_of_rejection
+                reason_of_revision
+                approval_index
+                approver_id {
+                  employee_number
+                  name
+                }
               }
               total_leaves
               start_date
@@ -232,7 +243,7 @@ export class FormLeaveService {
       .pipe(map((resp) => resp.data['GetAllEmployees']));
   }
 
-  GetAllApprovalGroups(userId) {
+  GetAllApprovalGroups(userId?) {
     return this._apollo
       .query({
         query: gql`
@@ -241,13 +252,21 @@ export class FormLeaveService {
               _id
               name
               approval_index
+              approvals {
+                default_approver {
+                  name
+                  _id
+                  employee_number
+                }
+              }
             }
           }
         `,
         variables: {
           filter: {
             is_enabled: true,
-            employee_id: userId,
+            employee_id: userId ? userId : null,
+            is_for_form: true
           },
         },
         fetchPolicy: 'network-only',
@@ -271,6 +290,7 @@ export class FormLeaveService {
             ) {
               leave_letter_number
               employee_id {
+                _id
                 employee_number
                 name
                 position {
@@ -300,6 +320,7 @@ export class FormLeaveService {
               pdf_application_form
               pdf_leave_letter
               count_document
+              total_leaves
               _id
             }
           }
@@ -358,6 +379,7 @@ export class FormLeaveService {
                 departure_off_day {
                   date
                 }
+                travel_date
                 field_leave_duration
                 yearly_leave_duration
                 permission_duration
@@ -371,6 +393,9 @@ export class FormLeaveService {
               pdf_application_form
               pdf_leave_letter
               count_document
+              employee_id {
+                _id
+              }
               _id
             }
           }
@@ -503,20 +528,26 @@ export class FormLeaveService {
           query GetAllNotifications($filter: NotificationFilter) {
             GetAllNotifications(filter: $filter) {
               _id
+              letter_type
               application_form_id {
                 _id
                 employee_id {
+                  _id
                   name
                 }
-                _id
+              }
+              from {
+                name
               }
               is_read
+              text
             }
           }
         `,
         variables: {
           filter: {
-            approver_id: userId,
+            // approver_id: userId,
+            to: userId
           },
         },
         fetchPolicy: 'network-only',
@@ -557,5 +588,40 @@ export class FormLeaveService {
         errorPolicy: 'all',
       })
       .pipe(map((resp) => resp?.data['UpdateNotification']));
+  }
+
+
+  getOneFormUserBarcode(payload) {
+    return this._apollo
+      .query({
+        query: gql`
+          query GetOneApplicationForm($_id: ID) {
+            GetOneApplicationForm(_id: $_id) {
+              employee_id {
+                name
+                employee_number
+              }
+              created_date
+              date_of_approval
+              approval {
+                date_of_approval {
+                  date
+                }
+                approver_id {
+                  name
+                  position {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          _id: payload,
+        },
+        fetchPolicy: 'network-only',
+      })
+      .pipe(map((resp) => resp.data['GetOneApplicationForm']));
   }
 }

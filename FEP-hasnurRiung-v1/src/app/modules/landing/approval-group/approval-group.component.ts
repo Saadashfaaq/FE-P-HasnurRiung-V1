@@ -22,8 +22,9 @@ export class ApprovalGroupComponent {
   employeeId: string
   subs: SubSink = new SubSink();
   approvalGroupData
+  isWaitingForResponse : boolean = false
 
-  constructor(    
+  constructor(
     private dialog: MatDialog,
     private formLeaveService : FormLeaveService,
     private changeDetectorRef: ChangeDetectorRef
@@ -51,12 +52,14 @@ OpenDialogAprovalGroup(group){
 }
 
 GetAllAppoverGroup(){
+  this.isWaitingForResponse = true
   this.subs.sink = this.formLeaveService.GetAllApproalGroupMenu(this.employeeId)
   .subscribe(
     (resp)=>{
       if(resp){
         this.approvalGroupData = resp
         this.changeDetectorRef.detectChanges()
+        this.isWaitingForResponse = false
       }
     },
     (err)=>{

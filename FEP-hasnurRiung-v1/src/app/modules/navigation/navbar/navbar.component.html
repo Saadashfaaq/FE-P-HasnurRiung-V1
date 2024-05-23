@@ -1,10 +1,27 @@
 <div
-  class="flex z-[100] flex-row bg-white items-center gap-3 justify-end p-1 ml-2"
+[ngClass]="{'hidden': pageTitle === 'barcode'}"
+  class="flex z-[1000] flex-row bg-white items-center gap-3 justify-between p-1 ml-2"
 >
+<div class="ml-2">
+  <span class="text-md font-semibold">
+    {{pageTitle}}
+  </span>
+</div>
+<div class="flex flex-row">
   <div class="mr-3">
-    <button [matMenuTriggerFor]="menu" mat-icon-button>
-      <i class="bx bxs-bell"></i>
-    </button>
+    <div class="relative">
+      <button [matMenuTriggerFor]="menu" mat-icon-button class="relative">
+        <i class="bx bxs-bell"></i>
+        <!-- Indikator Angka -->
+        <span
+          *ngIf="notifList.length> 0"
+          class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
+        >
+          {{ notifList.length }}
+        </span>
+      </button>
+    </div>
+
     <mat-menu class="relative" #menu="matMenu">
       <div
         class="z-50 fixed top-0 left-0 right-0 flex notification-header-background text-left h-10 text-white items-center"
@@ -19,26 +36,29 @@
       <div>
         <div *ngFor="let notif of notifList">
           <button
-            (click)="openForm(notif.application_form_id._id, notif?._id)"
+            (click)="openForm(notif.application_form_id._id, notif?._id, notif.application_form_id.employee_id._id, notif?.letter_type)"
             mat-menu-item
           >
             <div
-              class="flex flex-row items-center p-1 items-center justify-around gap-1"
+              class="flex flex-row items-center p-1 items-center gap-1"
             >
-              <div>
+              <div class="w-10">
                 <img
                   class="w-8 h-8 rounded-full"
                   src="../../../../assets/images/60111.jpg"
                   alt="User profile"
                 />
               </div>
-              <div class="text-sm font-semibold w-40 truncate text-black">
-                <p>
-                  {{ notif?.application_form_id?.employee_id?.name }}
-                </p>
+              <div
+              matTooltipPosition="above"
+              [matTooltip]="notif?.from?.name"
+              class="text-sm truncate font-semibold w-30 text-black">
+                <span>
+                  {{ notif?.from?.name }}
+                </span>
               </div>
-              <div class="text-xs mx-3 text-black text-sm">
-                <p>Membutuhkan Persetujuan Anda</p>
+              <div class="text-xs mx-3 text-black w-60 text-sm">
+                <span>{{notif.text}}</span>
               </div>
               <div *ngIf="notif.is_read === false" class="ml-2 text-green-700">
                 <i class="bx bxs-circle"></i>
@@ -50,18 +70,131 @@
           </button>
         </div>
       </div>
-      <div *ngIf="notifList.length === 0">
-        <div mat-menu-item>
+      <div *ngIf="notifList.lenght === 0">
+        <div class="cursor-custom" [disabled]="true" mat-menu-item>
           <span class="text-xs font-semibold"> Belum Ada Notifikasi </span>
         </div>
       </div>
     </mat-menu>
   </div>
   <div class="mr-2">
-    <img
+    <button [matMenuTriggerFor]="profile" mat-icon-button>
+      <img
       class="w-10 h-10 rounded-full"
       src="../../../../assets/images/60111.jpg"
       alt="User profile"
     />
+    </button>
+      <mat-menu  #profile="matMenu">
+        <div class="flex flex-row cursor-custom" mat-menu-item>
+          <div class="justify-center flex items-center">
+            <img
+              class="w-20 h-20 rounded-full"
+              [src]="profilePicture ? profilePicture : '../../../../assets/images/60111.jpg'"
+              alt="User profile"
+            />
+            <!-- <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden"> -->
+            <!-- <div class="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+              <mat-icon class="cursor-pointer" (click)="fileInput.click()">camera_enhance</mat-icon>
+            </div> -->
+          </div>
+        </div>
+        <div class="my-2 cursor-custom">
+          <mat-divider></mat-divider>
+        </div>
+        <button class="custom-button">
+          <div mat-menu-item class="flex flex-col w-full text-center p-2 items-center cursor-custom">
+            <div   class="pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{'Nama Karyawan'}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.name}}
+                </span>
+              </div>
+            </div>
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{'NIK'}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.employee_number}}
+                </span>
+              </div>
+            </div>
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{"Departemen"}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.position.department}}
+                </span>
+              </div>
+            </div>
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{"Jabatan"}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.position.name}}
+                </span>
+              </div>
+            </div>
+            <!-- <div class="my-2 cursor-custom">
+              <mat-divider></mat-divider>
+            </div> -->
+            <div  class="my-2 pl-3 custom-flex">
+              <div class="w-40 text-left">
+                <span class="text-md font-semibold">
+                  {{"Tanggal Matang Cuti"}}
+                </span>
+              </div>
+              <div class="mr-2">
+                <span class="text-md font-semibold">
+                  :
+                </span>
+              </div>
+              <div class="text-left">
+                <span class="text-md font-semibold">
+                  {{employeeData.date_of_eligible_for_leave.date}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </button>
+      </mat-menu>
   </div>
+</div>
 </div>

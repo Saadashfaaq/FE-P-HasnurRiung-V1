@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
@@ -33,6 +33,7 @@ export class TableLeavePermitAdminComponent {
   dataCount = 0;
   isReset = false
   dataLoaded = false;
+  isWaitingForResponse = false
 
 displayedColumns: string[] = [
   // "checkbox",
@@ -75,12 +76,6 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
     this.employeeId = localStorage.getItem('userProfile');
     this.token = localStorage.getItem('token')
     this.GetAllApplicationForms()
-    // if(this.employeeId &&  this.token){
-    //   this.router.navigate(['/auth/login'])
-    // } else {
-    //   console.log('employee_id', this.employeeId)
-    //   this.GetAllApplicationForms()
-    // }
   }
 
   ngAfterViewInit(): void {
@@ -112,7 +107,6 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
     this.subs.sink = this._formLeaveService.GetAllApplicationForms(filter,this.sortValue,pagination)
     .subscribe(
       (resp)=>{
-        console.log("RESP", resp)
         if(resp && resp.length){
           this.dataSource.data = resp
           this.paginator.length = resp[0].count_document;
@@ -132,7 +126,7 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
   }
 
   OpenFormToCreate(){
-    this.router.navigate(['/form-leave'])
+    this.router.navigate(['/form-leave/preview'])
   }
 
   OpenPdfApplicationForm(url: string){
@@ -182,7 +176,7 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
             return '#000000'; // hitam jika status tidak diketahui
         }
       }
-    
+
       // Fungsi untuk mendapatkan teks tooltip sesuai dengan status
       getStatusTooltip(status: string): string {
         switch (status) {
@@ -199,7 +193,7 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
           case 'rejected':
             return 'Ditolak';
           case 'completed':
-            return 'Selesai';
+            return 'Disetujui';
           case 'approved':
             return 'Disetujui';
           case 'cancelled':

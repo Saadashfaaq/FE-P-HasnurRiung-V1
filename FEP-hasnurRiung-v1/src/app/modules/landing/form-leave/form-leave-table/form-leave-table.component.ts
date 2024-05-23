@@ -106,12 +106,6 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
     this.employeeId = localStorage.getItem('userProfile');
     this.token = localStorage.getItem('token')
     this.GetAllApplicationForms()
-    // if(this.employeeId &&  this.token){
-    //   this.router.navigate(['/auth/login'])
-    // } else {
-    //   console.log('employee_id', this.employeeId)
-    //   this.GetAllApplicationForms()
-    // }
   }
 
   ngAfterViewInit(): void {
@@ -140,7 +134,6 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
     this.subs.sink = this._formLeaveService.GetAllApplicationForms(filter,this.sortValue,pagination)
     .subscribe(
       (resp)=>{
-        console.log("RESP", resp)
         if(resp && resp.length){
           this.dataSource.data = resp
           this.paginator.length = resp[0].count_document;
@@ -160,6 +153,6 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
   }
 
   OpenFormToCreate(){
-    this.router.navigate(['/form-leave'])
-  }  
+    this.router.navigate(['/form-leave/preview'])
+  }
 }

@@ -22,6 +22,8 @@ export class ApprovalTableDialogComponent {
   subs: SubSink = new SubSink();
   employeeId
   summary = new UntypedFormControl('', [Validators.required])
+  isWaitingForResponse : boolean = false
+  previousPage
   constructor(
     public dialogRef: MatDialogRef<ApprovalTableDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -30,7 +32,7 @@ export class ApprovalTableDialogComponent {
   ) {}
 
   ngOnInit(): void {
-    console.log("this.data",this.data)
+    this.previousPage = localStorage.getItem('previousPage')
     this.employeeId = localStorage.getItem('userProfile');
   }
 
@@ -39,23 +41,21 @@ export class ApprovalTableDialogComponent {
   }
 
   onSubmit(){
-    console.log(this.summary)
     this.SendApproveForm(this.data.formID)
-    console.log("this.data.formID",this.data.formID)
   }
 
   SendApproveForm(id: string){
+    this.isWaitingForResponse = true
     const approver = {
       approval_status: this.data.order === 'cancel' ?  'rejected' : 'revision',
       approver_id: this.employeeId,
       reason_of_rejection: this.data.order === 'cancel' ? this.summary.value : null,
       reason_of_revision:  this.data.order !== 'cancel' ? this.summary.value : null
     }
-    console.log("wkkwwk", id)
     this.subs.sink = this._formLeaveService.UpdateApprovalApplicationForm(id,approver).subscribe(
       (resp)=>{
-        console.log("resp", resp)
         if(resp){
+          this.isWaitingForResponse = false
           Swal.fire({
             title: this.data.order === 'cancel' ?  'Permohonan Berhasil Ditolak' : 'Revisi Berhasil Diajukan',
             icon: 'success',
@@ -66,13 +66,12 @@ export class ApprovalTableDialogComponent {
             confirmButtonText:'Iya',
           }).then(()=>{
             this.dialogRef.close();
-            this.router.navigate(['/approval'])
-            console.log("success")
+            this.router.navigate([this.previousPage]);
           })
         }
 
         if(resp.errors){
-          console.log("resp.errors", resp.errors)
+         this.isWaitingForResponse = false
           Swal.fire({
             title: resp.errors.massage,
             icon: 'success',
@@ -85,7 +84,7 @@ export class ApprovalTableDialogComponent {
         }
       },
       (err)=>{
-        console.log("ERRPR", err)
+        this.isWaitingForResponse = false
         Swal.fire({
           title: err.massage,
           icon: 'success',

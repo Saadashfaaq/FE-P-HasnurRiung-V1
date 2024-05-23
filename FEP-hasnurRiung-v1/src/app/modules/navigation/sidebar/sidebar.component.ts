@@ -17,14 +17,13 @@ export class SidebarComponent {
   @ViewChild('sidebar') sidebar: ElementRef | undefined;
   subs: SubSink = new SubSink();
   employeeId: string;
-  
+
 
   constructor(
     private router: Router,
     private _formLeaveService : FormLeaveService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        console.log("NavigationStart", event)
         if (event.url.includes('auth')) {
           this.showSideBar = false;
         } else {
@@ -33,17 +32,8 @@ export class SidebarComponent {
           setTimeout(() => {
             this.Init()
           }, 50);
-          
+
         }
-      }
-
-      if (event instanceof NavigationEnd) {
-        console.log("NavigationEnd", event)
-      }
-
-      if (event instanceof NavigationError) {
-        console.log("NavigationError", event)
-        console.log(event.error);
       }
     });
   }
@@ -68,7 +58,6 @@ export class SidebarComponent {
   }
 
   Init(){
-    console.log("ngAfterViewInit called");
     if (this.sidebar) {
       const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
       const searchBtn = this.sidebar.nativeElement.querySelector('.bx-search');
@@ -84,7 +73,6 @@ export class SidebarComponent {
   }
 
   toggleSidebar() {
-    console.log("toggleSidebar called");
     if (this.sidebar) {
       this.sidebar.nativeElement.classList.toggle('open');
       this.menuBtnChange();
