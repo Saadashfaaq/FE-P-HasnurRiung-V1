@@ -316,7 +316,7 @@ filteredValue = {
       OpenDialogTimeline(formId){
         const dialogRef = this.dialog.open(TimelineDialogComponent, {
           data:formId,
-          width: '900px',
+          width: '1100px',
           height: '540px',
           disableClose: true,
         });

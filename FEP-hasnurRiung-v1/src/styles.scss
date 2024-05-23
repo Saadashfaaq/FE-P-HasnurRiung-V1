@@ -291,6 +291,75 @@
   color: black !important;
 }
 
+.mat-step-icon {
+  border-radius: 50%;
+  height: 48px!important;
+  width: 48px!important;
+  flex-shrink: 0;
+  position: relative;
+  color: var(--mat-stepper-header-icon-foreground-color);
+  background-color: var(--mat-stepper-header-icon-background-color);
+}
+
+.mat-step-icon .mat-icon {
+  font-size: 32px!important;
+  height: 32px!important;
+  width: 32px!important;
+}
+
+
+.mat-step-label {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 50px;
+  vertical-align: middle;
+  font-family: var(--mat-stepper-header-label-text-font);
+  font-size: 17px!important;
+  font-weight: 600!important;
+  color: var(--mat-stepper-header-label-text-color);
+}
+
+.mat-step-label.mat-step-label-active {
+  color: var(--mat-stepper-header-selected-state-label-text-color);
+  font-weight: 600!important;
+}
+
+.mat-step-label.mat-step-label-selected {
+  font-size: var(--mat-stepper-header-selected-state-label-text-size);
+  font-weight: 600!important;
+}
+
+.mat-step-icon-state-waiting_for_approval {
+  background-color: transparent!important;
+  color: var(--mat-stepper-header-edit-state-icon-foreground-color);
+}
+
+.mat-step-icon-state-rejected {
+  background-color: transparent!important;
+  color: var(--mat-stepper-header-edit-state-icon-foreground-color);
+}
+
+.mat-step-icon-state-approved {
+  background-color: transparent!important;
+  color: var(--mat-stepper-header-edit-state-icon-foreground-color);
+}
+
+.mat-step-icon-state-revision {
+  background-color: transparent!important;
+  color: var(--mat-stepper-header-edit-state-icon-foreground-color);
+}
+
+.mat-step-icon-state-edit {
+  background-color: transparent!important;
+  color: var(--mat-stepper-header-edit-state-icon-foreground-color);
+}
+
+.mat-step-icon-state-cancelled {
+  background-color: transparent!important;
+  color: var(--mat-stepper-header-edit-state-icon-foreground-color);
+}
 
 
 

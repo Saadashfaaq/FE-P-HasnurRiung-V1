@@ -289,6 +289,7 @@ export class FormPermitService {
         query: gql`
           query GetOneApplicationForm($_id: ID) {
             GetOneApplicationForm(_id: $_id) {
+              current_approval_index
               approval {
                 approver_id {
                   name

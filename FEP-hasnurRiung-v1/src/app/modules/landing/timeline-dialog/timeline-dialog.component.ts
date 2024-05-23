@@ -36,6 +36,7 @@ export class TimelineDialogComponent implements OnInit {
   private subs = new SubSink();
   isWaitingForResponse : boolean = false
   approvalData
+  currentApprovalIndex
 
 
   firstFormGroup = this._formBuilder.group({
@@ -67,8 +68,21 @@ export class TimelineDialogComponent implements OnInit {
     .subscribe(
       (resp)=>{
         if(resp){
-          console.log("INI YAA", resp)
           this.approvalData = resp?.approval
+          // let changeStatusToCancel = false
+          // this.approvalData .forEach((approval,index) => {
+          //   if(approval.approval_status === 'rejected'){
+          //     changeStatusToCancel = true
+          //   }
+
+          //   if(changeStatusToCancel = true){
+          //     const updatedApproval = { ...approval, approval_status: 'cancelled' };
+          //     this.approvalData[index] = updatedApproval; // Replace with new object
+          //   }
+
+          // });
+          console.log("RESPPIN", this.approvalData)
+          this.currentApprovalIndex = resp?.current_approval_index
         }
       }
     )
@@ -106,6 +120,20 @@ export class TimelineDialogComponent implements OnInit {
           return 'Perlu Revisi';
         default:
           return 'Status Tidak Diketahui';
+      }
+    }
+
+    getColor(i: number): string {
+      if (this.approvalData[i].approval_status === 'waiting_for_approval') {
+        return '#ffa000'; // Orange for waiting for approval
+      } else if (this.approvalData[i].approval_status === 'rejected') {
+        return '#ff0100'; // Red for rejected
+      } else if (this.approvalData[i].approval_status === 'approved') {
+        return '#01BA6D'; // Green for approved
+      } else if (this.approvalData[i].approval_status === 'revision') {
+        return '#fffe00'; // Yellow for revision
+      } else {
+        return 'inherit'; // Default color for any other status
       }
     }
 }
