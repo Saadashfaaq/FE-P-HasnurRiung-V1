@@ -77,7 +77,7 @@ getOneFormUser(){
 ];
 
 // Fungsi untuk mengubah format tanggal
-changeDateFormat(tanggalStr: string): string {
+ ubahFormatTanggal(tanggalStr: string): string {
   // Memisahkan hari, bulan, dan tahun dari string input
   const [hari, bulan, tahun] = tanggalStr.split('/');
 
