@@ -2142,7 +2142,7 @@ export class FormLeaveComponent implements OnInit {
       is_routine_official_letter: data?.employee_id?.is_routine_official_letter,
       leave_address: data?.leave_address || null,
       is_lump_sump: data?.employee_id?.is_lump_sump,
-      lump_sump_amount: data?.employee_id?.lump_sump_amount ? data?.employee_id?.lump_sump_amount : (data?.employee_id?.lump_sump_amount === 0 ? 0 : null),
+      lump_sump_amount: this.formatToRupiah(data?.employee_id?.lump_sump_amount ?  data?.employee_id?.lump_sump_amount : (data?.employee_id?.lump_sump_amount === 0 ? 0 : null)) ,
       placement_status: data?.employee_id?.placement_status || null,
       leave_category: data?.leaves.leave_category || null,
       permission_category: data?.permission_category || null,
