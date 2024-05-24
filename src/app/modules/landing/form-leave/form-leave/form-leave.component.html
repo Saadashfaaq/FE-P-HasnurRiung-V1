@@ -507,7 +507,7 @@
             </div>
           </div>
           <div
-            *ngIf="IsTypeIsLeave() === false && permissionType === 'pp' && !isPreviewMode"
+            *ngIf="IsTypeIsLeave() === false && permissionType === 'pp'"
             class="flex flex-row h-10 mb-6 items-baseline w-[75%]"
           >
             <div class="w-70 text-left">
@@ -539,7 +539,7 @@
             </div>
           </div>
           <div
-            *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp' && !isPreviewMode"
+            *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
@@ -561,7 +561,7 @@
             </div>
           </div>
           <div
-            *ngIf="IsTypeIsLeave() === false && !isPreviewMode"
+            *ngIf="IsTypeIsLeave() === false"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
@@ -588,7 +588,7 @@
             </div>
           </div>
           <div
-            *ngIf="IsTypeIsLeave() === false && !isPreviewMode"
+            *ngIf="IsTypeIsLeave() === false"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
@@ -899,7 +899,7 @@
             </div>
           </div>
           <div
-            *ngIf="(IsTypeIsLeave() && IsPermissionSelected()) || (isPreviewMode) "
+            *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
@@ -957,8 +957,7 @@
             </div>
           </div>
           <div
-
-            *ngIf="(IsTypeIsLeave() && IsPermissionSelected()) || (isPreviewMode)"
+            *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
@@ -985,7 +984,7 @@
             </div>
           </div>
           <div
-            *ngIf="(IsTypeIsLeave() && IsPermissionSelected()) || (isPreviewMode)"
+            *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
