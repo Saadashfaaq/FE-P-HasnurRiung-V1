@@ -1,6 +1,11 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+@tailwind base;;
+@tailwind utilities;
+@tailwind components;
+@tailwind variants;
+
 @font-face {
     font-family: 'Catamaran';
     src: url('../assets/fonts/Catamaran-Regular.woff2') format('woff2');

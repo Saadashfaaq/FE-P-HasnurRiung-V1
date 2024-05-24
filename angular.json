@@ -31,7 +31,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/tailwind.scss",
               "node_modules/boxicons/css/boxicons.min.css"
             ],
             "scripts": []
@@ -96,7 +95,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/tailwind.scss",
               "node_modules/slick-carousel/slick/slick.css",
               "node_modules/slick-carousel/slick/slick-theme.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css"
