@@ -507,7 +507,7 @@
             </div>
           </div>
           <div
-            *ngIf="IsTypeIsLeave() === false && permissionType === 'pp'"
+            *ngIf="(IsTypeIsLeave() === false && permissionType === 'pp') && !isPreviewMode"
             class="flex flex-row h-10 mb-6 items-baseline w-[75%]"
           >
             <div class="w-70 text-left">
@@ -539,7 +539,7 @@
             </div>
           </div>
           <div
-            *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'"
+            *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'  && !isPreviewMode"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
@@ -899,39 +899,13 @@
             </div>
           </div>
           <div
-            *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
+            *ngIf="(IsTypeIsLeave() && IsPermissionSelected()) || (isPreviewMode && formLeaveDetailRequest.get('permission_type').value)"
             class="flex flex-row h-10 mb-6 items-baseline w-2/3"
           >
             <div class="w-70 text-left">
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <!-- <mat-form-field appearance="outline" class="w-160">
-                <input
-                  (focusout)="SelectPermissionType()"
-                  matInput
-                  formControlName="permission_type"
-                  [matAutocomplete]="permissionList"
-                />
-                <mat-autocomplete #permissionList="matAutocomplete">
-                  <mat-option
-                    (click)="SelectPermissionType()"
-                    *ngFor="let item of filteredPermission | async"
-                    [value]="item.name"
-                  >
-                    {{ item.name }}
-                  </mat-option>
-                </mat-autocomplete>
-                <mat-error
-                  *ngIf="
-                    formLeaveDetailRequest
-                      .get('permission_type')
-                      .hasError('required')
-                  "
-                >
-                  Kolom ini wajib diisi
-                </mat-error>
-              </mat-form-field> -->
               <div class="w-160">
                 <ng-select
                   class="w-160"
