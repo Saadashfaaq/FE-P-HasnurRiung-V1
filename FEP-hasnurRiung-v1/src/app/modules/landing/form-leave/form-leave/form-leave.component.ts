@@ -2216,6 +2216,8 @@ export class FormLeaveComponent implements OnInit {
         : null,
     });
 
+    console.log("HALLOAAAAA", this.formLeaveDetailRequest.value)
+
     const getParams = this.route.snapshot.params['mode'];
     if(getParams === 'preview'){
           // Iterate through form controls and disable if they have a value

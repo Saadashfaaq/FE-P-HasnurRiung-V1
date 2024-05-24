@@ -5,7 +5,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -134,16 +134,16 @@ displayedColumns: string[] = [
   "work_letter_number",
   "work_letter_month",
   "work_letter_year",
-  "name",
+  "employee_name",
   "position",
   "position_type",
   "department",
   "family_status",
-  "date_of_registration",
+  "registration_date",
   "work_start_date",
   "work_duration",
   "work_end_date",
-  "date_of_eligible_for_leave",
+  "leave_eligible_date",
   "work_letter_date",
   "form_status",
   "action",
@@ -154,16 +154,16 @@ filteredValue = {
   work_letter_number: null,
   work_letter_month: null,
   work_letter_year: null,
-  // name: null,
+  employee_name: null,
   position: null,
   position_type: null,
   department: null,
   family_status: null,
-  // date_of_registration: null,
+  registration_date: null,
   work_start_date: null,
   work_duration: null,
   work_end_date: null,
-  // date_of_eligible_for_leave: null,
+  leave_eligible_date: null,
   work_letter_date: null,
   form_status: null,
 }
@@ -172,16 +172,16 @@ filteredValue = {
     work_letter_number_ctrl : new UntypedFormControl(null),
     work_letter_month_ctrl : new UntypedFormControl(null),
     work_letter_year_ctrl : new UntypedFormControl(null),
-    name_ctrl : new UntypedFormControl(null),
+    employee_name_ctrl : new UntypedFormControl(null),
     position_ctrl : new UntypedFormControl(null),
     position_type_ctrl : new UntypedFormControl(null),
     department_ctrl : new UntypedFormControl(null),
     family_status_ctrl : new UntypedFormControl(null),
-    date_of_registration_ctrl : new UntypedFormControl(null),
+    registration_date_ctrl : new UntypedFormControl(null),
     work_start_date_ctrl : new UntypedFormControl(null),
     work_duration_ctrl : new UntypedFormControl(null),
     work_end_date_ctrl : new UntypedFormControl(null),
-    date_of_eligible_for_leave_ctrl : new UntypedFormControl(null),
+    leave_eligible_date_ctrl : new UntypedFormControl(null),
     work_letter_date_ctrl : new UntypedFormControl(null),
     form_status_ctrl : new UntypedFormControl(null),
   }
@@ -382,5 +382,25 @@ PohConfigReturn(resp) {
 OpenFormToPreview(formId, employeeId){
   localStorage.setItem("previousPage", '/permit-work')
   this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`])
+}
+
+onSort(sort: Sort) {
+
+  if (sort.active && sort.direction) {
+    if (this.sortValue && this.sortValue[sort.active] === sort.direction) {
+      this.sortValue[sort.active] = sort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortValue = { [sort.active]: sort.direction };
+    }
+  } else {
+    this.sortValue = null;
+  }
+
+  if (this.dataLoaded) {
+    this.paginator.pageIndex = 0;
+    if (!this.isReset) {
+      this.GetAllApplicationForms();
+    }
+  }
 }
 }

@@ -5,11 +5,11 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { debounceTime, map } from 'rxjs';
+import { debounceTime, map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormPermitService } from 'src/app/services/form-permit/form-permit.services';
 import { SubSink } from 'subsink';
@@ -42,6 +42,41 @@ export class TableWorkPermitEmployeeComponent implements OnInit {
   dataLoaded = false;
   isWaitingForResponse = false
 
+  formStatusList = [
+    {
+      name: 'Menunggu Persetujuan 1',
+      value: 'waiting_for_approval_1',
+    },
+    {
+      name: 'Menunggu Persetujuan 2',
+      value: 'waiting_for_approval_2',
+    },
+    {
+      name: 'Menunggu Persetujuan 3',
+      value: 'waiting_for_approval_3',
+    },
+    {
+      name: 'Menunggu Persetujuan 4',
+      value: 'waiting_for_approval_4',
+    },
+    {
+      name: 'Menunggu Persetujuan 5',
+      value: 'waiting_for_approval_5',
+    },
+    {
+      name: 'Ditolak',
+      value: 'rejected',
+    },
+    {
+      name: 'Disetujui',
+      value: 'completed',
+    },
+    {
+      name: 'Revisi',
+      value: 'revision',
+    },
+  ]
+
   constructor(
     private router: Router,
     public dialog: MatDialog,
@@ -57,6 +92,20 @@ export class TableWorkPermitEmployeeComponent implements OnInit {
     this.GetAllApplicationFormsEmployee()
     this.initFilter()
     this.SetDatePickerFormat()
+  }
+
+  ngAfterViewInit(): void {
+    this.subs.sink = this.paginator.page
+      .pipe(
+        startWith(null),
+        tap(() => {
+          if (!this.isReset) {
+            this.GetAllApplicationFormsEmployee()
+          }
+          this.dataLoaded = true;
+        }),
+      )
+      .subscribe();
   }
 
   displayedColumns: string[] = [
@@ -95,25 +144,25 @@ export class TableWorkPermitEmployeeComponent implements OnInit {
   }
 
   initFilter() {
-    // Object.keys(this.formControls).forEach((key: null,index) => {
-    //   const control = this.formControls[key]
-    //   const filteredKey = key.replace('_ctrl', '');
+    Object.keys(this.formControls).forEach((key: string) => {
+      const control = this.formControls[key];
+      const filteredKey = key.replace('_ctrl', '');
 
-    //   control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
-    //     if (key.toLowerCase().includes("date") || key.toLowerCase().includes("departure") ) {
-    //       this.filteredValue[filteredKey] =  value? new Date(value).toISOString() : null;
-    //     } else {
-    //       this.filteredValue[filteredKey] = value ? value : null;
-    //     }
+      control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
+        if (key!.toLowerCase().includes("date") || key!.toLowerCase().includes("departure")) {
+          this.filteredValue[filteredKey] = value ? new Date(value).toISOString() : null;
+        } else {
+          this.filteredValue[filteredKey] = value ? value : null;
+        }
 
-    //     this.paginator.firstPage();
+        this.paginator.firstPage();
 
-    //     if (!this.isReset) {
-    //       this.GetAllApplicationFormsEmployee();
-    //     }
-    //   });
-    // });
-}
+        if (!this.isReset) {
+          this.GetAllApplicationFormsEmployee();
+        }
+      });
+    });
+  }
 
 GetAllApplicationFormsEmployee(){
   this.isWaitingForResponse = true
@@ -252,5 +301,35 @@ GetAllApplicationFormsEmployee(){
   OpenFormToPreview(formId, employeeId){
     localStorage.setItem("previousPage", '/permit-work')
     this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`])
+  }
+
+  // onSort(sort: Sort) {
+  //   this.sortValue = sort.active ? { [sort.active]: sort.direction ? sort.direction : 'asc' } : null;
+  //   if (this.dataLoaded) {
+  //     this.paginator.pageIndex = 0;
+  //     if (!this.isReset) {
+  //       this.GetAllApplicationFormsEmployee()
+  //     }
+  //   }
+  // }
+
+  onSort(sort: Sort) {
+
+    if (sort.active && sort.direction) {
+      if (this.sortValue && this.sortValue[sort.active] === sort.direction) {
+        this.sortValue[sort.active] = sort.direction === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sortValue = { [sort.active]: sort.direction };
+      }
+    } else {
+      this.sortValue = null;
+    }
+
+    if (this.dataLoaded) {
+      this.paginator.pageIndex = 0;
+      if (!this.isReset) {
+        this.GetAllApplicationFormsEmployee()
+      }
+    }
   }
 }

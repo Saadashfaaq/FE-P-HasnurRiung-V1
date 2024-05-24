@@ -361,6 +361,16 @@
   color: var(--mat-stepper-header-edit-state-icon-foreground-color);
 }
 
+.mat-sort-header-arrow {
+  height: 12px;
+  width: 12px;
+  min-width: 12px;
+  position: relative;
+  display: flex;
+  color: white!important;
+  opacity: 0;
+}
+
 
 
 

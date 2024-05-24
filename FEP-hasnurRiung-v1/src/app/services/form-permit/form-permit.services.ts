@@ -101,6 +101,7 @@ export class FormPermitService {
               work_duration
               form_status
               pdf_work_letter
+              count_document
               employee_id {
                 employee_number
                 _id
