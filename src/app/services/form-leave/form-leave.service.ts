@@ -606,6 +606,7 @@ export class FormLeaveService {
               approval {
                 date_of_approval {
                   date
+                  time
                 }
                 approver_id {
                   name
