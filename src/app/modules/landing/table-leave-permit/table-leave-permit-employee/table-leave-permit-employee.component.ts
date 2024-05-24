@@ -2,7 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { debounceTime, map, startWith, tap } from 'rxjs';
@@ -187,7 +187,7 @@ export class TableLeavePermitEmployeeComponent {
         startWith(null),
         tap(() => {
           if (!this.isReset) {
-
+            this.GetAllApplicationFormsEmployee()
           }
           this.dataLoaded = true;
         }),
@@ -323,6 +323,8 @@ export class TableLeavePermitEmployeeComponent {
           control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
             if (key.toLowerCase().includes("date") || key.toLowerCase().includes("departure") ) {
               this.filteredValue[filteredKey] =  value? new Date(value).toISOString() : null;
+            } else if(key.toLowerCase().includes("is_ticket_supported")){
+              this.filteredValue[filteredKey] = value === false? false : true;
             } else {
               this.filteredValue[filteredKey] = value ? value : null;
             }
@@ -356,6 +358,38 @@ export class TableLeavePermitEmployeeComponent {
       }
     }
   }
+
+  onSort(sort: Sort) {
+    this.sortValue = sort.active ? { [sort.active]: sort.direction ? sort.direction : 'asc' } : null;
+    if (this.dataLoaded) {
+      this.paginator.pageIndex = 0;
+      if (!this.isReset) {
+        this.GetAllApplicationFormsEmployee()
+      }
+    }
+  }
+
+  // onSort(sort: Sort) {
+  //   console.log("SORT", sort);
+  //   console.log(this.sortValue);
+
+  //   if (sort.active && sort.direction) {
+  //     if (this.sortValue && this.sortValue[sort.active] === sort.direction) {
+  //       this.sortValue[sort.active] = sort.direction === 'asc' ? 'desc' : 'asc';
+  //     } else {
+  //       this.sortValue = { [sort.active]: sort.direction };
+  //     }
+  //   } else {
+  //     this.sortValue = null;
+  //   }
+
+  //   if (this.dataLoaded) {
+  //     this.paginator.pageIndex = 0;
+  //     if (!this.isReset) {
+  //       this.GetAllApplicationFormsEmployee()
+  //     }
+  //   }
+  // }
 
 
 }

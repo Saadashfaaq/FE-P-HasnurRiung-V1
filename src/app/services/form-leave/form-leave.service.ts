@@ -306,6 +306,7 @@ export class FormLeaveService {
                 departure_off_day {
                   date
                 }
+                travel_date
                 field_leave_duration
                 yearly_leave_duration
                 permission_duration
@@ -321,6 +322,7 @@ export class FormLeaveService {
               pdf_leave_letter
               count_document
               total_leaves
+              is_ticket_supported
               _id
             }
           }
