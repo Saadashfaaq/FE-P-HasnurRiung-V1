@@ -98,22 +98,18 @@ export class NavbarComponent {
         }
       });
     if(letterType === 'work'){
+      localStorage.setItem("previousPage", '/approval-table/work')
       this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`]);
       setTimeout(() => {
         location.reload()
       }, 100);
 
-    //   if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
-    //     location.reload()
-    //  }
     } else {
+      localStorage.setItem("previousPage", '/approval-table')
       this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`]);
       setTimeout(() => {
         location.reload()
       }, 100);
-    //   if(this.pageTitle === 'Tugas Lapangan' || this.pageTitle === 'Tugas Istirahat'){
-    //     location.reload()
-    //  }
     }
   }
   onFileSelected(event: any): void {
@@ -125,15 +121,6 @@ export class NavbarComponent {
         return;
       }
 
-//       var fd = new FormData()
-// fd.append('operations', JSON.stringify(operations))
-// fd.append('map', JSON.stringify(_map))
-// fd.append('file', file, file.name)
-
-// var fd = new FormData()
-// fd.append('operations', JSON.stringify(operations))
-// fd.append('map', JSON.stringify(_map))
-// fd.append('file', file, file.name)
 
       const reader = new FileReader();
       reader.onload = () => {
