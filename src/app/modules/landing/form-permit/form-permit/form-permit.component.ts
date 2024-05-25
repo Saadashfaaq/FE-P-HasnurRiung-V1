@@ -35,6 +35,7 @@ export class FormPermitComponent {
   isPreviewMode: boolean = false;
   routerSubscription: Subscription;
   employeeId: any;
+  requesterId
   localStorageUser: string;
   previousPage;
   constructor(
@@ -101,11 +102,11 @@ export class FormPermitComponent {
     this._adapter.setLocale(this._locale);
   }
 
-  getOnePermitForm() {
-    this.subs.sink = this.formPermitService
-      .GetOneApplicationForm(this.formID)
-      .subscribe((resp) => {
-        if (resp) {
+  getOnePermitForm(){
+    this.subs.sink = this.formPermitService.GetOneApplicationForm(this.formID).subscribe(
+      (resp)=>{
+        if(resp){
+          this.requesterId = resp.employee_id?._id
           this.currentApprovers = resp.current_approvers;
           this.formStatus = resp.form_status;
           if (resp.form_status) {
@@ -151,10 +152,11 @@ export class FormPermitComponent {
       .subscribe(
         (resp) => {
           this.employeeData = resp;
-          this.InitPermitFormGroup();
-          this.GetAllApprovalGroups();
-          this.changeDetectorRef.detectChanges();
-          this.isWaitingForResponse = false;
+            this.InitPermitFormGroup();
+            this.permitFormGroup.get('start_date_dinas').setValidators([Validators.required]);
+            this.GetAllApprovalGroups();
+            this.changeDetectorRef.detectChanges();
+            this.isWaitingForResponse = false
         },
         (err) => {
           console.error(err);
@@ -185,10 +187,7 @@ export class FormPermitComponent {
         value: this.employeeData?.position?.type === 'staff' ? '56' : '84',
         disabled: true,
       },
-      start_date_dinas: {
-        value: null,
-        disabled: false,
-      },
+      start_date_dinas: ['', [Validators.required]],
       end_date_dinas: {
         value: null,
         disabled: true,
@@ -270,34 +269,59 @@ export class FormPermitComponent {
   }
 
   submitForm() {
-    // this.isWaitingForResponse = true
+    this.isWaitingForResponse = true
     const payload = this.createPayload();
 
-    if (this.isEditMode) {
-      (this.subs.sink = this.formPermitService
+    if(this.permitFormGroup.invalid){
+      this.isWaitingForResponse = false
+      this.permitFormGroup.get('start_date_dinas').markAsTouched();
+      this.InvalidSwal()
+    } else {
+      if (this.isEditMode) {
+        this.subs.sink = this.formPermitService
         .UpdateFormPermit(payload, this.formID)
         .subscribe((resp) => {
-          if (resp) {
-            this.isWaitingForResponse = false;
-            this.router.navigate([this.previousPage]);
+          if(resp){
+            this.isWaitingForResponse = false
+            this.router.navigate([
+              this.previousPage
+            ]);
           }
-        })),
+        }),
         (err) => {
-          console.log(err);
+          this.isWaitingForResponse = false
+          console.log(err)
         };
-    } else {
-      (this.subs.sink = this.formPermitService
-        .CreateFormPermit(payload)
-        .subscribe((resp) => {
-          if (resp) {
-            this.isWaitingForResponse = false;
-            this.router.navigate([this.previousPage]);
-          }
-        })),
-        (err) => {
-          console.log(err);
-        };
+      } else {
+        this.subs.sink = this.formPermitService
+          .CreateFormPermit(payload)
+          .subscribe((resp) => {
+            if(resp){
+              this.isWaitingForResponse = false
+              this.router.navigate([
+                this.previousPage
+              ]);
+            }
+          }),
+          (err) => {
+            this.isWaitingForResponse = false
+            console.log(err)
+          };
+      }
     }
+  }
+
+  InvalidSwal() {
+    Swal.fire({
+      title: 'Invalid',
+      html: 'Mohon Isi Kolom Yang Berwarna Merah',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText: 'Oke',
+    });
   }
 
   createPayload() {
@@ -467,11 +491,11 @@ export class FormPermitComponent {
       });
   }
 
-  editCondition(): boolean {
-    if (this.formStatus === 'revision') {
-      return true;
-    } else if (this.formStatus === 'waiting_for_approval_1') {
-      return true;
+  editCondition() : boolean{
+    if(this.formStatus === 'revision' && this.requesterId === this.localStorageUser){
+      return true
+    } else if (this.formStatus === 'waiting_for_approval_1' && this.requesterId === this.localStorageUser){
+      return true
     } else {
       return false;
     }

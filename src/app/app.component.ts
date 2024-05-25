@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     },
     {
       _id: 'permit-leave',
-      name: 'Tugas Lapangan',
+      name: 'Tugas Istirahat',
       link: '/permit-leave',
       icon: 'bx bx-calendar',
       textClass: 'links_name font-semibold',

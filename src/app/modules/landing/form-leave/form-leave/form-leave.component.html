@@ -15,7 +15,7 @@
       <form [formGroup]="formLeaveIdentity">
         <!-- Form Section -->
         <div class="flex flex-row">
-          <div class="flex flex-col items-left w-1/2 pt-3 mr-2">
+          <div class="flex flex-col items-left pt-3 mr-2">
             <div class="mb-4">
               <div class="flex flex-row mb-6 h-10 items-baseline">
                 <div class="w-70 text-left">
@@ -263,7 +263,7 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-left w-1/2 pt-3">
+          <div class="flex flex-col items-left pt-3">
             <div class="mb-4" *ngIf="IsTypeIsLeave()">
               <div class="flex flex-row h-10 mb-6 items-baseline">
                 <div class="w-70 text-left">
@@ -474,7 +474,7 @@
                 formLeaveIdentity.get('is_ticket_supported').value) ||
               permissionType === 'pp'
             "
-            class="flex flex-row h-10 mb-6 items-baseline w-[75%]"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tanggal Berangkat (hari off)*</span>
@@ -508,15 +508,15 @@
           </div>
           <div
             *ngIf="(IsTypeIsLeave() === false && permissionType === 'pp') && !isPreviewMode"
-            class="flex flex-row h-10 mb-6 items-baseline w-[75%]"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <div class="w-160">
+              <div class="w-90">
                 <ng-select
-                  class="min-w-160"
+                  class="min-w-90"
                   appendTo="body"
                   [items]="permissionList"
                   bindLabel="name"
@@ -540,13 +540,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() === false && permissionType === 'non_pp'  && !isPreviewMode"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input matInput formControlName="permission_type" />
                 <mat-error
                   *ngIf="
@@ -562,13 +562,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() === false"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Jumlah Hari Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="ResetFieldAfterInputPermissionAmount()"
@@ -589,7 +589,7 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() === false"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tanggal Ijin</span>
@@ -633,7 +633,7 @@
               !IsLeaveCategoryIsYearly() &&
               formLeaveIdentity.get('is_ticket_supported').value
             "
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Perjalanan*</span>
@@ -667,13 +667,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Jumlah Hari Cuti Lapangan*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input
                   (focusout)="CalculateLeaveDate('first')"
                   (keypress)="preventNonNumericalInput($event)"
@@ -694,7 +694,7 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 min-w-70 pr-1 truncate text-left">
               <span>Tanggal Cuti (Waktu Cuti Aktif)*</span>
@@ -746,12 +746,12 @@
               (IsTypeIsLeave() && !IsLeaveCategoryIsYearly()) ||
               permissionType === 'pp'
             "
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tambah Cuti Tahunan*</span>
             </div>
-            <div class="w-160 text-left pl-1">
+            <div class="w-90 text-left pl-1">
               <mat-radio-group
                 (change)="SelectYealyLeave()"
                 [formControlName]="'is_yearly_leave'"
@@ -779,7 +779,7 @@
               <span>Jumlah Hari Cuti Tahunan*</span>
             </div>
             <div class="flex flex-row items-baseline">
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input
                   (focusout)="CalculateYearlyLeaveDate()"
                   (keypress)="preventNonNumericalInput($event)"
@@ -873,12 +873,12 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tambah Ijin*</span>
             </div>
-            <div class="w-160 text-left pl-1">
+            <div class="w-90 text-left pl-1">
               <mat-radio-group
                 (change)="SelectPermission()"
                 [formControlName]="'is_permission'"
@@ -900,15 +900,15 @@
           </div>
           <div
             *ngIf="(IsTypeIsLeave() && IsPermissionSelected()) || (isPreviewMode && formLeaveDetailRequest.get('permission_type').value)"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Alasan Ijin*</span>
             </div>
             <div>
-              <div class="w-160">
+              <div class="w-90">
                 <ng-select
-                  class="w-160"
+                  class="w-90"
                   appendTo="body"
                   [items]="permissionList"
                   bindLabel="name"
@@ -932,13 +932,13 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Jumlah Hari Ijin*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="CalculatePermissionLeaveDate()"
@@ -959,7 +959,7 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && IsPermissionSelected()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tanggal Ijin</span>
@@ -998,12 +998,12 @@
           </div>
           <div
             *ngIf="IsTypeIsLeave() && !IsLeaveCategoryIsYearly()"
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tambah Kompensasi*</span>
             </div>
-            <div class="w-160 text-left pl-1">
+            <div class="w-90 text-left pl-1">
               <mat-radio-group
                 (change)="IsCompensationSelected()"
                 [formControlName]="'is_compensation'"
@@ -1029,13 +1029,13 @@
               !IsLeaveCategoryIsYearly() &&
               IsCompensationSelected()
             "
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Jumlah Hari Kompensasi*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input
                   (keypress)="preventNonNumericalInput($event)"
                   (focusout)="CalculateCompensationLeaveDate()"
@@ -1060,7 +1060,7 @@
               !IsLeaveCategoryIsYearly() &&
               IsCompensationSelected()
             "
-            class="flex flex-row h-10 mb-6 items-baseline w-2/3"
+            class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
               <span>Tanggal Kompensasi*</span>
@@ -1177,7 +1177,7 @@
               <span>Total (Hari)</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input
                   matInput
                   [formControlName]="'total_leave_amount'"
@@ -1191,7 +1191,7 @@
               <span>Keterangan*</span>
             </div>
             <div>
-              <mat-form-field appearance="outline" class="w-160">
+              <mat-form-field appearance="outline" class="w-90">
                 <input matInput [formControlName]="'leave_comment'" />
                 <mat-error
                   *ngIf="
@@ -1225,7 +1225,7 @@
                     </div>
                     <div>
                       <mat-form-field class="w-70" appearance="outline">
-                        <input class="w-160" matInput formControlName="name" />
+                        <input class="w-90" matInput formControlName="name" />
                       </mat-form-field>
                     </div>
                   </div>
@@ -1237,7 +1237,7 @@
                       <mat-form-field class="w-44 min-w-44" appearance="outline">
                         <input
                           (keypress)="preventNonNumericalInput($event)"
-                          class="w-160"
+                          class="w-90"
                           matInput
                           formControlName="age"
                         />
@@ -1258,7 +1258,7 @@
                         <input
                           [disabled]="true"
                           [readonly]="true"
-                          class="w-160"
+                          class="w-90"
                           matInput
                           formControlName="departure_from"
                         />
@@ -1339,7 +1339,7 @@
                         <input
                           [disabled]="true"
                           [readonly]="true"
-                          class="w-160"
+                          class="w-90"
                           matInput
                           formControlName="arrival_to"
                         />
@@ -1387,7 +1387,7 @@
               <span>Pejabat Sementara Selama Cuti*</span>
             </div>
             <div>
-              <div class="w-160">
+              <div class="w-90">
                 <ng-select
                   appendTo="body"
                   [items]="substituteOfficerList"
@@ -1417,7 +1417,7 @@
               <span>Daftar Job Pending*</span>
             </div>
             <div>
-              <mat-form-field class="w-160" appearance="outline">
+              <mat-form-field class="w-90" appearance="outline">
                 <input
                   matInput
                   [formControlName]="'pending_job'"
@@ -1443,9 +1443,9 @@
               <span>Persetujuan 1*</span>
             </div>
             <div>
-              <mat-form-field class="w-160" appearance="outline">
+              <mat-form-field class="w-90" appearance="outline">
                 <input
-                  class="w-160"
+                  class="w-90"
                   matInput
                   [formControlName]="'approval_id_1'"
                   [disabled]="true"
@@ -1459,9 +1459,9 @@
               <span>Persetujuan 2*</span>
             </div>
             <div>
-              <mat-form-field class="w-160" appearance="outline">
+              <mat-form-field class="w-90" appearance="outline">
                 <input
-                  class="w-160"
+                  class="w-90"
                   matInput
                   [formControlName]="'approval_id_2'"
                   [disabled]="true"
@@ -1475,9 +1475,9 @@
               <span>Persetujuan 3*</span>
             </div>
             <div>
-              <mat-form-field class="w-160" appearance="outline">
+              <mat-form-field class="w-90" appearance="outline">
                 <input
-                  class="w-160"
+                  class="w-90"
                   matInput
                   [formControlName]="'approval_id_3'"
                   [disabled]="true"
@@ -1563,7 +1563,7 @@
               Setuju
             </button>
           </div>
-          <div *ngIf="editCondition() && !ButtonApproveCondition()" class="ml-2">
+          <div *ngIf="editCondition()" class="ml-2">
             <button (click)="EditForm()" mat-raised-button color="primary">
               Edit
             </button>

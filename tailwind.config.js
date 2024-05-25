@@ -4,15 +4,16 @@ module.exports = {
   important: true,
   theme: {
     extend: {
-      spacing: {
-        13: "3.25rem",
-        15: "3.75rem",
-        18: "4.5rem",
-        22: "5.5rem",
-        26: "6.5rem",
-        30: "7.5rem",
-        50: "12.5rem",
-        90: "22.5rem",
+            spacing: {
+        13: '3.25rem',
+        15: '3.75rem',
+        18: '4.5rem',
+        22: '5.5rem',
+        26: '6.5rem',
+        30: '7.5rem',
+        50: '12.5rem',
+        70: '17.5rem',
+        90: '22.5rem',
 
         // Bigger values
         100: "25rem",
