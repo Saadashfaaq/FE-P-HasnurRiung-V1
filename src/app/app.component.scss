@@ -24,6 +24,16 @@
 }
 .sidebar.open {
   width: 250px;
+
+  .logo-details {
+    height: fit-content !important;
+    justify-content: flex-start !important;
+    margin-top: 2rem;
+  }
+
+  .logo-image {
+    margin-top: -2rem !important;
+  }
 }
 .sidebar .logo-details {
   height: 60px;
@@ -40,6 +50,7 @@
   font-size: 20px;
   font-weight: 600;
   opacity: 0;
+  margin-top: 2rem !important;
   transition: all 0.5s ease;
 }
 .sidebar.open .logo-details .icon,
@@ -54,10 +65,10 @@
   font-size: 23px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.5s ease;
 }
 .sidebar.open .logo-details #btn {
   text-align: right;
+  top: 0 !important;
 }
 .sidebar i {
   color: #015BAB;
@@ -149,6 +160,13 @@
 .sidebar li a:hover {
   background: #015BAB;
 }
+::ng-deep.active {
+  background: #015BAB !important;
+  .links_name, i {
+    color: #fff !important;
+  }
+}
+
 .sidebar li a .links_name {
   color: #015BAB;
   font-size: 15px;
@@ -182,7 +200,7 @@
   padding: 10px 14px;
   background: #015BAB;
   transition: all 0.5s ease;
-  overflow: hidden;
+  overflow: visible;
 }
 .sidebar.open li.profile {
   width: 250px;
