@@ -11,6 +11,7 @@ module.exports = {
         26: '6.5rem',
         30: '7.5rem',
         50: '12.5rem',
+        70: '17.5rem',
         90: '22.5rem',
 
         // Bigger values
