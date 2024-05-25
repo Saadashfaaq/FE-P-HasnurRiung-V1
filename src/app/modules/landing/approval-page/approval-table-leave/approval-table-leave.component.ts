@@ -122,10 +122,23 @@ export class ApprovalTableLeaveComponent {
     }
   ]
 
+  travelDurationList = [
+    {
+      value: true,
+      name: "YA"
+    },
+    {
+      value: false,
+      name: "TIDAK"
+    }
+  ]
+
 
 displayedColumns: string[] = [
   "checkbox",
   "leave_letter_number",
+  "leave_letter_month",
+  "leave_letter_year",
   "employee_number",
   "name",
   "position",
@@ -133,19 +146,22 @@ displayedColumns: string[] = [
   "poh_status",
   "lump_sump",
   "remaining_yearly_leaves",
+  "work_start_date",
   "application_type",
   "departure_date",
   "field_leave_duration",
   "yearly_leave_duration",
+  "travel_duration",
   "permission_duration",
   "compensation_duration",
   "total_leaves",
-  "leave_comment",
   "start_date",
   "end_date",
   "leave_location",
   "leave_destination",
   "created_date",
+  "leave_letter_date_of_approval",
+  "leave_comment",
   "form_status",
   "pdf_application_form",
   "action",
@@ -155,17 +171,21 @@ filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
 filteredValue = {
   leave_letter_number: null,
   employee_number: null,
+  leave_letter_month: null,
+  leave_letter_year: null,
   employee_name: null,
   position: null,
   department: null,
   poh_status: null,
   lump_sump: null,
   remaining_yearly_leaves: null,
+  work_start_date: null,
   application_type: null,
   // departure_date: null,
   field_leave_duration: null,
   yearly_leave_duration: null,
   permission_duration: null,
+  travel_duration: null,
   compensation_duration: null,
   leave_comment: null,
   start_date: null,
@@ -175,10 +195,13 @@ filteredValue = {
   created_date: null,
   form_status: null,
   pdf_application_form: null,
+  leave_letter_date_of_approval: null
 }
 
   formControls = {
     leave_letter_number_ctrl : new UntypedFormControl(null),
+    leave_letter_month_ctrl : new UntypedFormControl(null),
+    leave_letter_year_ctrl : new UntypedFormControl(null),
     employee_number_ctrl : new UntypedFormControl(null),
     employee_name_ctrl : new UntypedFormControl(null),
     position_ctrl : new UntypedFormControl(null),
@@ -190,6 +213,8 @@ filteredValue = {
     departure_date_ctrl : new UntypedFormControl(null),
     field_leave_duration_ctrl : new UntypedFormControl(null),
     yearly_leave_duration_ctrl : new UntypedFormControl(null),
+    travel_duration_ctrl: new UntypedFormControl(null),
+    work_start_date_ctrl: new UntypedFormControl(null),
     permission_duration_ctrl : new UntypedFormControl(null),
     compensation_duration_ctrl : new UntypedFormControl(null),
     leave_comment_ctrl : new UntypedFormControl(null),
@@ -201,6 +226,7 @@ filteredValue = {
     form_status_ctrl : new UntypedFormControl(null),
     pdf_application_form_ctrl : new UntypedFormControl(null),
     total_leaves_ctrl : new UntypedFormControl(null),
+    leave_letter_date_of_approval_ctrl : new UntypedFormControl(null),
   }
 
   ngOnInit(): void {
@@ -366,6 +392,8 @@ filteredValue = {
         control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
           if (key.toLowerCase().includes("date") || key.toLowerCase().includes("departure") ) {
             this.filteredValue[filteredKey] =  value? new Date(value).toISOString() : null;
+          } if(key.toLowerCase().includes("travel_duration") ){
+            this.filteredValue[filteredKey] = value
           } else {
             this.filteredValue[filteredKey] = value ? value : null;
           }

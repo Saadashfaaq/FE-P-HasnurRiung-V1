@@ -62,6 +62,18 @@
         </th>
       </ng-container>
 
+      <ng-container matColumnDef="employee_number_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.employee_number_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
       <ng-container matColumnDef="employee_name_filter">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
@@ -219,21 +231,21 @@
         </th>
       </ng-container>
 
-      <ng-container matColumnDef="work_letter_date_filter">
+      <ng-container matColumnDef="work_letter_date_of_approval_filter">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
             <input
               placeholder="Tanggal"
               matInput
-              [formControl]="formControls.work_letter_date_ctrl"
-              [matDatepicker]="work_letter_date_filter"
+              [formControl]="formControls.work_letter_date_of_approval_ctrl"
+              [matDatepicker]="work_letter_date_of_approval_filter"
               [readonly]="true"
             />
             <mat-datepicker-toggle
               matIconSuffix
-              [for]="work_letter_date_filter"
+              [for]="work_letter_date_of_approval_filter"
             ></mat-datepicker-toggle>
-            <mat-datepicker #work_letter_date_filter></mat-datepicker>
+            <mat-datepicker #work_letter_date_of_approval_filter></mat-datepicker>
           </mat-form-field>
         </th>
       </ng-container>
@@ -290,6 +302,13 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="employee_number">
+        <th mat-header-cell *matHeaderCellDef>NRP</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.employee_id.employee_number }}
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef>Jabatan</th>
         <td mat-cell *matCellDef="let element">
@@ -300,12 +319,12 @@
       <ng-container matColumnDef="position_type">
         <th mat-header-cell *matHeaderCellDef>Tipe Jabatan</th>
         <td mat-cell *matCellDef="let element">
-          {{ element?.employee_id.position.name }}
+          {{ element?.employee_id.position.type === "staff" ? "Staff" : "Non Staf" }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="department">
-        <th mat-header-cell *matHeaderCellDef>Department</th>
+        <th mat-header-cell *matHeaderCellDef>Dept</th>
         <td mat-cell *matCellDef="let element">{{ element?.employee_id?.position?.department }}</td>
       </ng-container>
 
@@ -329,7 +348,7 @@
       </ng-container>
 
       <ng-container matColumnDef="work_duration">
-        <th mat-header-cell *matHeaderCellDef>Durasi Cuti</th>
+        <th mat-header-cell *matHeaderCellDef>Durasi Kerja</th>
         <td mat-cell *matCellDef="let element">{{ element?.work_duration }}</td>
       </ng-container>
 
@@ -345,10 +364,10 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="work_letter_date">
+      <ng-container matColumnDef="work_letter_date_of_approval">
         <th mat-header-cell *matHeaderCellDef>Tanggal ST Dinas</th>
         <td mat-cell *matCellDef="let element">
-          {{ element?.work_start_date }}
+          {{ element?.work_letter_date_of_approval }}
         </td>
       </ng-container>
 

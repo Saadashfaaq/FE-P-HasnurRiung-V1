@@ -313,6 +313,10 @@ export class FormLeaveService {
                 compensation_duration
                 leave_comment
               }
+              leave_letter_month
+              leave_letter_year
+              travel_duration
+              work_start_date
               start_date
               end_date
               leave_location

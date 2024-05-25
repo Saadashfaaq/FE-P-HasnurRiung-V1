@@ -134,6 +134,7 @@ displayedColumns: string[] = [
   "work_letter_number",
   "work_letter_month",
   "work_letter_year",
+  "employee_number",
   "employee_name",
   "position",
   "position_type",
@@ -144,7 +145,7 @@ displayedColumns: string[] = [
   "work_duration",
   "work_end_date",
   "leave_eligible_date",
-  "work_letter_date",
+  "work_letter_date_of_approval",
   "form_status",
   "action",
 ]
@@ -154,6 +155,7 @@ filteredValue = {
   work_letter_number: null,
   work_letter_month: null,
   work_letter_year: null,
+  employee_number: null,
   employee_name: null,
   position: null,
   position_type: null,
@@ -164,7 +166,7 @@ filteredValue = {
   work_duration: null,
   work_end_date: null,
   leave_eligible_date: null,
-  work_letter_date: null,
+  work_letter_date_of_approval: null,
   form_status: null,
 }
 
@@ -172,6 +174,7 @@ filteredValue = {
     work_letter_number_ctrl : new UntypedFormControl(null),
     work_letter_month_ctrl : new UntypedFormControl(null),
     work_letter_year_ctrl : new UntypedFormControl(null),
+    employee_number_ctrl : new UntypedFormControl(null),
     employee_name_ctrl : new UntypedFormControl(null),
     position_ctrl : new UntypedFormControl(null),
     position_type_ctrl : new UntypedFormControl(null),
@@ -182,7 +185,7 @@ filteredValue = {
     work_duration_ctrl : new UntypedFormControl(null),
     work_end_date_ctrl : new UntypedFormControl(null),
     leave_eligible_date_ctrl : new UntypedFormControl(null),
-    work_letter_date_ctrl : new UntypedFormControl(null),
+    work_letter_date_of_approval_ctrl : new UntypedFormControl(null),
     form_status_ctrl : new UntypedFormControl(null),
   }
 
