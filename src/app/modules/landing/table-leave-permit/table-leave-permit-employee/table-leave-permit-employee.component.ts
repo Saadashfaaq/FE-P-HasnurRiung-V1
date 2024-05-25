@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-table-leave-permit-employee',
@@ -232,8 +233,31 @@ export class TableLeavePermitEmployeeComponent {
   }
 
   OpenFormToCreate(){
-    localStorage.setItem("previousPage", '/permit-leave')
-    this.router.navigate(['/form-leave'])
+   const formType = 'leave'
+    this.subs.sink = this._formLeaveService.CheckEmployeeApplicationForm(this.employeeId,formType)
+    .subscribe(
+      (resp : any)=>{
+        if(resp){
+          localStorage.setItem("previousPage", '/permit-leave')
+          this.router.navigate(['/form-leave'])
+        } else {
+          this.InvalidSwal()
+        }
+      }
+    )
+  }
+
+  InvalidSwal(){
+    Swal.fire({
+      title: 'Permohonan terakhir Anda saat ini sedang dalam proses pengajuan.',
+      html: 'Silakan selesaikan permohonan Anda terlebih dahulu.',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText:'Saya Mengerti',
+    })
   }
 
   OpenFormToPreview(formId, employeeId){

@@ -51,6 +51,8 @@ export class FormLeaveComponent implements OnInit {
   formID: string;
   formData;
   formStatus;
+  requesterId
+
   currentApprovers;
   isRevision : boolean = false
   isRejected : boolean = false
@@ -2068,6 +2070,8 @@ export class FormLeaveComponent implements OnInit {
     )
   }
 
+
+
   getParamsId() {
     const getParams = this.route.snapshot.params['id'];
     const getParamsMode = this.route.snapshot.params['mode'];
@@ -2076,6 +2080,7 @@ export class FormLeaveComponent implements OnInit {
         .GetOneApplicationForm(getParams)
         .subscribe(
           (resp) => {
+            this.requesterId = resp.employee_id?._id
             if(getParamsMode === 'preview'){
               this.isPreviewMode = true;
               this.openIdentity = true;
@@ -2529,7 +2534,7 @@ export class FormLeaveComponent implements OnInit {
   ButtonApproveCondition(): boolean {
     return this.currentApprovers.some(
       (approver) => approver._id === this.localStorageUser
-    );
+    ) && this.formStatus.includes('waiting_for_approval')
   }
 
   checkRouterParamsId() {
@@ -2579,9 +2584,9 @@ export class FormLeaveComponent implements OnInit {
   }
 
   editCondition() : boolean{
-    if(this.formStatus === 'revision'){
+    if(this.formStatus === 'revision' && this.requesterId === this.localStorageUser){
       return true
-    } else if (this.formStatus === 'waiting_for_approval_1'){
+    } else if (this.formStatus === 'waiting_for_approval_1' && this.requesterId === this.localStorageUser){
       return true
     } else {
       return false
