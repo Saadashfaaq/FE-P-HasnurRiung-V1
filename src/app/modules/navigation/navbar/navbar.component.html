@@ -14,10 +14,10 @@
         <i class="bx bxs-bell"></i>
         <!-- Indikator Angka -->
         <span
-          *ngIf="notifList.length> 0"
+          *ngIf="notifList?.length> 0"
           class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
         >
-          {{ notifList.length }}
+          {{ notifList?.length }}
         </span>
       </button>
     </div>
@@ -70,7 +70,7 @@
           </button>
         </div>
       </div>
-      <div *ngIf="notifList.lenght === 0">
+      <div *ngIf="notifList?.length === 0">
         <div class="cursor-custom" [disabled]="true" mat-menu-item>
           <span class="text-xs font-semibold"> Belum Ada Notifikasi </span>
         </div>

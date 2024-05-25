@@ -150,7 +150,7 @@ export class NavbarComponent {
 
 
   checkingConditonForUnfoundedDataNotif():boolean{
-     if(this.notifList.lenght){
+     if(this.notifList?.length){
       return false
     }
     return true

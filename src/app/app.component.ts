@@ -1,10 +1,15 @@
 import {
+  AfterContentInit,
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  OnDestroy,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import {
+  ActivatedRoute,
   NavigationEnd,
   NavigationError,
   NavigationStart,
@@ -18,7 +23,7 @@ import { SubSink } from 'subsink';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   title = 'STOPLESS';
   showSideBar: boolean = true;
   userName: string = '';
@@ -28,14 +33,76 @@ export class AppComponent {
   subs: SubSink = new SubSink();
   firstTime: boolean = true;
 
+  currRoute: string;
+
+  navigationMenu = [
+    {
+      _id: 'approval-group',
+      name: 'Approval Group',
+      link: '/approval-group',
+      icon: 'bx bxs-group',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: ''
+    },
+    {
+      _id: 'approval-table',
+      name: 'Approval ST Istirahat',
+      link: '/approval-table',
+      icon: 'bx bxs-badge-check',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: ''
+    },
+    {
+      _id: 'approval-table-work',
+      name: 'Approval ST Lapangan',
+      link: '/approval-table/work',
+      icon: 'bx bxs-badge-check',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: ''
+    },
+    {
+      _id: 'permit-leave',
+      name: 'Tugas Lapangan',
+      link: '/permit-leave',
+      icon: 'bx bx-calendar',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: ''
+    },
+    {
+      _id: 'permit-work',
+      name: 'Tugas Lapangan',
+      link: '/permit-work',
+      icon: 'bx bx-calendar',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: ''
+    },
+  ]
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private _formLeaveService: FormLeaveService
-  ) {
-    this.router.events.subscribe((event) => {
+    private _formLeaveService: FormLeaveService,
+  ) {}
+
+  ngOnInit(): void {
+    this.employeeId = localStorage.getItem('userProfile');
+    this.userName = localStorage.getItem('name');
+  }
+
+  ngAfterViewInit() {
+    this.listenToRouteChanges();
+  }
+
+  listenToRouteChanges() {
+    this.subs.sink = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        if (event.url.includes('auth') || event.url.includes('data-validation')) {
+        this.currRoute = event?.url;
+        if (event.url.includes('auth') || event.url.includes('data-validation') || event.url.includes('form-leave') || event.url.includes('form-permit')){
           this.showSideBar = false;
           this.changeDetectorRef.detectChanges();
         } else {
@@ -51,41 +118,9 @@ export class AppComponent {
           //   }
           // });
         }
+        this.sideBarInitialization();
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.employeeId = localStorage.getItem('userProfile');
-    this.userName = localStorage.getItem('name');
-
-    if (this.showSideBar) {
-      this.changeDetectorRef.detectChanges();
-      this.iconButtonOpen.nativeElement.removeEventListener(
-        'click',
-        this.sidebarClickHandler
-      );
-      this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
-      this.iconButtonOpen.nativeElement.addEventListener(
-        'click',
-        this.sidebarClickHandler
-      );
-    }
-  }
-
-  ngAfterViewInit() {
-    if (this.sidebar) {
-      this.changeDetectorRef.detectChanges();
-      this.iconButtonOpen.nativeElement.removeEventListener(
-        'click',
-        this.sidebarClickHandler
-      );
-      this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
-      this.iconButtonOpen.nativeElement.addEventListener(
-        'click',
-        this.sidebarClickHandler
-      );
-    }
   }
 
   private sidebarClickHandler(event: MouseEvent) {
@@ -97,14 +132,17 @@ export class AppComponent {
     }
   }
 
-  Init() {
+  sideBarInitialization() {
     if (this.sidebar) {
-      const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
-      const searchBtn = this.sidebar.nativeElement.querySelector('.bx-search');
-
-      closeBtn.addEventListener('click', () => {
-        this.toggleSidebar();
-      });
+      this.iconButtonOpen.nativeElement.removeEventListener(
+        'click',
+        this.sidebarClickHandler
+      );
+      this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
+      this.iconButtonOpen.nativeElement.addEventListener(
+        'click',
+        this.sidebarClickHandler
+      );
     }
   }
 
@@ -155,5 +193,13 @@ export class AppComponent {
     localStorage.removeItem('userProfile');
     localStorage.removeItem('name');
     this.router.navigate(['/auth/login']);
+  }
+
+  getCurrentRoutes() {
+    // this.currRoute = this._route.snapshot.params
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }
