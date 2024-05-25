@@ -137,6 +137,7 @@ export class FormPermitComponent {
         (resp) => {
           this.employeeData = resp;
             this.InitPermitFormGroup();
+            this.permitFormGroup.get('start_date_dinas').setValidators([Validators.required]);
             this.GetAllApprovalGroups();
             this.changeDetectorRef.detectChanges();
             this.isWaitingForResponse = false
@@ -170,10 +171,7 @@ export class FormPermitComponent {
         value: this.employeeData?.position?.type === 'staff' ? '56' : '84',
         disabled: true,
       },
-      start_date_dinas: {
-        value: null,
-        disabled: false,
-      },
+      start_date_dinas: ['', [Validators.required]],
       end_date_dinas: {
         value: null,
         disabled: true,
@@ -257,26 +255,17 @@ export class FormPermitComponent {
   }
 
   submitForm() {
-    // this.isWaitingForResponse = true
+    this.isWaitingForResponse = true
     const payload = this.createPayload();
 
-    if (this.isEditMode) {
-      this.subs.sink = this.formPermitService
-      .UpdateFormPermit(payload, this.formID)
-      .subscribe((resp) => {
-        if(resp){
-          this.isWaitingForResponse = false
-          this.router.navigate([
-            this.previousPage
-          ]);
-        }
-      }),
-      (err) => {
-        console.log(err)
-      };
+    if(this.permitFormGroup.invalid){
+      this.isWaitingForResponse = false
+      this.permitFormGroup.get('start_date_dinas').markAsTouched();
+      this.InvalidSwal()
     } else {
-      this.subs.sink = this.formPermitService
-        .CreateFormPermit(payload)
+      if (this.isEditMode) {
+        this.subs.sink = this.formPermitService
+        .UpdateFormPermit(payload, this.formID)
         .subscribe((resp) => {
           if(resp){
             this.isWaitingForResponse = false
@@ -286,9 +275,39 @@ export class FormPermitComponent {
           }
         }),
         (err) => {
+          this.isWaitingForResponse = false
           console.log(err)
         };
+      } else {
+        this.subs.sink = this.formPermitService
+          .CreateFormPermit(payload)
+          .subscribe((resp) => {
+            if(resp){
+              this.isWaitingForResponse = false
+              this.router.navigate([
+                this.previousPage
+              ]);
+            }
+          }),
+          (err) => {
+            this.isWaitingForResponse = false
+            console.log(err)
+          };
+      }
     }
+  }
+
+  InvalidSwal() {
+    Swal.fire({
+      title: 'Invalid',
+      html: 'Mohon Isi Kolom Yang Berwarna Merah',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText: 'Oke',
+    });
   }
 
   createPayload() {
