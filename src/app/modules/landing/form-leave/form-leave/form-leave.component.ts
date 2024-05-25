@@ -856,6 +856,7 @@ export class FormLeaveComponent implements OnInit {
     .subscribe(
       (resp) => {
         if (resp) {
+          this.isWaitingForResponse = false
           this.swalSuccess()
         }
       },
@@ -872,6 +873,7 @@ export class FormLeaveComponent implements OnInit {
     .subscribe(
       (resp) => {
         if (resp) {
+          this.isWaitingForResponse = false
           this.swalSuccess()
         }
       },
