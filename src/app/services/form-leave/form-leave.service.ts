@@ -627,4 +627,22 @@ export class FormLeaveService {
       })
       .pipe(map((resp) => resp.data['GetOneApplicationForm']));
   }
+
+
+  CheckEmployeeApplicationForm(_id , formType) {
+    return this._apollo
+      .query({
+        query: gql`
+          query CheckEmployeeApplicationForm ($employee_id: ID $letter_type: LetterTypeEnum) {
+            CheckEmployeeApplicationForm(employee_id: $employee_id  letter_type: $letter_type)
+          }
+        `,
+        variables: {
+          employee_id: _id,
+          letter_type: formType
+        },
+        fetchPolicy: 'network-only',
+      })
+      .pipe(map((resp : any) => resp.data.CheckEmployeeApplicationForm));
+  }
 }

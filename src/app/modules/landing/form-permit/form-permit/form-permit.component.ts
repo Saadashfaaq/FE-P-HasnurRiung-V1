@@ -34,6 +34,7 @@ export class FormPermitComponent {
   isPreviewMode: boolean = false;
   routerSubscription: Subscription;
   employeeId: any;
+  requesterId
   localStorageUser: string;
   previousPage
   constructor(
@@ -97,6 +98,7 @@ export class FormPermitComponent {
     this.subs.sink = this.formPermitService.GetOneApplicationForm(this.formID).subscribe(
       (resp)=>{
         if(resp){
+          this.requesterId = resp.employee_id?._id
           this.currentApprovers = resp.current_approvers;
           this.formStatus = resp.form_status
           if(resp.form_status){
@@ -447,9 +449,9 @@ export class FormPermitComponent {
   }
 
   editCondition() : boolean{
-    if(this.formStatus === 'revision'){
+    if(this.formStatus === 'revision' && this.requesterId === this.localStorageUser){
       return true
-    } else if (this.formStatus === 'waiting_for_approval_1'){
+    } else if (this.formStatus === 'waiting_for_approval_1' && this.requesterId === this.localStorageUser){
       return true
     } else {
       return false

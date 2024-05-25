@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormPermitService } from 'src/app/services/form-permit/form-permit.services';
 import { SubSink } from 'subsink';
 import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-table-work-permit-employee',
@@ -273,9 +274,33 @@ GetAllApplicationFormsEmployee(){
   }
 
   OpenFormToCreate(){
-    localStorage.setItem("previousPage", '/permit-work')
-    this.router.navigate(['/form-permit'])
-  }
+    const formType = 'work'
+     this.subs.sink = this.formPermitService.CheckEmployeeApplicationForm(this.employeeId,formType)
+     .subscribe(
+       (resp : any)=>{
+         if(resp){
+          localStorage.setItem("previousPage", '/permit-work')
+          this.router.navigate(['/form-permit'])
+         } else {
+           this.InvalidSwal()
+         }
+       }
+     )
+   }
+
+   InvalidSwal(){
+     Swal.fire({
+       title: 'Permohonan terakhir Anda saat ini sedang dalam proses pengajuan.',
+       html: 'Silakan selesaikan permohonan Anda terlebih dahulu.',
+       icon: 'warning',
+       confirmButtonColor: '#3085d6',
+       allowEnterKey: false,
+       allowEscapeKey: false,
+       allowOutsideClick: false,
+       confirmButtonText:'Saya Mengerti',
+     })
+   }
+
 
   OpenPdfApplicationForm(url: string){
     window.open(url, '_blank');
