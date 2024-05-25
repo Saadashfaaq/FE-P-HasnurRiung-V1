@@ -110,6 +110,15 @@
                     />
                     <mat-datepicker-toggle matIconSuffix [for]="pickerstart_date_dinas"></mat-datepicker-toggle>
                     <mat-datepicker #pickerstart_date_dinas></mat-datepicker>
+                    <mat-error
+                    *ngIf="
+                      permitFormGroup
+                        .get('start_date_dinas')
+                        .hasError('required') && permitFormGroup.get('start_date_dinas').touched
+                    "
+                  >
+                    Kolom ini wajib diisi
+                  </mat-error>
                   </mat-form-field>
                 </div>
               </div>

@@ -119,6 +119,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           // });
         }
         this.sideBarInitialization();
+        this.changeDetectorRef.detectChanges();
       }
     });
   }

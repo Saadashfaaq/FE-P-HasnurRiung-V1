@@ -1,38 +1,45 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import {
-  AbstractControl,
-  FormArray,
-  FormControl,
+  ReactiveFormsModule,
   UntypedFormBuilder,
-  UntypedFormControl,
   UntypedFormGroup,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatDatepickerIntl } from '@angular/material/datepicker';
+import {
+  MatDatepickerIntl,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { NgSelectModule } from '@ng-select/ng-select';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
-import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormPermitService } from 'src/app/services/form-permit/form-permit.services';
 import { SubSink } from 'subsink';
 import Swal from 'sweetalert2';
-import { ApprovalTableDialogComponent } from '../../approval-page/approval-table-dialog/approval-table-dialog.component';
+import { ApprovalTableDialogComponent } from '../../../approval-page/approval-table-dialog/approval-table-dialog.component';
+import { MatInputModule } from '@angular/material/input';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import * as _ from 'lodash';
-import { DesktopFormPermitComponent } from "./desktop-form-permit/desktop-form-permit.component";
-import { MobileFormPermitComponent } from "./mobile-form-permit/mobile-form-permit.component";
 
 @Component({
-    selector: 'app-form-permit',
-    standalone: true,
-    templateUrl: './form-permit.component.html',
-    styleUrl: './form-permit.component.scss',
-    imports: [SharedModule, NgSelectModule, AsyncPipe, MobileFormPermitComponent, DesktopFormPermitComponent]
+  selector: 'app-desktop-form-permit',
+  standalone: true,
+  imports: [
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    NgIf,
+    NgFor,
+    NgClass,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+  ],
+  templateUrl: './desktop-form-permit.component.html',
+  styleUrl: './desktop-form-permit.component.scss',
 })
-export class FormPermitComponent {
+export class DesktopFormPermitComponent {
   subs: SubSink = new SubSink();
   isPreviewMode: boolean = false;
   routerSubscription: Subscription;
@@ -258,7 +265,9 @@ export class FormPermitComponent {
       this.permitFormGroup.get('start_date_dinas').getRawValue()
     );
     const leaveEndDate = new Date(leaveStartDate);
-    const positionTypeNumber = this.employeeData?.position?.type === 'staff' ? 56 : 84;
+    const positionTypeNumber = parseInt(
+      this.permitFormGroup.get('total_work_days').getRawValue()
+    );
     leaveEndDate.setDate(leaveStartDate.getDate() + positionTypeNumber);
     this.permitFormGroup.get('end_date_dinas').setValue(leaveEndDate);
 

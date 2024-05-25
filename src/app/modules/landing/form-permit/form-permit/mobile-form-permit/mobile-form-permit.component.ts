@@ -1,43 +1,46 @@
-import { AsyncPipe } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import {
-  AbstractControl,
-  FormArray,
-  FormControl,
+  ReactiveFormsModule,
   UntypedFormBuilder,
-  UntypedFormControl,
   UntypedFormGroup,
-  ValidatorFn,
-  Validators,
 } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatDatepickerIntl } from '@angular/material/datepicker';
+import {
+  MatDatepickerIntl,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { NgSelectModule } from '@ng-select/ng-select';
+import { MatInputModule } from '@angular/material/input';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
+import * as _ from 'lodash';
 import { Subscription, filter } from 'rxjs';
-import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormPermitService } from 'src/app/services/form-permit/form-permit.services';
 import { SubSink } from 'subsink';
 import Swal from 'sweetalert2';
-import { ApprovalTableDialogComponent } from '../../approval-page/approval-table-dialog/approval-table-dialog.component';
-import * as _ from 'lodash';
-import { DesktopFormPermitComponent } from "./desktop-form-permit/desktop-form-permit.component";
-import { MobileFormPermitComponent } from "./mobile-form-permit/mobile-form-permit.component";
+import { ApprovalTableDialogComponent } from '../../../approval-page/approval-table-dialog/approval-table-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-    selector: 'app-form-permit',
-    standalone: true,
-    templateUrl: './form-permit.component.html',
-    styleUrl: './form-permit.component.scss',
-    imports: [SharedModule, NgSelectModule, AsyncPipe, MobileFormPermitComponent, DesktopFormPermitComponent]
+  selector: 'app-mobile-form-permit',
+  standalone: true,
+  imports: [
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    NgIf,
+    NgFor,
+    NgClass,
+    MatProgressSpinnerModule,
+  ],
+  templateUrl: './mobile-form-permit.component.html',
+  styleUrl: './mobile-form-permit.component.scss',
 })
-export class FormPermitComponent {
+export class MobileFormPermitComponent {
   subs: SubSink = new SubSink();
   isPreviewMode: boolean = false;
   routerSubscription: Subscription;
   employeeId: any;
-  requesterId
   localStorageUser: string;
   previousPage;
   constructor(
@@ -74,7 +77,7 @@ export class FormPermitComponent {
    */
 
   formPage: 0 | 1 = 0;
-  formTotalPage: [0, 1] = [0, 1]
+  formTotalPage: [0, 1] = [0, 1];
 
   ngOnInit(): void {
     this.previousPage = localStorage.getItem('previousPage');
@@ -104,11 +107,11 @@ export class FormPermitComponent {
     this._adapter.setLocale(this._locale);
   }
 
-  getOnePermitForm(){
-    this.subs.sink = this.formPermitService.GetOneApplicationForm(this.formID).subscribe(
-      (resp)=>{
-        if(resp){
-          this.requesterId = resp.employee_id?._id
+  getOnePermitForm() {
+    this.subs.sink = this.formPermitService
+      .GetOneApplicationForm(this.formID)
+      .subscribe((resp) => {
+        if (resp) {
           this.currentApprovers = resp.current_approvers;
           this.formStatus = resp.form_status;
           if (resp.form_status) {
@@ -154,11 +157,10 @@ export class FormPermitComponent {
       .subscribe(
         (resp) => {
           this.employeeData = resp;
-            this.InitPermitFormGroup();
-            this.permitFormGroup.get('start_date_dinas').setValidators([Validators.required]);
-            this.GetAllApprovalGroups();
-            this.changeDetectorRef.detectChanges();
-            this.isWaitingForResponse = false
+          this.InitPermitFormGroup();
+          this.GetAllApprovalGroups();
+          this.changeDetectorRef.detectChanges();
+          this.isWaitingForResponse = false;
         },
         (err) => {
           console.error(err);
@@ -189,7 +191,10 @@ export class FormPermitComponent {
         value: this.employeeData?.position?.type === 'staff' ? '56' : '84',
         disabled: true,
       },
-      start_date_dinas: ['', [Validators.required]],
+      start_date_dinas: {
+        value: null,
+        disabled: false,
+      },
       end_date_dinas: {
         value: null,
         disabled: true,
@@ -222,7 +227,7 @@ export class FormPermitComponent {
       (resp) => {
         if (resp) {
           const response = resp;
-          this.approverData = _.cloneDeep(resp)
+          this.approverData = _.cloneDeep(resp);
           this.permitFormGroup.patchValue({
             first_approval:
               response[0].employee_number + ' - ' + response[0].name,
@@ -258,7 +263,8 @@ export class FormPermitComponent {
       this.permitFormGroup.get('start_date_dinas').getRawValue()
     );
     const leaveEndDate = new Date(leaveStartDate);
-    const positionTypeNumber = this.employeeData?.position?.type === 'staff' ? 56 : 84;
+    const positionTypeNumber =
+      this.employeeData?.position?.type === 'staff' ? 56 : 84;
     leaveEndDate.setDate(leaveStartDate.getDate() + positionTypeNumber);
     this.permitFormGroup.get('end_date_dinas').setValue(leaveEndDate);
 
@@ -271,59 +277,34 @@ export class FormPermitComponent {
   }
 
   submitForm() {
-    this.isWaitingForResponse = true
+    // this.isWaitingForResponse = true
     const payload = this.createPayload();
 
-    if(this.permitFormGroup.invalid){
-      this.isWaitingForResponse = false
-      this.permitFormGroup.get('start_date_dinas').markAsTouched();
-      this.InvalidSwal()
-    } else {
-      if (this.isEditMode) {
-        this.subs.sink = this.formPermitService
+    if (this.isEditMode) {
+      (this.subs.sink = this.formPermitService
         .UpdateFormPermit(payload, this.formID)
         .subscribe((resp) => {
-          if(resp){
-            this.isWaitingForResponse = false
-            this.router.navigate([
-              this.previousPage
-            ]);
+          if (resp) {
+            this.isWaitingForResponse = false;
+            this.router.navigate([this.previousPage]);
           }
-        }),
+        })),
         (err) => {
-          this.isWaitingForResponse = false
-          console.log(err)
+          console.log(err);
         };
-      } else {
-        this.subs.sink = this.formPermitService
-          .CreateFormPermit(payload)
-          .subscribe((resp) => {
-            if(resp){
-              this.isWaitingForResponse = false
-              this.router.navigate([
-                this.previousPage
-              ]);
-            }
-          }),
-          (err) => {
-            this.isWaitingForResponse = false
-            console.log(err)
-          };
-      }
+    } else {
+      (this.subs.sink = this.formPermitService
+        .CreateFormPermit(payload)
+        .subscribe((resp) => {
+          if (resp) {
+            this.isWaitingForResponse = false;
+            this.router.navigate([this.previousPage]);
+          }
+        })),
+        (err) => {
+          console.log(err);
+        };
     }
-  }
-
-  InvalidSwal() {
-    Swal.fire({
-      title: 'Invalid',
-      html: 'Mohon Isi Kolom Yang Berwarna Merah',
-      icon: 'warning',
-      confirmButtonColor: '#3085d6',
-      allowEnterKey: false,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-      confirmButtonText: 'Oke',
-    });
   }
 
   createPayload() {
@@ -493,11 +474,11 @@ export class FormPermitComponent {
       });
   }
 
-  editCondition() : boolean{
-    if(this.formStatus === 'revision' && this.requesterId === this.localStorageUser){
-      return true
-    } else if (this.formStatus === 'waiting_for_approval_1' && this.requesterId === this.localStorageUser){
-      return true
+  editCondition(): boolean {
+    if (this.formStatus === 'revision') {
+      return true;
+    } else if (this.formStatus === 'waiting_for_approval_1') {
+      return true;
     } else {
       return false;
     }
