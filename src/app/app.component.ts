@@ -108,15 +108,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.showSideBar = true;
           this.changeDetectorRef.detectChanges();
-          // this.sidebar.nativeElement.addEventListener('click', (event: MouseEvent) => {
-          //   const target = event.target as HTMLElement;
-
-          //   if (target && target.classList.contains('bx-menu')) {
-          //     this.toggleSidebar();
-          //   } else {
-          //     this.toggleSidebar();
-          //   }
-          // });
         }
         this.sideBarInitialization();
       }
