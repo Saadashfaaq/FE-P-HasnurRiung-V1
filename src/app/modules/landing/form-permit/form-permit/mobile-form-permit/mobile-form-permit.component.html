@@ -222,7 +222,7 @@
       <ng-template #showApproval>
         <article
           *ngFor="let approval of approvalType"
-          class="flex py-4 px-6 items-center gap-6 w-full rounded-xl shadow-md"
+          class="flex py-4 px-6 items-center gap-6 w-full rounded-xl shadow-md cursor-pointer"
           [ngClass]="
             approval?.title === 'Setuju'
               ? 'bg-[#01BA6D] text-white'
