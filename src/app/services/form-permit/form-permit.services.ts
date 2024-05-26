@@ -48,6 +48,12 @@ export class FormPermitService {
               _id
               name
               employee_number
+              position {
+                position
+                name
+                department
+                type
+              }
             }
           }
         `,

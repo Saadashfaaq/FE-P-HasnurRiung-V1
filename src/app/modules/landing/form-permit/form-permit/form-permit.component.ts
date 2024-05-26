@@ -21,6 +21,7 @@ import { FormPermitService } from 'src/app/services/form-permit/form-permit.serv
 import { SubSink } from 'subsink';
 import Swal from 'sweetalert2';
 import { ApprovalTableDialogComponent } from '../../approval-page/approval-table-dialog/approval-table-dialog.component';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-form-permit',
@@ -36,7 +37,7 @@ export class FormPermitComponent {
   employeeId: any;
   requesterId
   localStorageUser: string;
-  previousPage
+  previousPage;
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
@@ -54,24 +55,31 @@ export class FormPermitComponent {
   formData;
   formStatus;
   employeeData;
+  approverData;
   minDate: Date = new Date();
-  currentApprovers
-  isRevision : boolean = false
-  isRejected : boolean = false
-  reasonText : string = ''
+  currentApprovers;
+  isRevision: boolean = false;
+  isRejected: boolean = false;
+  reasonText: string = '';
 
   isEditMode = false;
 
   isWaitingForResponse: boolean = false;
   permitFormGroup: UntypedFormGroup;
 
+  /**
+   * Listen to form index, at 25/05/2024 we have 2 page of from
+   */
+
+  formPage: 0 | 1 = 0;
+  formTotalPage: [0, 1] = [0, 1]
 
   ngOnInit(): void {
-    this.previousPage = localStorage.getItem('previousPage')
+    this.previousPage = localStorage.getItem('previousPage');
     this.SetDatePickerFormat();
     const getParamsEmployeeId = this.route.snapshot.params['employeeId'];
     const getParamsFormId = this.route.snapshot.params['id'];
-    this.formID = getParamsFormId
+    this.formID = getParamsFormId;
     this.checkRouterParamsId();
 
     this.employeeId =
@@ -79,11 +87,11 @@ export class FormPermitComponent {
         ? getParamsEmployeeId
         : localStorage.getItem('userProfile');
     this.localStorageUser = localStorage.getItem('userProfile');
-    if(getParamsEmployeeId !== undefined && getParamsFormId !== undefined){
-      this.isPreviewMode = true
-      this.getOnePermitForm()
+    if (getParamsEmployeeId !== undefined && getParamsFormId !== undefined) {
+      this.isPreviewMode = true;
+      this.getOnePermitForm();
     } else {
-       this.getOneEmployeeData();
+      this.getOneEmployeeData();
     }
     this.InitPermitFormGroup();
     this.changeDetectorRef.detectChanges();
@@ -100,33 +108,41 @@ export class FormPermitComponent {
         if(resp){
           this.requesterId = resp.employee_id?._id
           this.currentApprovers = resp.current_approvers;
-          this.formStatus = resp.form_status
-          if(resp.form_status){
-            if(resp.form_status === 'revision'){
-              this.isRevision = true
-              this.reasonText = resp.approval[resp.current_approval_index].reason_of_revision
-            } else if(resp.form_status === 'rejected'){
-              this.isRejected  = true
-              this.reasonText = resp.approval[resp.current_approval_index].reason_of_rejection
+          this.formStatus = resp.form_status;
+          if (resp.form_status) {
+            if (resp.form_status === 'revision') {
+              this.isRevision = true;
+              this.reasonText =
+                resp.approval[resp.current_approval_index].reason_of_revision;
+            } else if (resp.form_status === 'rejected') {
+              this.isRejected = true;
+              this.reasonText =
+                resp.approval[resp.current_approval_index].reason_of_rejection;
             }
           }
 
           this.permitFormGroup.patchValue({
-            start_date_dinas: new Date(this.convertDateFormat(resp.work_start_date)).toISOString() ,
-            end_date_dinas: new Date(this.convertDateFormat(resp.work_end_date)).toISOString(),
+            start_date_dinas: new Date(
+              this.convertDateFormat(resp.work_start_date)
+            ).toISOString(),
+            end_date_dinas: new Date(
+              this.convertDateFormat(resp.work_end_date)
+            ).toISOString(),
             name: resp.employee_id.name,
-            employee_number:resp.employee_id.employee_number,
+            employee_number: resp.employee_id.employee_number,
             position: resp.employee_id.position?.name,
             department: resp.employee_id.position?.department,
-            total_work_days: resp.employee_id.position.type === 'staff' ? '56' : '84',
-            date_of_eligible_for_leave: new Date(this.convertDateFormat(resp.date_of_eligible_for_leave)).toISOString(),
-          })
-          this.permitFormGroup.get('start_date_dinas').disable()
+            total_work_days:
+              resp.employee_id.position.type === 'staff' ? '56' : '84',
+            date_of_eligible_for_leave: new Date(
+              this.convertDateFormat(resp.date_of_eligible_for_leave)
+            ).toISOString(),
+          });
+          this.permitFormGroup.get('start_date_dinas').disable();
           this.GetAllApprovalGroups();
           this.changeDetectorRef.detectChanges();
         }
-      }
-    )
+      });
   }
 
   getOneEmployeeData() {
@@ -200,27 +216,24 @@ export class FormPermitComponent {
   }
 
   GetAllApprovalGroups() {
-      this.subs.sink = this.formPermitService
-        .GetAllApprovalGroups()
-        .subscribe(
-          (resp) => {
-            if (resp) {
-              const response = resp
-              this.permitFormGroup.patchValue({
-                first_approval:  response[0].employee_number +
-                ' - ' +
-                response[0].name,
-                second_approval: response[1].employee_number +
-                ' - ' +
-                response[1].name
-              })
-                this.changeDetectorRef.detectChanges();
-            }
-          },
-          (err) => {
-            console.log('err', err);
-          }
-        );
+    this.subs.sink = this.formPermitService.GetAllApprovalGroups().subscribe(
+      (resp) => {
+        if (resp) {
+          const response = resp;
+          this.approverData = _.cloneDeep(resp)
+          this.permitFormGroup.patchValue({
+            first_approval:
+              response[0].employee_number + ' - ' + response[0].name,
+            second_approval:
+              response[1].employee_number + ' - ' + response[1].name,
+          });
+          this.changeDetectorRef.detectChanges();
+        }
+      },
+      (err) => {
+        console.log('err', err);
+      }
+    );
   }
 
   convertDateFormat(date: string): string {
@@ -239,18 +252,19 @@ export class FormPermitComponent {
   }
 
   calculatePermitDay() {
-
     const leaveStartDate = new Date(
       this.permitFormGroup.get('start_date_dinas').getRawValue()
     );
     const leaveEndDate = new Date(leaveStartDate);
-    const positionTypeNumber = parseInt(this.permitFormGroup.get('total_work_days').getRawValue())
+    const positionTypeNumber = this.employeeData?.position?.type === 'staff' ? 56 : 84;
     leaveEndDate.setDate(leaveStartDate.getDate() + positionTypeNumber);
     this.permitFormGroup.get('end_date_dinas').setValue(leaveEndDate);
 
     const dateForEligible = new Date(leaveStartDate);
-    dateForEligible.setDate(dateForEligible.getDate()+ positionTypeNumber + 1)
-    this.permitFormGroup.get('date_of_eligible_for_leave').setValue(dateForEligible);
+    dateForEligible.setDate(dateForEligible.getDate() + positionTypeNumber + 1);
+    this.permitFormGroup
+      .get('date_of_eligible_for_leave')
+      .setValue(dateForEligible);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -267,11 +281,9 @@ export class FormPermitComponent {
         this.subs.sink = this.formPermitService
         .UpdateFormPermit(payload, this.formID)
         .subscribe((resp) => {
-          if(resp){
-            this.isWaitingForResponse = false
-            this.router.navigate([
-              this.previousPage
-            ]);
+          if (resp) {
+            this.isWaitingForResponse = false;
+            this.router.navigate([this.previousPage]);
           }
         }),
         (err) => {
@@ -314,8 +326,12 @@ export class FormPermitComponent {
     const startDate = new Date(
       this.permitFormGroup.get('start_date_dinas').getRawValue()
     );
-    const endDate = new Date(this.permitFormGroup.get('end_date_dinas').getRawValue());
-    const eligibleDate = new Date(this.permitFormGroup.get('date_of_eligible_for_leave').getRawValue());
+    const endDate = new Date(
+      this.permitFormGroup.get('end_date_dinas').getRawValue()
+    );
+    const eligibleDate = new Date(
+      this.permitFormGroup.get('date_of_eligible_for_leave').getRawValue()
+    );
 
     const formattedStartDate = this.formatDate(startDate);
     const formattedEndDate = this.formatDate(endDate);
@@ -352,20 +368,28 @@ export class FormPermitComponent {
       cancelButtonText: 'Tidak',
     }).then((resp) => {
       if (resp.isConfirmed) {
-        this.router.navigate([
-          this.previousPage
-        ]);
+        this.router.navigate([this.previousPage]);
       } else {
         return;
       }
     });
   }
 
-  edit(){
-    this.isPreviewMode = false
-    this.isEditMode = true
+  backToPreviousForm() {
+    this.formPage--;
+    this.changeDetectorRef.detectChanges();
+  }
 
-    this.permitFormGroup.get('start_date_dinas').enable()
+  nextForm() {
+    this.formPage++;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  edit() {
+    this.isPreviewMode = false;
+    this.isEditMode = true;
+
+    this.permitFormGroup.get('start_date_dinas').enable();
   }
 
   OpenDialogApproval(order: string) {
@@ -415,7 +439,7 @@ export class FormPermitComponent {
       .subscribe(
         (resp) => {
           if (resp) {
-            this.isWaitingForResponse = false
+            this.isWaitingForResponse = false;
             Swal.fire({
               title: 'Permohonan Disetujui',
               icon: 'success',
@@ -437,7 +461,7 @@ export class FormPermitComponent {
 
   ButtonApproveCondition(): boolean {
     if (this.currentApprovers) {
-      const isApprover = this.currentApprovers.some(approver => {
+      const isApprover = this.currentApprovers.some((approver) => {
         if (approver._id === this.localStorageUser) {
           return true;
         } else {
@@ -448,8 +472,6 @@ export class FormPermitComponent {
     }
     return false; // Menyesuaikan untuk mengembalikan false jika tidak ada approvers
   }
-
-
 
   checkRouterParamsId() {
     // Check for NavigationStart events and compare the ID
@@ -473,11 +495,11 @@ export class FormPermitComponent {
     } else if (this.formStatus === 'waiting_for_approval_1' && this.requesterId === this.localStorageUser){
       return true
     } else {
-      return false
+      return false;
     }
   }
 
-  backPreviousPage(){
+  backPreviousPage() {
     this.router.navigate([this.previousPage]);
   }
 

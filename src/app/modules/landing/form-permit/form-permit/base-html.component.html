@@ -1,132 +1,10 @@
-<section id="form-permit-container" class="flex flex-col justify-between items w-[100vw] px-4 py-6 h-[100vh] bg-white lg:hidden">
-  <main id="form-permit" class="w-full gap-6 flex flex-col items-start overflow-auto">
-    <!-- Form first page -->
-    <section id="form-permit-page" class="flex flex-col items-start gap-6 w-full mb-24">
-      <section id="title-navigation" class="flex flex-col items-start gap-4 w-full">
-        <section id="title">
-          <strong class="text-primary-blue text-3xl">Form ST Dinas</strong>
-        </section>
-        <section id="navigation" class="flex flex-col items-start gap-1 w-full">
-          <article id="progress" class="justify-between items-center gap-4 flex w-full h-fit">
-            <span *ngFor="let bar of formTotalPage; let barIndex = index" id="rectangle" class="rounded-full h-1 w-full" [ngClass]="barIndex === formPage ? 'bg-primary-blue' : barIndex < formPage ? 'bg-green-500' : 'bg-[#D9D9D9]'"></span>
-          </article>
-          <article id="page-title">
-            <strong class="text-xl">{{ formPage === 0 ? 'Detail ST Dinas' : 'Persetujuan Pemberi Tugas'}}</strong>
-          </article>
-        </section>
-      </section>
-
-      <section *ngIf="formPage === 0" id="main-form detail-permit" class="flex flex-col gap-6 items-start w-full">
-        <article id="input-disabled" class="flex gap-4 items-start justify-start w-full">
-          <strong class="w-24">Nama</strong>
-          <section class="flex items-start gap-1">
-            <span>:</span>
-            <p>{{employeeData?.name}}</p>
-          </section>
-        </article>
-        <article id="input-disabled" class="flex gap-4 items-center justify-start w-full">
-          <strong class="w-24">NRP</strong>
-          <section class="flex items-start gap-1">
-            <span>:</span>
-            <p>{{employeeData?.employee_number}}</p>
-          </section>
-        </article>
-        <article id="input-disabled" class="flex gap-4 items-center justify-start w-full">
-          <strong class="w-24">Jabatan</strong>
-          <section class="flex items-start gap-1">
-            <span>:</span>
-            <p>{{employeeData?.position?.name}}</p>
-          </section>
-        </article>
-        <article id="input-disabled" class="flex gap-4 items-center justify-start w-full">
-          <strong class="w-24">Departemen</strong>
-          <section class="flex items-start gap-1">
-            <span>:</span>
-            <p>{{employeeData?.position?.department}}</p>
-          </section>
-        </article>
-        <article id="input-disabled" class="flex gap-4 items-center justify-start w-full">
-          <strong class="w-24">Jumlah Hari Kerja</strong>
-          <section class="flex items-start gap-1">
-            <span>:</span>
-            <p>{{employeeData?.position?.type === 'staff' ? 56 : 84 }}</p>
-          </section>
-        </article>
-        <article id="input-calendar" class="flex flex-col gap-4 items-start justify-start w-full">
-          <section class="flex gap-4 items-center justify-start">
-            <strong class="w-fit">Tanggal Dinas*:</strong>
-          </section>
-          <section class="flex w-full gap-2 items-center" [formGroup]="permitFormGroup">
-            <mat-form-field appearance="outline" class="w-full text-date">
-              <input
-                matInput
-                [formControlName]="'start_date_dinas'"
-                [matDatepicker]="pickerstart_date_dinas"
-                [readonly]="true"
-                [min]="minDate"
-                (dateInput)="calculatePermitDay()"
-              />
-              <mat-datepicker-toggle matIconSuffix [for]="pickerstart_date_dinas"></mat-datepicker-toggle>
-              <mat-datepicker #pickerstart_date_dinas></mat-datepicker>
-            </mat-form-field>
-            <span>s/d</span>
-            <mat-form-field appearance="outline" class="w-full text-date">
-              <input
-                matInput
-                [formControlName]="'end_date_dinas'"
-                [matDatepicker]="pickerend_date_dinas"
-                [readonly]="true"
-                [min]="minDate"
-              />
-              <mat-datepicker-toggle matIconSuffix [for]="pickerend_date_dinas"></mat-datepicker-toggle>
-              <mat-datepicker #pickerend_date_dinas></mat-datepicker>
-            </mat-form-field>
-          </section>
-        </article>
-        <article id="input-calendar" class="flex flex-col gap-4 items-start justify-start w-full">
-          <section class="flex gap-4 items-center justify-start">
-            <strong class="w-fit">Tanggal Dinas*:</strong>
-          </section>
-          <section class="flex w-full gap-2 items-center" [formGroup]="permitFormGroup">
-            <mat-form-field appearance="outline" class="w-full text-date">
-              <input
-                matInput
-                [formControlName]="'date_of_eligible_for_leave'"
-                [matDatepicker]="pickerstart_date_dinas"
-                [readonly]="true"
-                [min]="minDate"
-                (dateInput)="calculatePermitDay()"
-              />
-              <mat-datepicker-toggle matIconSuffix [for]="pickerstart_date_dinas"></mat-datepicker-toggle>
-              <mat-datepicker #pickerstart_date_dinas></mat-datepicker>
-            </mat-form-field>
-          </section>
-        </article>
-      </section>
-
-      <section *ngIf="formPage === 1" id="main-form detail-approval" class="flex flex-col gap-8 items-start w-full">
-        <article id="input-disabled" *ngFor="let approver of approverData; let i = index" class="flex flex-col gap-4 items-start justify-start w-full">
-          <strong class="w-fit">Persetujuan {{i + 1}}:</strong>
-            <p>{{approver?.employee_number + ' - ' + approver?.name}}</p>
-            <p class="text-xs -mt-3">*{{approver?.position?.name}}*</p>
-        </article>
-      </section>
-    </section>
-  </main>
-  <footer id="form-permit-action" class="flex justify-end items-center gap-4 bg-white fixed bottom-0 left-0 px-4 shad pb-6 w-[100vw] action-container">
-    <article *ngIf="formPage > 0" (click)="backToPreviousForm()" class="px-6 rounded-lg cursor-pointer py-3 flex justify-center items-center shadow-md text-white bg-error">Kembali</article>
-    <article *ngIf="formPage === 0" (click)="CancelCreateForm()" class="px-6 rounded-lg cursor-pointer py-3 flex justify-center items-center shadow-md text-black bg-primary-yellow">Batalkan</article>
-    <article *ngIf="formPage < 1" (click)="nextForm()" class="px-6 rounded-lg cursor-pointer py-3 flex justify-center items-center shadow-md text-white bg-primary-blue">Selanjutnya</article>
-    <article *ngIf="formPage === 1" (click)="submitForm()" class="px-6 rounded-lg cursor-pointer py-3 flex justify-center items-center shadow-md text-white bg-primary-blue">Ajukan Permohonan</article>
-  </footer>
-</section>
 <div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
   <mat-spinner color="primary" [diameter]="100"></mat-spinner>
 </div>
 
 <div
   [ngClass]="{ hidden: isWaitingForResponse }"
-  class="flex-col p-5 text-center hidden-responsive lg:flex"
+  class="flex flex-col p-5 text-center"
 >
   <h2 class="mt-1">Form Tugas Lapangan</h2>
 
@@ -232,15 +110,6 @@
                     />
                     <mat-datepicker-toggle matIconSuffix [for]="pickerstart_date_dinas"></mat-datepicker-toggle>
                     <mat-datepicker #pickerstart_date_dinas></mat-datepicker>
-                    <mat-error
-                    *ngIf="
-                      permitFormGroup
-                        .get('start_date_dinas')
-                        .hasError('required') && permitFormGroup.get('start_date_dinas').touched
-                    "
-                  >
-                    Kolom ini wajib diisi
-                  </mat-error>
                   </mat-form-field>
                 </div>
               </div>
