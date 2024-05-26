@@ -22,6 +22,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import * as _ from 'lodash';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-desktop-form-permit',
@@ -35,6 +36,7 @@ import * as _ from 'lodash';
     NgClass,
     MatDividerModule,
     MatProgressSpinnerModule,
+    MatButtonModule
   ],
   templateUrl: './desktop-form-permit.component.html',
   styleUrl: './desktop-form-permit.component.scss',

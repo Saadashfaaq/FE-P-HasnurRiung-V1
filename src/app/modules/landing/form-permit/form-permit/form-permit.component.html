@@ -1,2 +1,9 @@
-<app-desktop-form-permit class="lg:block hidden"></app-desktop-form-permit>
-<app-mobile-form-permit class="lg:hidden block"></app-mobile-form-permit>
+<ng-container *ngIf="isShowMobile; then mobile; else desktop"></ng-container>
+<ng-template #mobile>
+  <app-mobile-form-permit></app-mobile-form-permit>
+</ng-template>
+
+<ng-template #desktop>
+  <app-desktop-form-permit></app-desktop-form-permit>
+</ng-template>
+

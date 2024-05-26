@@ -34,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   firstTime: boolean = true;
 
   currRoute: string;
+  isWaitingForResponse: boolean = false;
 
   navigationMenu = [
     {
@@ -99,6 +100,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   listenToRouteChanges() {
+    this.isWaitingForResponse = true;
     this.subs.sink = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.currRoute = event?.url;
@@ -109,8 +111,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.showSideBar = true;
           this.changeDetectorRef.detectChanges();
         }
+        this.isWaitingForResponse = false;
         this.sideBarInitialization();
-        this.changeDetectorRef.detectChanges();
       }
     });
   }

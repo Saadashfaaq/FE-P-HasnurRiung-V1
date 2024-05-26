@@ -1,9 +1,16 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import {
   ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
+  Validators,
 } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import {
@@ -36,7 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './mobile-form-permit.component.html',
   styleUrl: './mobile-form-permit.component.scss',
 })
-export class MobileFormPermitComponent {
+export class MobileFormPermitComponent implements OnInit {
   subs: SubSink = new SubSink();
   isPreviewMode: boolean = false;
   routerSubscription: Subscription;
@@ -74,13 +81,36 @@ export class MobileFormPermitComponent {
   permitFormGroup: UntypedFormGroup;
 
   /**
-   * Listen to form index, at 25/05/2024 we have 2 page of from
+   * Listen to form index, at 25/05/2024 we have 3 page of from
    */
-
-  formPage: 0 | 1 = 0;
+  formPage: 0 | 1 | 2 = 0;
   formTotalPage: [0, 1] = [0, 1];
 
-  ngOnInit(): void {
+  /**
+   * Approval Type
+   */
+  approvalType = [
+    {
+      value: 'approve',
+      icon: 'Check',
+      title: 'Setuju',
+      description: 'Setujui ST Dinas pemohon',
+    },
+    {
+      value: 'revision',
+      icon: 'stylus_note',
+      title: 'Revisi',
+      description: 'Ajukan Revisi kepada pemohon',
+    },
+    {
+      value: 'cancel',
+      icon: 'Close',
+      title: 'Tolak',
+      description: 'Tolak ST Dinas pemohon',
+    },
+  ];
+
+  ngOnInit() {
     this.previousPage = localStorage.getItem('previousPage');
     this.SetDatePickerFormat();
     const getParamsEmployeeId = this.route.snapshot.params['employeeId'];
@@ -109,10 +139,13 @@ export class MobileFormPermitComponent {
   }
 
   getOnePermitForm() {
+    this.isWaitingForResponse = true;
     this.subs.sink = this.formPermitService
       .GetOneApplicationForm(this.formID)
       .subscribe((resp) => {
+        this.isWaitingForResponse = false;
         if (resp) {
+          this.employeeData = _.cloneDeep(resp?.employee_id);
           this.requesterId = resp.employee_id?._id
           this.currentApprovers = resp.current_approvers;
           this.formStatus = resp.form_status;
@@ -153,7 +186,7 @@ export class MobileFormPermitComponent {
   }
 
   getOneEmployeeData() {
-    // this.isWaitingForResponse = true
+    this.isWaitingForResponse = true
     this.subs.sink = this.formPermitService
       .GetOneEmployee(this.employeeId)
       .subscribe(
@@ -193,10 +226,7 @@ export class MobileFormPermitComponent {
         value: this.employeeData?.position?.type === 'staff' ? '56' : '84',
         disabled: true,
       },
-      start_date_dinas: {
-        value: null,
-        disabled: false,
-      },
+      start_date_dinas: ['', [Validators.required]],
       end_date_dinas: {
         value: null,
         disabled: true,
@@ -309,6 +339,19 @@ export class MobileFormPermitComponent {
     }
   }
 
+  InvalidSwal() {
+    Swal.fire({
+      title: 'Invalid',
+      html: 'Mohon Isi Kolom Yang Berwarna Merah',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText: 'Oke',
+    });
+  }
+
   createPayload() {
     const startDate = new Date(
       this.permitFormGroup.get('start_date_dinas').getRawValue()
@@ -368,6 +411,11 @@ export class MobileFormPermitComponent {
   }
 
   nextForm() {
+    if (this.permitFormGroup?.invalid) {
+      this.permitFormGroup.get('start_date_dinas').markAsTouched();
+      this.InvalidSwal();
+      return;
+    }
     this.formPage++;
     this.changeDetectorRef.detectChanges();
   }
@@ -380,19 +428,22 @@ export class MobileFormPermitComponent {
   }
 
   OpenDialogApproval(order: string) {
-    const dialogRef = this.dialog.open(ApprovalTableDialogComponent, {
-      data: {
-        order: order,
-        formID: this.formID,
-      },
-      width: '600px',
-      height: '340px',
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
+    if (order === 'approve') {
+      this.ApproveForm();
+    } else {
+      const dialogRef = this.dialog.open(ApprovalTableDialogComponent, {
+        data: {
+          order: order,
+          formID: this.formID,
+        },
+        width: '600px',
+        height: '340px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log('The dialog was closed');
+      });
+    }
   }
 
   ApproveForm() {
