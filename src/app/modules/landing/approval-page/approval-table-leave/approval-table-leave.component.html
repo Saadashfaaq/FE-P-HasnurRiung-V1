@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="mat-elevation-z8 horizontal">
-    <table class="mat-elevation-z8" mat-table [dataSource]="dataSource">
+    <table matSort (matSortChange)="onSort($event)" class="mat-elevation-z8" mat-table [dataSource]="dataSource">
       <ng-container
         class="leftBottom sticky"
         matColumnDef="checkbox_filter"
@@ -443,181 +443,181 @@
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="leave_letter_number" >
-        <th mat-header-cell *matHeaderCellDef>No Cuti</th>
+        <th mat-sort-header="leave_letter_number" mat-header-cell *matHeaderCellDef>No Cuti</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_number }}
         </td>
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="leave_letter_month" >
-        <th mat-header-cell *matHeaderCellDef>Bulan Cuti</th>
+        <th mat-sort-header="leave_letter_month" mat-header-cell *matHeaderCellDef>Bulan Cuti</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_month }}
         </td>
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="leave_letter_year" >
-        <th mat-header-cell *matHeaderCellDef>Tahun Surat Cuti</th>
+        <th mat-sort-header="leave_letter_year" mat-header-cell *matHeaderCellDef>Tahun Surat Cuti</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_year }}
         </td>
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="employee_number" >
-        <th mat-header-cell *matHeaderCellDef>NRP</th>
+        <th mat-sort-header="employee_number" mat-header-cell *matHeaderCellDef>NRP</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.employee_number }}
         </td>
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="name" >
-        <th mat-header-cell *matHeaderCellDef>Nama</th>
+        <th mat-sort-header="employee_name" mat-header-cell *matHeaderCellDef>Nama</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.name }}
         </td>
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="position" >
-        <th mat-header-cell *matHeaderCellDef>Posisi</th>
+        <th mat-sort-header="position" mat-header-cell *matHeaderCellDef>Jabatan</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.position?.name }}
         </td>
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="department" >
-        <th mat-header-cell *matHeaderCellDef>Departemen</th>
+        <th mat-sort-header="department" mat-header-cell *matHeaderCellDef>Dept</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.position?.department }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="poh_status">
-        <th mat-header-cell *matHeaderCellDef>Status POH</th>
+        <th mat-sort-header="poh_status" mat-header-cell *matHeaderCellDef>POH</th>
         <td mat-cell *matCellDef="let element">
           {{ PohConfigReturn(element?.employee_id?.poh_status) }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="application_type">
-        <th mat-header-cell *matHeaderCellDef>Tipe Permohonan</th>
+        <th mat-sort-header="application_type" mat-header-cell *matHeaderCellDef>Jenis Permohonan</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.application_type }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="departure_date">
-        <th mat-header-cell *matHeaderCellDef>Tanggal Berangkat</th>
+        <th mat-sort-header="departure_date" mat-header-cell *matHeaderCellDef>Tanggal Berangkat</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.is_ticket_supported ? element?.leaves?.departure_off_day?.date : element?.start_date }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="start_date">
-        <th mat-header-cell *matHeaderCellDef>Awal Cuti</th>
+        <th mat-sort-header="start_date" mat-header-cell *matHeaderCellDef>Awal Cuti</th>
         <td mat-cell *matCellDef="let element">{{ element?.is_ticket_supported ?  element?.leaves?.travel_date : element?.start_date}} </td>
       </ng-container>
 
       <ng-container matColumnDef="field_leave_duration">
-        <th mat-header-cell *matHeaderCellDef>Roster</th>
+        <th mat-sort-header="field_leave_duration" mat-header-cell *matHeaderCellDef>Roster</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.field_leave_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="yearly_leave_duration">
-        <th mat-header-cell *matHeaderCellDef>Tahunan / Besar</th>
+        <th mat-sort-header="yearly_leave_duration" mat-header-cell *matHeaderCellDef>Tahunan / Besar</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.yearly_leave_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="travel_duration">
-        <th mat-header-cell *matHeaderCellDef>Perjalanan</th>
+        <th mat-sort-header="travel_duration" mat-header-cell *matHeaderCellDef>Perjalanan</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.travel_duration ? "YA" : "TIDAK" }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="permission_duration">
-        <th mat-header-cell *matHeaderCellDef>Ijin</th>
+        <th mat-sort-header="permission_duration" mat-header-cell *matHeaderCellDef>Ijin</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.permission_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="compensation_duration">
-        <th mat-header-cell *matHeaderCellDef>Durasi Kompensasi</th>
+        <th mat-sort-header="compensation_duration" mat-header-cell *matHeaderCellDef>Kompensasi</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.compensation_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="total_leaves">
-        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <th mat-sort-header="total_leaves" mat-header-cell *matHeaderCellDef>Total</th>
         <td mat-cell *matCellDef="let element">{{ element?.total_leaves }}</td>
       </ng-container>
 
       <ng-container matColumnDef="end_date">
-        <th mat-header-cell *matHeaderCellDef>Tanggal Akhir</th>
+        <th mat-sort-header="end_date" mat-header-cell *matHeaderCellDef>Akhir Cuti</th>
         <td mat-cell *matCellDef="let element">{{ element?.end_date }}</td>
       </ng-container>
 
       <ng-container matColumnDef="leave_location">
-        <th mat-header-cell *matHeaderCellDef>Tujuan Cuti</th>
+        <th mat-sort-header="leave_location" mat-header-cell *matHeaderCellDef>Tujuan Cuti</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_location }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="leave_destination">
-        <th mat-header-cell *matHeaderCellDef>Kembali Dari</th>
+        <th mat-sort-header="leave_destination" mat-header-cell *matHeaderCellDef>Kembali Dari</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_location }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="lump_sump">
-        <th mat-header-cell *matHeaderCellDef>Lumpsump</th>
+        <th mat-sort-header="lump_sump" mat-header-cell *matHeaderCellDef>Lumpsump</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.lump_sump }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="remaining_yearly_leaves">
-        <th mat-header-cell *matHeaderCellDef>Sisa Cuti Tahunan</th>
+        <th mat-sort-header="remaining_yearly_leaves" mat-header-cell *matHeaderCellDef>Sisa Cuti Tahunan</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.remaining_yearly_leaves }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="work_start_date">
-        <th mat-header-cell *matHeaderCellDef>Masuk Dinas</th>
+        <th mat-sort-header="work_start_date" mat-header-cell *matHeaderCellDef>Masuk Dinas</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.work_start_date }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="created_date">
-        <th mat-header-cell *matHeaderCellDef>Tanggal Pengajuan</th>
+        <th mat-sort-header="created_date" mat-header-cell *matHeaderCellDef>Tanggal Pengajuan</th>
         <td mat-cell *matCellDef="let element">{{ element?.created_date }}</td>
       </ng-container>
 
       <ng-container matColumnDef="leave_comment">
-        <th mat-header-cell *matHeaderCellDef>Keterangan</th>
+        <th mat-sort-header="leave_comment" mat-header-cell *matHeaderCellDef>Keterangan</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.leave_comment }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="leave_letter_date_of_approval">
-        <th mat-header-cell *matHeaderCellDef>Tanggal ST Cuti</th>
+        <th mat-sort-header="leave_letter_date_of_approval" mat-header-cell *matHeaderCellDef>Tanggal ST Cuti</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_date_of_approval }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="form_status">
-        <th mat-header-cell *matHeaderCellDef>Status Formulir</th>
+        <th mat-sort-header="form_status" mat-header-cell *matHeaderCellDef>Status Permohonan</th>
         <td mat-cell *matCellDef="let element">
           <button
             (click)="OpenDialogTimeline(element?._id)"
@@ -631,7 +631,7 @@
       </ng-container>
 
       <ng-container matColumnDef="pdf_application_form">
-        <th mat-header-cell *matHeaderCellDef>Formulir Permohonan</th>
+        <th mat-sort-header="created_date" mat-header-cell *matHeaderCellDef>Formulir Permohonan</th>
         <td mat-cell *matCellDef="let element">
           <button
             (click)="OpenPdfApplicationForm(element?.pdf_application_form)"
