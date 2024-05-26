@@ -21,7 +21,7 @@
       <ng-container
         class="leftBottom sticky"
         matColumnDef="checkbox_filter"
-        sticky
+
       >
         <th mat-header-cell *matHeaderCellDef></th>
       </ng-container>
@@ -29,7 +29,7 @@
       <ng-container
         class="sticky"
         matColumnDef="leave_letter_number_filter"
-        sticky
+
       >
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
@@ -42,7 +42,7 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="employee_number_filter" sticky>
+      <ng-container class="sticky" matColumnDef="employee_number_filter" >
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
             <input
@@ -54,7 +54,31 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="name_filter" sticky>
+      <ng-container class="sticky" matColumnDef="leave_letter_month_filter" >
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.leave_letter_month_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container class="sticky" matColumnDef="leave_letter_year_filter" >
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.leave_letter_year_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container class="sticky" matColumnDef="name_filter" >
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
             <input
@@ -66,7 +90,7 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="position_filter" sticky>
+      <ng-container class="sticky" matColumnDef="position_filter" >
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
             <input
@@ -78,7 +102,7 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="department_filter" sticky>
+      <ng-container class="sticky" matColumnDef="department_filter" >
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
             <input
@@ -181,6 +205,21 @@
               [formControl]="formControls.yearly_leave_duration_ctrl"
             />
           </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="travel_duration_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <ng-select
+          class="mx-auto"
+          appendTo="body"
+          [items]="travelDurationList"
+          bindLabel="name"
+          bindValue="value"
+          placeholder="Filter Kolom"
+          [formControl]="formControls.travel_duration_ctrl"
+        >
+        </ng-select>
         </th>
       </ng-container>
 
@@ -294,6 +333,25 @@
         </th>
       </ng-container>
 
+      <ng-container matColumnDef="work_start_date_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Tanggal"
+              matInput
+              [formControl]="formControls.work_start_date_ctrl"
+              [matDatepicker]="work_start_date_filter"
+              [readonly]="true"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="work_start_date_filter"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #work_start_date_filter></mat-datepicker>
+          </mat-form-field>
+        </th>
+      </ng-container>
+
       <ng-container matColumnDef="created_date_filter">
         <th mat-header-cell *matHeaderCellDef>
           <mat-form-field appearance="outline" class="w-full w-full mx-auto">
@@ -322,6 +380,25 @@
               matInput
               [formControl]="formControls.leave_comment_ctrl"
             />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="leave_letter_date_of_approval_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Tanggal"
+              matInput
+              [formControl]="formControls.work_start_date_ctrl"
+              [matDatepicker]="leave_letter_date_of_approval_filter"
+              [readonly]="true"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="leave_letter_date_of_approval_filter"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #leave_letter_date_of_approval_filter></mat-datepicker>
           </mat-form-field>
         </th>
       </ng-container>
@@ -360,40 +437,54 @@
         <th mat-header-cell *matHeaderCellDef></th>
       </ng-container>
 
-      <ng-container class="leftTop sticky" matColumnDef="checkbox" sticky>
+      <ng-container class="leftTop sticky" matColumnDef="checkbox" >
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element"></td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="leave_letter_number" sticky>
+      <ng-container class="sticky" matColumnDef="leave_letter_number" >
         <th mat-header-cell *matHeaderCellDef>No Cuti</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_number }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="employee_number" sticky>
+      <ng-container class="sticky" matColumnDef="leave_letter_month" >
+        <th mat-header-cell *matHeaderCellDef>Bulan Cuti</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.leave_letter_month }}
+        </td>
+      </ng-container>
+
+      <ng-container class="sticky" matColumnDef="leave_letter_year" >
+        <th mat-header-cell *matHeaderCellDef>Tahun Surat Cuti</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.leave_letter_year }}
+        </td>
+      </ng-container>
+
+      <ng-container class="sticky" matColumnDef="employee_number" >
         <th mat-header-cell *matHeaderCellDef>NRP</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.employee_number }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="name" sticky>
+      <ng-container class="sticky" matColumnDef="name" >
         <th mat-header-cell *matHeaderCellDef>Nama</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.name }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="position" sticky>
+      <ng-container class="sticky" matColumnDef="position" >
         <th mat-header-cell *matHeaderCellDef>Posisi</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.position?.name }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="department" sticky>
+      <ng-container class="sticky" matColumnDef="department" >
         <th mat-header-cell *matHeaderCellDef>Departemen</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.position?.department }}
@@ -437,6 +528,13 @@
         <th mat-header-cell *matHeaderCellDef>Tahunan / Besar</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.yearly_leave_duration }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="travel_duration">
+        <th mat-header-cell *matHeaderCellDef>Perjelanan</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.travel_duration ? "YA" : "TIDAK" }}
         </td>
       </ng-container>
 
@@ -492,6 +590,13 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="work_start_date">
+        <th mat-header-cell *matHeaderCellDef>Masuk Dinas</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.work_start_date }}
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="created_date">
         <th mat-header-cell *matHeaderCellDef>Tanggal Pengajuan</th>
         <td mat-cell *matCellDef="let element">{{ element?.created_date }}</td>
@@ -501,6 +606,13 @@
         <th mat-header-cell *matHeaderCellDef>Keterangan</th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.leave_comment }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="leave_letter_date_of_approval">
+        <th mat-header-cell *matHeaderCellDef>Tanggal ST Cuti</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.leave_letter_date_of_approval }}
         </td>
       </ng-container>
 

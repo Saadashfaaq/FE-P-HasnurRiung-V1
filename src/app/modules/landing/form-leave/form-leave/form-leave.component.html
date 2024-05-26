@@ -1563,7 +1563,7 @@
               Setuju
             </button>
           </div>
-          <div *ngIf="editCondition()" class="ml-2">
+          <div *ngIf="editCondition() && !ButtonApproveCondition()" class="ml-2">
             <button (click)="EditForm()" mat-raised-button color="primary">
               Edit
             </button>
