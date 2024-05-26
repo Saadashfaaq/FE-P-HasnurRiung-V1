@@ -119,6 +119,17 @@ export class TableLeavePermitEmployeeComponent {
     }
   ]
 
+  travelDurationList = [
+    {
+      value: true,
+      name: "YA"
+    },
+    {
+      value: false,
+      name: "TIDAK"
+    }
+  ]
+
   displayedColumns: string[] = [
     "none",
     "created_date",
@@ -128,9 +139,12 @@ export class TableLeavePermitEmployeeComponent {
     "start_date",
     "field_leave_duration",
     "yearly_leave_duration",
+    "travel_duration",
     "permission_duration",
     "compensation_duration",
+    "total_leaves",
     "end_date",
+    "work_start_date",
     "form_status",
     "pdf_application_form",
     "action",
@@ -145,10 +159,13 @@ export class TableLeavePermitEmployeeComponent {
     start_date: null,
     field_leave_duration: null,
     yearly_leave_duration: null,
+    travel_duration: null,
     permission_duration: null,
     compensation_duration: null,
+    total_leaves: null,
     end_date: null,
     form_status: null,
+    work_start_date: null,
     pdf_application_form: null
   }
   formControls = {
@@ -159,10 +176,13 @@ export class TableLeavePermitEmployeeComponent {
     start_date_ctrl : new UntypedFormControl(null),
     field_leave_duration_ctrl : new UntypedFormControl(null),
     yearly_leave_duration_ctrl : new UntypedFormControl(null),
+    travel_duration_ctrl: new UntypedFormControl(null),
     permission_duration_ctrl : new UntypedFormControl(null),
     compensation_duration_ctrl : new UntypedFormControl(null),
+    total_leaves_ctrl : new UntypedFormControl(null),
     end_date_ctrl : new UntypedFormControl(null),
     form_status_ctrl : new UntypedFormControl(null),
+    work_start_date_ctrl: new UntypedFormControl(null),
     pdf_application_form_ctrl : new UntypedFormControl(null)
   }
 
@@ -347,7 +367,7 @@ export class TableLeavePermitEmployeeComponent {
           control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
             if (key.toLowerCase().includes("date") || key.toLowerCase().includes("departure") ) {
               this.filteredValue[filteredKey] =  value? new Date(value).toISOString() : null;
-            } else if(key.toLowerCase().includes("is_ticket_supported")){
+            } else if(key.toLowerCase().includes("is_ticket_supported") || key.toLowerCase().includes("travel_duration") ){
               this.filteredValue[filteredKey] = value === false? false : true;
             } else {
               this.filteredValue[filteredKey] = value ? value : null;
@@ -383,30 +403,8 @@ export class TableLeavePermitEmployeeComponent {
     }
   }
 
-  onSort(sort: Sort) {
-    this.sortValue = sort.active ? { [sort.active]: sort.direction ? sort.direction : 'asc' } : null;
-    if (this.dataLoaded) {
-      this.paginator.pageIndex = 0;
-      if (!this.isReset) {
-        this.GetAllApplicationFormsEmployee()
-      }
-    }
-  }
-
   // onSort(sort: Sort) {
-  //   console.log("SORT", sort);
-  //   console.log(this.sortValue);
-
-  //   if (sort.active && sort.direction) {
-  //     if (this.sortValue && this.sortValue[sort.active] === sort.direction) {
-  //       this.sortValue[sort.active] = sort.direction === 'asc' ? 'desc' : 'asc';
-  //     } else {
-  //       this.sortValue = { [sort.active]: sort.direction };
-  //     }
-  //   } else {
-  //     this.sortValue = null;
-  //   }
-
+  //   this.sortValue = sort.active ? { [sort.active]: sort.direction ? sort.direction : 'asc' } : null;
   //   if (this.dataLoaded) {
   //     this.paginator.pageIndex = 0;
   //     if (!this.isReset) {
@@ -414,6 +412,28 @@ export class TableLeavePermitEmployeeComponent {
   //     }
   //   }
   // }
+
+  onSort(sort: Sort) {
+    console.log("SORT", sort);
+    console.log(this.sortValue);
+
+    if (sort.active && sort.direction) {
+      if (this.sortValue && this.sortValue[sort.active] === sort.direction) {
+        this.sortValue[sort.active] = sort.direction === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sortValue = { [sort.active]: sort.direction };
+      }
+    } else {
+      this.sortValue = null;
+    }
+
+    if (this.dataLoaded) {
+      this.paginator.pageIndex = 0;
+      if (!this.isReset) {
+        this.GetAllApplicationFormsEmployee()
+      }
+    }
+  }
 
 
 }
