@@ -18,7 +18,7 @@
   >
 
   <div class="mt-6 w-full">
-    <mat-stepper #stepper [orientation]="isShowMobile ? 'vertical' : 'horizontal'" [linear]="isShowMobile">
+    <mat-stepper #stepper [orientation]="isShowMobile ? 'vertical' : 'horizontal'">
       <div  *ngFor="let approval of approvalData; let i = index">
         <mat-step [completed]="false" [editable]="approval.approval_status === 'cancelled'? false : true" [state]="approval.approval_status" [label]="'Approval ' + (i + 1)">
           <!-- For Approved Step -->
