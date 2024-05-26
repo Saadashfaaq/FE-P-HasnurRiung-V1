@@ -7,7 +7,7 @@
     {{pageTitle}}
   </span>
 </div>
-<div class="flex flex-row">
+<div class="flex flex-row items-center">
   <div class="mr-3">
     <div class="relative">
       <button [matMenuTriggerFor]="menu" mat-icon-button class="relative">
@@ -78,12 +78,12 @@
     </mat-menu>
   </div>
   <div class="mr-2">
-    <button [matMenuTriggerFor]="profile" mat-icon-button>
-      <img
-      class="w-10 h-10 rounded-full"
-      src="../../../../assets/images/60111.jpg"
-      alt="User profile"
-    />
+    <button [matMenuTriggerFor]="profile" mat-button>
+        <img
+        class="w-10 h-10 rounded-full"
+        src="../../../../assets/images/60111.jpg"
+        alt="User profile"
+      />
     </button>
       <mat-menu  #profile="matMenu">
         <div class="flex flex-row cursor-custom" mat-menu-item>
