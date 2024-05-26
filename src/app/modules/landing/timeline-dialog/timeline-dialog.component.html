@@ -18,23 +18,23 @@
   >
 
   <div class="mt-6 w-full">
-    <mat-stepper #stepper>
+    <mat-stepper #stepper [orientation]="isShowMobile ? 'vertical' : 'horizontal'" [linear]="isShowMobile">
       <div  *ngFor="let approval of approvalData; let i = index">
         <mat-step [completed]="false" [editable]="approval.approval_status === 'cancelled'? false : true" [state]="approval.approval_status" [label]="'Approval ' + (i + 1)">
           <!-- For Approved Step -->
           <div *ngIf="approval?.approval_status === 'approved'">
-            <div class="max-w-sm md:max-w-2xl">
+            <div class="w-full md:max-w-2xl">
               <div class="flex flex-row align-center ">
                 <div class="mr-3">
-                  <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+                  <h3 class="text-2xl font-bold">{{getStatusTooltip(approval.approval_status)}}</h3>
                 </div>
                 <div style="display: flex; align-items: center;">
                   <mat-icon style="color: #01BA6D;">lens</mat-icon>
                 </div>
               </div>
-              <div class="flex flex-row">
-                <div class="min-w-70">
-                  <div class="uppercase tracking-wide  text-indigo-500">
+              <div class="flex flex-row w-full">
+                <div class="w-full lg:min-w-70">
+                  <div class="uppercase tracking-wide">
                     <span>
                       {{formatDate(approval.date_of_approval)}}
                     </span>
@@ -64,15 +64,15 @@
             <div class="max-w-sm md:max-w-2xl">
               <div class="flex flex-row align-center ">
                 <div class="mr-3">
-                  <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+                  <h3 class="text-2xl font-bold">{{getStatusTooltip(approval.approval_status)}}</h3>
                 </div>
                 <div style="display: flex; align-items: center;">
                   <mat-icon style="color: #fffe00;">lens</mat-icon>
                 </div>
               </div>
-              <div class="flex flex-row">
-                <div class="min-w-70">
-                  <div class="uppercase tracking-wide  text-indigo-500 font-semibold">
+              <div class="flex flex-col lg:flex-row w-full">
+                <div class="w-full lg:min-w-70">
+                  <div class="uppercase tracking-wide font-semibold">
                     {{formatDate(approval.date_of_revision)}}
                   </div>
                   <div class="block mt-1 text-lg leading-tight font-medium text-black">
@@ -91,7 +91,7 @@
                   </div>
                 </div>
                 <mat-divider class="h-full" [vertical]="true"></mat-divider>
-                <div class="ml-4">
+                <div class="lg:ml-4">
                   <span >
                     {{approval?.reason_of_revision}}
                   </span>
@@ -104,15 +104,15 @@
             <div class="max-w-sm md:max-w-2xl">
               <div class="flex flex-row align-center ">
                 <div class="mr-3">
-                  <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+                  <h3 class="text-2xl font-bold">{{getStatusTooltip(approval.approval_status)}}</h3>
                 </div>
                 <div style="display: flex; align-items: center;">
                   <mat-icon style="color: #ff0100;">lens</mat-icon>
                 </div>
               </div>
-              <div class="flex flex-row">
-                <div class="min-w-70">
-                  <div class="uppercase tracking-wide  text-indigo-500 font-semibold">
+              <div class="flex flex-col lg:flex-row w-full">
+                <div class="w-full lg:min-w-70">
+                  <div class="uppercase tracking-wide font-semibold">
                     {{formatDate(approval.date_of_rejection)}}
                   </div>
                   <div class="block mt-1 text-lg leading-tight font-medium text-black">
@@ -131,7 +131,7 @@
                   </div>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
-                <div class="ml-4">
+                <div class="lg:ml-4">
                   <span >
                     {{approval?.reason_of_rejection}}
                   </span>
@@ -144,14 +144,14 @@
             <div class="max-w-sm md:max-w-2xl">
               <div class="flex flex-row align-center ">
                 <div class="mr-3">
-                  <h3>{{getStatusTooltip(approval.approval_status)}}</h3>
+                  <h3 class="text-2xl font-bold">{{getStatusTooltip(approval.approval_status)}}</h3>
                 </div>
                 <div style="display: flex; align-items: center;">
                   <mat-icon style="color: #ffa000;">lens</mat-icon>
                 </div>
               </div>
-              <div class="flex flex-row">
-                <div class="min-w-70">
+              <div class="flex flex-row w-full">
+                <div class="w-full lg:min-w-70">
                   <div class="mt-5 text-gray-500">
                     <div class="flex items-center mt-2">
                       <span class="text-lg ">{{approval.approver_id.name}}</span>

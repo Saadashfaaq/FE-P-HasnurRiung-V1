@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SharedModule } from '../../shared/shared.module';
@@ -33,6 +33,17 @@ import { SubSink } from 'subsink';
   ],
 })
 export class TimelineDialogComponent implements OnInit {
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(width: number) {
+    if (width < 1280) {
+      this.isShowMobile = true;
+    } else {
+      this.isShowMobile = false;
+    }
+  }
+
+  isShowMobile: boolean;
+
   private subs = new SubSink();
   isWaitingForResponse : boolean = false
   approvalData
@@ -57,7 +68,12 @@ export class TimelineDialogComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.getApprovalData()
+    this.getApprovalData();
+    if (window?.innerWidth < 1280) {
+      this.isShowMobile = true;
+    } else {
+      this.isShowMobile = false;
+    }
   }
   openSwalCancel(){
         this.dialogRef.close();
