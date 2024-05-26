@@ -66,6 +66,7 @@ export class MobileFormPermitComponent {
   isRevision: boolean = false;
   isRejected: boolean = false;
   reasonText: string = '';
+  requesterId: string;
 
   isEditMode = false;
 
@@ -112,6 +113,7 @@ export class MobileFormPermitComponent {
       .GetOneApplicationForm(this.formID)
       .subscribe((resp) => {
         if (resp) {
+          this.requesterId = resp.employee_id?._id
           this.currentApprovers = resp.current_approvers;
           this.formStatus = resp.form_status;
           if (resp.form_status) {
@@ -474,11 +476,11 @@ export class MobileFormPermitComponent {
       });
   }
 
-  editCondition(): boolean {
-    if (this.formStatus === 'revision') {
-      return true;
-    } else if (this.formStatus === 'waiting_for_approval_1') {
-      return true;
+  editCondition() : boolean{
+    if(this.formStatus === 'revision' && this.requesterId === this.localStorageUser){
+      return true
+    } else if (this.formStatus === 'waiting_for_approval_1' && this.requesterId === this.localStorageUser){
+      return true
     } else {
       return false;
     }
