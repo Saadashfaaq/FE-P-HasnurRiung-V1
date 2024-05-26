@@ -391,6 +391,9 @@ export class FormLeaveService {
                 permission_duration
                 compensation_duration
               }
+              travel_duration
+              total_leaves
+              work_start_date
               is_ticket_supported
               start_date
               end_date

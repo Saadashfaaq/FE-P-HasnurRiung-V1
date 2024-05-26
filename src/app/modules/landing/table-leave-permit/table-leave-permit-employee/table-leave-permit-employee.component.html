@@ -137,6 +137,21 @@
             </th>
           </ng-container>
 
+          <ng-container matColumnDef="travel_duration_filter">
+            <th mat-header-cell *matHeaderCellDef>
+              <ng-select
+              class="mx-auto"
+              appendTo="body"
+              [items]="travelDurationList"
+              bindLabel="name"
+              bindValue="value"
+              placeholder="Filter Kolom"
+              [formControl]="formControls.travel_duration_ctrl"
+            >
+            </ng-select>
+            </th>
+          </ng-container>
+
           <ng-container  matColumnDef="permission_duration_filter">
             <th mat-header-cell *matHeaderCellDef>
               <mat-form-field appearance="outline"  class="w-full mx-auto" >
@@ -161,6 +176,19 @@
             </th>
           </ng-container>
 
+          <ng-container matColumnDef="total_leaves_filter">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+                <input
+                  placeholder="Cari"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControl]="formControls?.total_leaves_ctrl"
+                />
+              </mat-form-field>
+            </th>
+          </ng-container>
+
           <ng-container  matColumnDef="end_date_filter">
             <th mat-header-cell *matHeaderCellDef>
               <mat-form-field appearance="outline"  class="w-full mx-auto" class="w-full w">
@@ -176,6 +204,25 @@
                   [for]="end_date_filter"
                 ></mat-datepicker-toggle>
                 <mat-datepicker #end_date_filter></mat-datepicker>
+              </mat-form-field>
+            </th>
+          </ng-container>
+
+          <ng-container matColumnDef="work_start_date_filter">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+                <input
+                  placeholder="Tanggal"
+                  matInput
+                  [formControl]="formControls.work_start_date_ctrl"
+                  [matDatepicker]="work_start_date_filter"
+                  [readonly]="true"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="work_start_date_filter"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #work_start_date_filter></mat-datepicker>
               </mat-form-field>
             </th>
           </ng-container>
@@ -252,9 +299,17 @@
           </ng-container>
 
           <ng-container  matColumnDef="yearly_leave_duration" >
-            <th mat-sort-header="yearly_leave_duration" mat-header-cell *matHeaderCellDef> Tahun / Besar </th>
+            <th mat-sort-header="yearly_leave_duration" mat-header-cell *matHeaderCellDef> Tahunan / Besar </th>
             <td mat-cell *matCellDef="let element"> {{ element?.leaves?.yearly_leave_duration }} </td>
           </ng-container>
+
+          <ng-container matColumnDef="travel_duration">
+            <th mat-sort-header="travel_duration" mat-header-cell *matHeaderCellDef>Perjalanan</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element?.travel_duration ? "YA" : "TIDAK" }}
+            </td>
+          </ng-container>
+
 
           <ng-container  matColumnDef="permission_duration" >
             <th mat-sort-header="permission_duration" mat-header-cell *matHeaderCellDef> Ijin </th>
@@ -262,18 +317,30 @@
           </ng-container>
 
           <ng-container  matColumnDef="compensation_duration" >
-            <th mat-sort-header="compensation_duration" mat-header-cell *matHeaderCellDef>  Durasi Kompensasi </th>
+            <th mat-sort-header="compensation_duration" mat-header-cell *matHeaderCellDef> Kompensasi </th>
             <td mat-cell *matCellDef="let element"> {{ element?.leaves?.compensation_duration }} </td>
           </ng-container>
 
+          <ng-container matColumnDef="total_leaves">
+            <th mat-sort-header="total_leaves" mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let element">{{ element?.total_leaves }}</td>
+          </ng-container>
+
           <ng-container  matColumnDef="end_date" >
-            <th mat-sort-header="" mat-header-cell *matHeaderCellDef> Akhir Cuti </th>
+            <th mat-sort-header="end_date" mat-header-cell *matHeaderCellDef> Akhir Cuti </th>
             <td mat-cell *matCellDef="let element"> {{ element?.end_date }} </td>
           </ng-container>
 
-          <ng-container  matColumnDef="form_status" >
-            <th mat-sort-header="end_date" mat-header-cell *matHeaderCellDef> Status Formulir </th>
+          <ng-container matColumnDef="work_start_date">
+            <th mat-header-cell="work_start_date" *matHeaderCellDef>Masuk Dinas</th>
             <td mat-cell *matCellDef="let element">
+              {{ element?.work_start_date }}
+            </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="form_status" >
+            <th mat-sort-header="form_status" mat-header-cell *matHeaderCellDef> Status Permohonan </th>
+            <td mat-cell mat-sort-header="form_status" *matCellDef="let element">
                 <button
                 (click)="OpenDialogTimeline(element?._id)"
                 [matTooltip]="getStatusTooltip(element?.form_status)"

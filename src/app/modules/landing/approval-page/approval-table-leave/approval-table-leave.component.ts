@@ -195,7 +195,8 @@ filteredValue = {
   created_date: null,
   form_status: null,
   pdf_application_form: null,
-  leave_letter_date_of_approval: null
+  leave_letter_date_of_approval: null,
+  total_leaves: null,
 }
 
   formControls = {
@@ -392,7 +393,7 @@ filteredValue = {
         control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
           if (key.toLowerCase().includes("date") || key.toLowerCase().includes("departure") ) {
             this.filteredValue[filteredKey] =  value? new Date(value).toISOString() : null;
-          } if(key.toLowerCase().includes("travel_duration") ){
+          } if(key.toLowerCase().includes("is_ticket_supported") || key.toLowerCase().includes("travel_duration") ){
             this.filteredValue[filteredKey] = value
           } else {
             this.filteredValue[filteredKey] = value ? value : null;
