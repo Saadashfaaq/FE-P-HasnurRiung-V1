@@ -3,7 +3,7 @@ import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { debounceTime, map, startWith, tap } from 'rxjs';
@@ -442,6 +442,27 @@ PohConfigReturn(resp) {
 OpenFormToPreview(formId, employeeId){
   localStorage.setItem("previousPage", '/approval-table')
   this.router.navigate([`/form-leave/preview/${formId}/${employeeId}`])
+}
+onSort(sort: Sort) {
+  console.log("SORT", sort);
+  console.log(this.sortValue);
+
+  if (sort.active && sort.direction) {
+    if (this.sortValue && this.sortValue[sort.active] === sort.direction) {
+      this.sortValue[sort.active] = sort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortValue = { [sort.active]: sort.direction };
+    }
+  } else {
+    this.sortValue = null;
+  }
+
+  if (this.dataLoaded) {
+    this.paginator.pageIndex = 0;
+    if (!this.isReset) {
+      this.GetAllApplicationForms()
+    }
+  }
 }
 
 }
