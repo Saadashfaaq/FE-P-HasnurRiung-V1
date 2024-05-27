@@ -41,6 +41,21 @@ export class ApprovalTableWorkComponent {
   isReset = false
   dataLoaded = false;
 
+  isWaitingForResponse
+
+  isCheckedAll = false;
+  disabledExport = true;
+  selectType: any;
+  dataSelected = [];
+  dataSelectedId = [];
+  dataUnselect = [];
+  clickedActionButton: string | null = null;
+  allStudentForCheckbox = [];
+  allStudentsData = [];
+  allStudentsEmail = [];
+  pageSelected = [];
+
+
   constructor(
     private formPermitService : FormPermitService,
     private router: Router,
@@ -406,4 +421,180 @@ onSort(sort: Sort) {
     }
   }
 }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.dataSelected = [];
+      this.pageSelected = [];
+      this.dataUnselect = [];
+      this.allStudentForCheckbox = [];
+      this.isCheckedAll = false;
+    } else {
+      this.selection.clear();
+      this.dataSelected = [];
+      this.dataUnselect = [];
+      this.allStudentForCheckbox = [];
+      this.isCheckedAll = true;
+      this.dataSource.data.map((row) => {
+        if (!this.dataUnselect.includes(row._id)) {
+          this.selection.select(row._id);
+        }
+      });
+    }
+  }
+
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return this.isCheckedAll ? true : numSelected === numRows || numSelected > numRows;
+  }
+
+
+
+  // getDataAllForCheckbox(pageNumber) {
+  //   const pagination = {
+  //     limit: this.paginator.pageSize ? this.paginator.pageSize : 10,
+  //     page: this.paginator.pageIndex ? this.paginator.pageIndex : 0,
+  //   };
+
+  //   const filter = {
+  //     employee_id: this.employeeId,
+  //     is_for_approval: true,
+  //     letter_type: 'work',
+  //     ...this.filteredValue
+  //   }
+  //   // const userTypesList = this.currentUser && this.currentUser.app_data ? this.currentUser.app_data.user_type_id : [];
+  //   this.isWaitingForResponse = true;
+  //   this.subs.sink = this.formPermitService.GetAllApplicationForms(filter,this.sortValue,pagination).subscribe(
+  //     (students: any) => {
+  //       if (students && students.length) {
+  //         this.allStudentForCheckbox.push(...students);
+  //         const page = pageNumber + 1;
+  //         this.getDataAllForCheckbox(page);
+  //       } else {
+  //         this.isWaitingForResponse = false;
+  //         if (this.isCheckedAll) {
+  //           if (this.allStudentForCheckbox && this.allStudentForCheckbox.length) {
+  //             this.allStudentForCheckbox.forEach((element) => {
+  //               this.selection.select(element._id);
+  //               this.dataSelected.push(element);
+  //             });
+  //           }
+  //           this.pageSelected.push(this.paginator.pageIndex);
+  //         } else {
+  //           this.pageSelected = [];
+  //         }
+  //       }
+  //     },
+  //     (error) => {
+  //       this.isReset = false;
+  //       this.isWaitingForResponse = false;
+  //     },
+  //   );
+  // }
+
+  getAllStudentsForOneTimeForm(page: number) {
+    const pagination = {
+      limit: this.paginator.pageSize ? this.paginator.pageSize : 10,
+      page: this.paginator.pageIndex ? this.paginator.pageIndex : 0,
+    };
+
+    const filter = {
+      employee_id: this.employeeId,
+      is_for_approval: true,
+      letter_type: 'work',
+      ...this.filteredValue
+    }
+    // const userTypesList = this.currentUser && this.currentUser.app_data ? this.currentUser.app_data.user_type_id : [];
+    this.isWaitingForResponse = true;
+
+    if (this.isCheckedAll) {
+      if (page === 0) {
+        this.dataSelected = [];
+      }
+      // this.isLoading = true
+      this.subs.sink = this.formPermitService.GetAllApplicationForms(filter,this.sortValue,pagination).subscribe(
+        (data: any) => {
+          if (data && data.length && data.length > 0) {
+            this.dataSelected.push(...data);
+            this.getAllStudentsForOneTimeForm(page + 1);
+          } else {
+            // this.isLoading = false;
+            if (this.isCheckedAll && this.dataSelected && this.dataSelected.length) {
+              this.dataSelected = this.dataSelected.filter((item) => !this.dataUnselect.includes(item._id));
+              if (this.dataSelected && this.dataSelected.length) {
+                // this.openOneTimeFormDialog(this.isCheckedAll);
+
+              }
+            }
+          }
+        },
+        (err: any) => {
+        },
+      );
+    } else {
+      // this.openOneTimeFormDialog();
+
+    }
+  }
+
+
+
+
+  showOptions(info, row) {
+    if (this.isCheckedAll) {
+      if (row) {
+        if (!this.dataUnselect.includes(row._id)) {
+          this.dataUnselect.push(row._id);
+          this.selection.deselect(row._id);
+        } else {
+          const indx = this.dataUnselect.findIndex((list) => list === row._id);
+          this.dataUnselect.splice(indx, 1);
+          this.selection.select(row._id);
+        }
+      }
+    } else {
+      if (row) {
+        if (this.dataSelected && this.dataSelected.length) {
+          const dataFilter = this.dataSelected.filter((resp) => resp._id === row._id);
+          if (dataFilter && dataFilter.length < 1) {
+            this.dataSelected.push(row);
+          } else {
+            const indexFilter = this.dataSelected.findIndex((resp) => resp._id === row._id);
+            this.dataSelected.splice(indexFilter, 1);
+          }
+        } else {
+          this.dataSelected.push(row);
+        }
+      }
+    }
+    const numSelected = this.dataSelected.length;
+    if (numSelected > 0) {
+      this.disabledExport = false;
+    } else {
+      this.disabledExport = true;
+    }
+    this.dataSelectedId = [];
+    this.selectType = info;
+    const data = this.dataSelected && this.dataSelected.length ? this.dataSelected : this.selection.selected;
+    data.forEach((user) => {
+      this.dataSelectedId.push(user._id);
+    });
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return ` ${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+
+
+
 }

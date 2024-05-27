@@ -265,6 +265,34 @@ export class FormPermitService {
       .pipe(map((resp) => resp.data['GetAllApplicationForms']));
   }
 
+  GetAllApplicationFormsSelection(filter, sorting, pagination) {
+    return this._apollo
+      .query({
+        query: gql`
+          query GetAllApplicationForms(
+            $filter: ApplicationFormFilter
+            $sorting: ApplicationFormSorting
+            $pagination: PaginationInput
+          ) {
+            GetAllApplicationForms(
+              filter: $filter
+              sorting: $sorting
+              pagination: $pagination
+            ) {
+              _id
+            }
+          }
+        `,
+        variables: {
+          filter,
+          sorting,
+          pagination,
+        },
+        fetchPolicy: 'network-only',
+      })
+      .pipe(map((resp) => resp.data['GetAllApplicationForms']));
+  }
+
   UpdateApprovalApplicationForm(_id, approval_input) {
     return this._apollo
       .mutate({
