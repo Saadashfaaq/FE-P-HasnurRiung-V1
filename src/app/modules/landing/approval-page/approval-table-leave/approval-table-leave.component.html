@@ -2,7 +2,7 @@
   <div class="flex flex-row justify-between mb-2">
     <div class="flex flex-row">
       <button
-        color="accent"
+        color="warn"
         mat-raised-button
         (click)="deleteApproval()"
         [disabled]="
@@ -10,27 +10,29 @@
           !isCheckedAll
         "
       >
-        Hapus
+        Hapus Permohonan
       </button>
     </div>
     <div class="flex flex-row">
       <div>
         <button color="none" (click)="resetTable('table')" mat-raised-button>
           <mat-icon>refresh</mat-icon>
-          <span>Hapus Filter</span>
+          <span>Reset</span>
         </button>
       </div>
       <div class="ml-1">
         <button
           mat-raised-button
-          color="accent"
+          color="primary"
           [matMenuTriggerFor]="actions"
           matTooltip="{{ 'Export' }}"
           matTooltipPosition="above"
           [disabled]="isWaitingForResponse"
         >
+        <p class="order-1 mr-1">
           Export
-          <mat-icon>expand_more</mat-icon>
+        </p>
+          <mat-icon class="order-1 mr-0">expand_more</mat-icon>
         </button>
         <mat-menu #actions="matMenu" class="export-menu">
           <!--  [ngClass]="{hide: testData?.correction_type === 'student'}" original condition div above 07/05/2021 11:31 -->

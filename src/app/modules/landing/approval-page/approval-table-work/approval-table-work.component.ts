@@ -639,12 +639,6 @@ export class ApprovalTableWorkComponent {
   }
 
   showOptions(row?) {
-    console.log(
-      this.dataUnselect?.length,
-      this.dataSelected?.length,
-      this.isCheckedAll
-    );
-
     if (this.isCheckedAll) {
       if (row) {
         if (!this.dataUnselect.includes(row?._id)) {
