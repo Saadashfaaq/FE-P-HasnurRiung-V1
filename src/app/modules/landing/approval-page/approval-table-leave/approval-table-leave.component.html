@@ -1,38 +1,76 @@
 <div class="p-2">
   <div class="flex flex-row justify-between mb-2">
     <div class="flex flex-row">
-      <button class="mr-1" color="primary" mat-raised-button>Cabut Cuti</button>
-      <button color="accent" mat-raised-button>Hapus</button>
+      <button
+        color="accent"
+        mat-raised-button
+        (click)="deleteApproval()"
+        [disabled]="
+          !(dataSelected?.length || selection?.selected?.length) &&
+          !isCheckedAll
+        "
+      >
+        Hapus
+      </button>
     </div>
     <div class="flex flex-row">
       <div>
-        <button color="none" (click)="resetTable()" mat-raised-button>
+        <button color="none" (click)="resetTable('table')" mat-raised-button>
           <mat-icon>refresh</mat-icon>
           <span>Hapus Filter</span>
         </button>
       </div>
       <div class="ml-1">
-        <button color="primary" mat-raised-button>Export</button>
+        <button
+          mat-raised-button
+          color="accent"
+          [matMenuTriggerFor]="actions"
+          matTooltip="{{ 'Export' }}"
+          matTooltipPosition="above"
+          [disabled]="isWaitingForResponse"
+        >
+          Export
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-menu #actions="matMenu" class="export-menu">
+          <!--  [ngClass]="{hide: testData?.correction_type === 'student'}" original condition div above 07/05/2021 11:31 -->
+          <button
+            data-cy="btn-template-mark-entry"
+            mat-menu-item
+            color="accent"
+            class="border-button"
+            (click)="exportAppllicationForm()"
+          >
+            Export Tabel
+          </button>
+          <button
+            data-cy="btn-template-mark-entry"
+            mat-menu-item
+            color="accent"
+            class="border-button"
+            (click)="exportEmployeeAsTemplate()"
+          >
+            Export Karyawan
+          </button>
+        </mat-menu>
       </div>
     </div>
   </div>
   <div class="mat-elevation-z8 horizontal">
-    <table matSort (matSortChange)="onSort($event)" class="mat-elevation-z8" mat-table [dataSource]="dataSource">
-      <ng-container
-        class="leftBottom sticky"
-        matColumnDef="checkbox_filter"
-
-      >
+    <table
+      matSort
+      (matSortChange)="onSort($event)"
+      class="mat-elevation-z8"
+      mat-table
+      [dataSource]="dataSource"
+    >
+      <ng-container class="leftBottom sticky" matColumnDef="checkbox_filter">
         <th mat-header-cell *matHeaderCellDef></th>
       </ng-container>
 
-      <ng-container
-        class="sticky"
-        matColumnDef="leave_letter_number_filter"
-
-      >
+      <ng-container class="sticky" matColumnDef="leave_letter_number_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               matInput
@@ -42,9 +80,9 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="employee_number_filter" >
+      <ng-container class="sticky" matColumnDef="employee_number_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               matInput
@@ -54,9 +92,9 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="leave_letter_month_filter" >
+      <ng-container class="sticky" matColumnDef="leave_letter_month_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               matInput
@@ -66,9 +104,9 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="leave_letter_year_filter" >
+      <ng-container class="sticky" matColumnDef="leave_letter_year_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               matInput
@@ -78,9 +116,9 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="name_filter" >
+      <ng-container class="sticky" matColumnDef="name_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               matInput
@@ -90,9 +128,9 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="position_filter" >
+      <ng-container class="sticky" matColumnDef="position_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               matInput
@@ -102,9 +140,9 @@
         </th>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="department_filter" >
+      <ng-container class="sticky" matColumnDef="department_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               matInput
@@ -146,7 +184,7 @@
 
       <ng-container matColumnDef="departure_date_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Tanggal"
               matInput
@@ -165,7 +203,7 @@
 
       <ng-container matColumnDef="start_date_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Tanggal"
               matInput
@@ -184,7 +222,7 @@
 
       <ng-container matColumnDef="field_leave_duration_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -197,7 +235,7 @@
 
       <ng-container matColumnDef="yearly_leave_duration_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -211,21 +249,21 @@
       <ng-container matColumnDef="travel_duration_filter">
         <th mat-header-cell *matHeaderCellDef>
           <ng-select
-          class="mx-auto"
-          appendTo="body"
-          [items]="travelDurationList"
-          bindLabel="name"
-          bindValue="value"
-          placeholder="Filter Kolom"
-          [formControl]="formControls.travel_duration_ctrl"
-        >
-        </ng-select>
+            class="mx-auto"
+            appendTo="body"
+            [items]="travelDurationList"
+            bindLabel="name"
+            bindValue="value"
+            placeholder="Filter Kolom"
+            [formControl]="formControls.travel_duration_ctrl"
+          >
+          </ng-select>
         </th>
       </ng-container>
 
       <ng-container matColumnDef="permission_duration_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -238,7 +276,7 @@
 
       <ng-container matColumnDef="compensation_duration_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -251,7 +289,7 @@
 
       <ng-container matColumnDef="total_leaves_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -264,7 +302,7 @@
 
       <ng-container matColumnDef="end_date_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Tanggal"
               matInput
@@ -283,7 +321,7 @@
 
       <ng-container matColumnDef="leave_location_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -296,7 +334,7 @@
 
       <ng-container matColumnDef="leave_destination_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -309,7 +347,7 @@
 
       <ng-container matColumnDef="lump_sump_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -322,7 +360,7 @@
 
       <ng-container matColumnDef="remaining_yearly_leaves_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -335,7 +373,7 @@
 
       <ng-container matColumnDef="work_start_date_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Tanggal"
               matInput
@@ -354,7 +392,7 @@
 
       <ng-container matColumnDef="created_date_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Tanggal"
               matInput
@@ -373,7 +411,7 @@
 
       <ng-container matColumnDef="leave_comment_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Cari"
               (keypress)="preventNonNumericalInput($event)"
@@ -386,7 +424,7 @@
 
       <ng-container matColumnDef="leave_letter_date_of_approval_filter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+          <mat-form-field appearance="outline" class="w-full mx-auto">
             <input
               placeholder="Tanggal"
               matInput
@@ -398,7 +436,9 @@
               matIconSuffix
               [for]="leave_letter_date_of_approval_filter"
             ></mat-datepicker-toggle>
-            <mat-datepicker #leave_letter_date_of_approval_filter></mat-datepicker>
+            <mat-datepicker
+              #leave_letter_date_of_approval_filter
+            ></mat-datepicker>
           </mat-form-field>
         </th>
       </ng-container>
@@ -437,187 +477,339 @@
         <th mat-header-cell *matHeaderCellDef></th>
       </ng-container>
 
-      <ng-container class="leftTop sticky" matColumnDef="checkbox" >
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element"></td>
+      <ng-container class="leftTop sticky" matColumnDef="checkbox">
+        <th mat-header-cell *matHeaderCellDef class="overflow-visible">
+          <mat-checkbox
+            class="label-header-checkbox"
+            (change)="$event ? masterToggle() : null; showOptions('')"
+            [checked]="
+              ((selection.hasValue() && isAllSelected()) || isCheckedAll) &&
+              dataUnselect?.length !== dataCount
+            "
+            [indeterminate]="
+              selection.hasValue() &&
+              (dataUnselect?.length > 0 || !isAllSelected()) &&
+              dataUnselect?.length !== dataCount
+            "
+            [aria-label]="checkboxLabel()"
+            [attr.data-cy]="'checkbox-all'"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="
+              $event ? selection.toggle(element._id) : null;
+              showOptions(element)
+            "
+            [checked]="
+              selection.isSelected(element._id) ||
+              (isCheckedAll && !dataUnselect?.includes(element?._id))
+            "
+            [aria-label]="checkboxLabel(element)"
+            [attr.data-cy]="'checkbox-one'"
+          >
+          </mat-checkbox>
+        </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="leave_letter_number" >
-        <th mat-sort-header="leave_letter_number" mat-header-cell *matHeaderCellDef>No Cuti</th>
+      <ng-container class="sticky" matColumnDef="leave_letter_number">
+        <th
+          mat-sort-header="leave_letter_number"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          No Cuti
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_number }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="leave_letter_month" >
-        <th mat-sort-header="leave_letter_month" mat-header-cell *matHeaderCellDef>Bulan Cuti</th>
+      <ng-container class="sticky" matColumnDef="leave_letter_month">
+        <th
+          mat-sort-header="leave_letter_month"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Bulan Cuti
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_month }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="leave_letter_year" >
-        <th mat-sort-header="leave_letter_year" mat-header-cell *matHeaderCellDef>Tahun Surat Cuti</th>
+      <ng-container class="sticky" matColumnDef="leave_letter_year">
+        <th
+          mat-sort-header="leave_letter_year"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tahun Surat Cuti
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_year }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="employee_number" >
-        <th mat-sort-header="employee_number" mat-header-cell *matHeaderCellDef>NRP</th>
+      <ng-container class="sticky" matColumnDef="employee_number">
+        <th mat-sort-header="employee_number" mat-header-cell *matHeaderCellDef>
+          NRP
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.employee_number }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="name" >
-        <th mat-sort-header="employee_name" mat-header-cell *matHeaderCellDef>Nama</th>
+      <ng-container class="sticky" matColumnDef="name">
+        <th mat-sort-header="employee_name" mat-header-cell *matHeaderCellDef>
+          Nama
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.name }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="position" >
-        <th mat-sort-header="position" mat-header-cell *matHeaderCellDef>Jabatan</th>
+      <ng-container class="sticky" matColumnDef="position">
+        <th mat-sort-header="position" mat-header-cell *matHeaderCellDef>
+          Jabatan
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.position?.name }}
         </td>
       </ng-container>
 
-      <ng-container class="sticky" matColumnDef="department" >
-        <th mat-sort-header="department" mat-header-cell *matHeaderCellDef>Dept</th>
+      <ng-container class="sticky" matColumnDef="department">
+        <th mat-sort-header="department" mat-header-cell *matHeaderCellDef>
+          Dept
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.position?.department }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="poh_status">
-        <th mat-sort-header="poh_status" mat-header-cell *matHeaderCellDef>POH</th>
+        <th mat-sort-header="poh_status" mat-header-cell *matHeaderCellDef>
+          POH
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ PohConfigReturn(element?.employee_id?.poh_status) }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="application_type">
-        <th mat-sort-header="application_type" mat-header-cell *matHeaderCellDef>Jenis Permohonan</th>
+        <th
+          mat-sort-header="application_type"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Jenis Permohonan
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.application_type }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="departure_date">
-        <th mat-sort-header="departure_date" mat-header-cell *matHeaderCellDef>Tanggal Berangkat</th>
+        <th
+          mat-sort-header="departure_off_day"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tanggal Berangkat
+        </th>
         <td mat-cell *matCellDef="let element">
-          {{ element?.is_ticket_supported ? element?.leaves?.departure_off_day?.date : element?.start_date }}
+          {{
+            element?.is_ticket_supported
+              ? element?.leaves?.departure_off_day?.date
+              : element?.start_date
+          }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="start_date">
-        <th mat-sort-header="start_date" mat-header-cell *matHeaderCellDef>Awal Cuti</th>
-        <td mat-cell *matCellDef="let element">{{ element?.is_ticket_supported ?  element?.leaves?.travel_date : element?.start_date}} </td>
+        <th mat-sort-header="start_date" mat-header-cell *matHeaderCellDef>
+          Awal Cuti
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{
+            element?.is_ticket_supported
+              ? element?.leaves?.travel_date
+              : element?.start_date
+          }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="field_leave_duration">
-        <th mat-sort-header="field_leave_duration" mat-header-cell *matHeaderCellDef>Roster</th>
+        <th
+          mat-sort-header="field_leave_duration"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Roster
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.field_leave_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="yearly_leave_duration">
-        <th mat-sort-header="yearly_leave_duration" mat-header-cell *matHeaderCellDef>Tahunan / Besar</th>
+        <th
+          mat-sort-header="annual_leave_duration"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tahunan / Besar
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.yearly_leave_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="travel_duration">
-        <th mat-sort-header="travel_duration" mat-header-cell *matHeaderCellDef>Perjalanan</th>
+        <th mat-sort-header="travel_duration" mat-header-cell *matHeaderCellDef>
+          Perjalanan
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.travel_duration ? "YA" : "TIDAK" }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="permission_duration">
-        <th mat-sort-header="permission_duration" mat-header-cell *matHeaderCellDef>Ijin</th>
+        <th
+          mat-sort-header="permission_duration"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Ijin
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.permission_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="compensation_duration">
-        <th mat-sort-header="compensation_duration" mat-header-cell *matHeaderCellDef>Kompensasi</th>
+        <th
+          mat-sort-header="compensation_duration"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Kompensasi
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.compensation_duration }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="total_leaves">
-        <th mat-sort-header="total_leaves" mat-header-cell *matHeaderCellDef>Total</th>
+        <th mat-sort-header="total_leaves" mat-header-cell *matHeaderCellDef>
+          Total
+        </th>
         <td mat-cell *matCellDef="let element">{{ element?.total_leaves }}</td>
       </ng-container>
 
       <ng-container matColumnDef="end_date">
-        <th mat-sort-header="end_date" mat-header-cell *matHeaderCellDef>Akhir Cuti</th>
+        <th mat-sort-header="end_date" mat-header-cell *matHeaderCellDef>
+          Akhir Cuti
+        </th>
         <td mat-cell *matCellDef="let element">{{ element?.end_date }}</td>
       </ng-container>
 
       <ng-container matColumnDef="leave_location">
-        <th mat-sort-header="leave_location" mat-header-cell *matHeaderCellDef>Tujuan Cuti</th>
+        <th
+          mat-sort-header="leave_destination_to"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tujuan Cuti
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_location }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="leave_destination">
-        <th mat-sort-header="leave_destination" mat-header-cell *matHeaderCellDef>Kembali Dari</th>
+        <th
+          mat-sort-header="leave_destination_from"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Kembali Dari
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_location }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="lump_sump">
-        <th mat-sort-header="lump_sump" mat-header-cell *matHeaderCellDef>Lumpsump</th>
+        <th mat-sort-header="lump_sump" mat-header-cell *matHeaderCellDef>
+          Lumpsump
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.lump_sump }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="remaining_yearly_leaves">
-        <th mat-sort-header="remaining_yearly_leaves" mat-header-cell *matHeaderCellDef>Sisa Cuti Tahunan</th>
+        <th
+          mat-sort-header="remaining_yearly_leaves"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Sisa Cuti Tahunan
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.employee_id?.remaining_yearly_leaves }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="work_start_date">
-        <th mat-sort-header="work_start_date" mat-header-cell *matHeaderCellDef>Masuk Dinas</th>
+        <th mat-sort-header="work_start_date" mat-header-cell *matHeaderCellDef>
+          Masuk Dinas
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.work_start_date }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="created_date">
-        <th mat-sort-header="created_date" mat-header-cell *matHeaderCellDef>Tanggal Pengajuan</th>
+        <th
+          mat-sort-header="created_date_submission"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tanggal Pengajuan
+        </th>
         <td mat-cell *matCellDef="let element">{{ element?.created_date }}</td>
       </ng-container>
 
       <ng-container matColumnDef="leave_comment">
-        <th mat-sort-header="leave_comment" mat-header-cell *matHeaderCellDef>Keterangan</th>
+        <th mat-sort-header="leave_comment" mat-header-cell *matHeaderCellDef>
+          Keterangan
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leaves?.leave_comment }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="leave_letter_date_of_approval">
-        <th mat-sort-header="leave_letter_date_of_approval" mat-header-cell *matHeaderCellDef>Tanggal ST Cuti</th>
+        <th
+          mat-sort-header="leave_letter_date_of_approval"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tanggal ST Cuti
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element?.leave_letter_date_of_approval }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="form_status">
-        <th mat-sort-header="form_status" mat-header-cell *matHeaderCellDef>Status Permohonan</th>
+        <th mat-sort-header="form_status" mat-header-cell *matHeaderCellDef>
+          Status Permohonan
+        </th>
         <td mat-cell *matCellDef="let element">
           <button
             (click)="OpenDialogTimeline(element?._id)"
@@ -631,7 +823,13 @@
       </ng-container>
 
       <ng-container matColumnDef="pdf_application_form">
-        <th mat-sort-header="created_date" mat-header-cell *matHeaderCellDef>Formulir Permohonan</th>
+        <th
+          mat-sort-header="created_date_form"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Formulir Permohonan
+        </th>
         <td mat-cell *matCellDef="let element">
           <button
             (click)="OpenPdfApplicationForm(element?.pdf_application_form)"
@@ -676,14 +874,41 @@
                 >
               </button>
             </div>
+            <div>
+              <button
+                (click)="deleteApproval(element, 'table')"
+                mat-icon-button
+                color="warn"
+                [disabled]="dataSelected?.length || selection?.selected?.length || isCheckedAll"
+              >
+                <mat-icon class="cursor-pointer">delete</mat-icon>
+              </button>
+            </div>
           </div>
         </td>
       </ng-container>
 
+      <!-- loading spinner -->
+      <ng-container matColumnDef="loading">
+        <th mat-header-cell *matHeaderCellDef colspan="100%" class="text-center w-full">
+          <div class="center-spinner w-full flex justify-center align-center">
+            <mat-spinner color="accent"></mat-spinner>
+          </div>
+        </th>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-header-row *matHeaderRowDef="filterCols"></tr>
-
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        [hidden]="isWaitingForResponse"
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+      <tr
+        [hidden]="!isWaitingForResponse"
+        mat-row
+        *matHeaderRowDef="['loading']"
+      ></tr>
     </table>
   </div>
 

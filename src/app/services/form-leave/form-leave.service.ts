@@ -266,7 +266,7 @@ export class FormLeaveService {
           filter: {
             is_enabled: true,
             employee_id: userId ? userId : null,
-            is_for_form: true
+            is_for_form: true,
           },
         },
         fetchPolicy: 'network-only',
@@ -530,6 +530,114 @@ export class FormLeaveService {
       .pipe(map((resp) => resp?.data['UpdateApprovalGroup']));
   }
 
+  DeleteApplicationForm(
+    filter,
+    pagination,
+    isSelectAll,
+    formIds,
+    unselectFormIds
+  ) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation DeleteApplicationForm(
+            $formIds: [ID]
+            $isSelectAll: Boolean
+            $unselectFormIds: [ID]
+            $filter: ApplicationFormFilter
+            $pagination: PaginationInput
+          ) {
+            DeleteApplicationForm(
+              form_ids: $formIds
+              is_select_all: $isSelectAll
+              unselect_form_ids: $unselectFormIds
+              filter: $filter
+              pagination: $pagination
+            ) {
+              leave_letter_number
+              employee_id {
+                _id
+                employee_number
+                name
+                position {
+                  name
+                  department
+                }
+                poh_status
+                lump_sump_amount
+                remaining_yearly_leaves
+              }
+              application_type
+              leaves {
+                departure_off_day {
+                  date
+                }
+                travel_date
+                field_leave_duration
+                yearly_leave_duration
+                permission_duration
+                compensation_duration
+                leave_comment
+              }
+              leave_letter_month
+              leave_letter_year
+              travel_duration
+              work_start_date
+              start_date
+              end_date
+              leave_location
+              created_date
+              form_status
+              pdf_application_form
+              pdf_leave_letter
+              count_document
+              total_leaves
+              is_ticket_supported
+              _id
+            }
+          }
+        `,
+        variables: {
+          filter,
+          pagination,
+          formIds,
+          isSelectAll,
+          unselectFormIds,
+        },
+        errorPolicy: 'all',
+      })
+      .pipe(map((resp) => resp?.data['DeleteApplicationForm']));
+  }
+
+  ExportAppllicationForm(letterType) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation ExportAppllicationForm(
+            $letterType: LetterTypeEnum) {
+            ExportAppllicationForm(
+              letter_type: $letterType
+          }
+        `,
+        variables: {
+          letterType,
+        },
+        errorPolicy: 'all',
+      })
+  }
+
+  ExportEmployeeAsTemplate() {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+        mutation Mutation {
+          ExportEmployeeAsTemplate
+        }
+        `,
+        errorPolicy: 'all',
+      })
+  }
+
   GetAllNotifications(userId) {
     return this._apollo
       .query({
@@ -556,7 +664,7 @@ export class FormLeaveService {
         variables: {
           filter: {
             // approver_id: userId,
-            to: userId
+            to: userId,
           },
         },
         fetchPolicy: 'network-only',
@@ -599,7 +707,6 @@ export class FormLeaveService {
       .pipe(map((resp) => resp?.data['UpdateNotification']));
   }
 
-
   getOneFormUserBarcode(payload) {
     return this._apollo
       .query({
@@ -635,21 +742,26 @@ export class FormLeaveService {
       .pipe(map((resp) => resp.data['GetOneApplicationForm']));
   }
 
-
-  CheckEmployeeApplicationForm(_id , formType) {
+  CheckEmployeeApplicationForm(_id, formType) {
     return this._apollo
       .query({
         query: gql`
-          query CheckEmployeeApplicationForm ($employee_id: ID $letter_type: LetterTypeEnum) {
-            CheckEmployeeApplicationForm(employee_id: $employee_id  letter_type: $letter_type)
+          query CheckEmployeeApplicationForm(
+            $employee_id: ID
+            $letter_type: LetterTypeEnum
+          ) {
+            CheckEmployeeApplicationForm(
+              employee_id: $employee_id
+              letter_type: $letter_type
+            )
           }
         `,
         variables: {
           employee_id: _id,
-          letter_type: formType
+          letter_type: formType,
         },
         fetchPolicy: 'network-only',
       })
-      .pipe(map((resp : any) => resp.data.CheckEmployeeApplicationForm));
+      .pipe(map((resp: any) => resp.data.CheckEmployeeApplicationForm));
   }
 }

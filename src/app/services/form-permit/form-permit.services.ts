@@ -265,6 +265,114 @@ export class FormPermitService {
       .pipe(map((resp) => resp.data['GetAllApplicationForms']));
   }
 
+  DeleteApplicationForm(
+    filter,
+    pagination,
+    isSelectAll,
+    formIds,
+    unselectFormIds
+  ) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation DeleteApplicationForm(
+            $formIds: [ID]
+            $isSelectAll: Boolean
+            $unselectFormIds: [ID]
+            $filter: ApplicationFormFilter
+            $pagination: PaginationInput
+          ) {
+            DeleteApplicationForm(
+              form_ids: $formIds
+              is_select_all: $isSelectAll
+              unselect_form_ids: $unselectFormIds
+              filter: $filter
+              pagination: $pagination
+            ) {
+              leave_letter_number
+              employee_id {
+                _id
+                employee_number
+                name
+                position {
+                  name
+                  department
+                }
+                poh_status
+                lump_sump_amount
+                remaining_yearly_leaves
+              }
+              application_type
+              leaves {
+                departure_off_day {
+                  date
+                }
+                travel_date
+                field_leave_duration
+                yearly_leave_duration
+                permission_duration
+                compensation_duration
+                leave_comment
+              }
+              leave_letter_month
+              leave_letter_year
+              travel_duration
+              work_start_date
+              start_date
+              end_date
+              leave_location
+              created_date
+              form_status
+              pdf_application_form
+              pdf_leave_letter
+              count_document
+              total_leaves
+              is_ticket_supported
+              _id
+            }
+          }
+        `,
+        variables: {
+          filter,
+          pagination,
+          formIds,
+          isSelectAll,
+          unselectFormIds,
+        },
+        errorPolicy: 'all',
+      })
+      .pipe(map((resp) => resp?.data['DeleteApplicationForm']));
+  }
+
+  ExportAppllicationForm(letterType) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation ExportAppllicationForm(
+            $letterType: LetterTypeEnum) {
+            ExportAppllicationForm(
+              letter_type: $letterType
+          }
+        `,
+        variables: {
+          letterType,
+        },
+        errorPolicy: 'all',
+      })
+  }
+
+  ExportEmployeeAsTemplate() {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+        mutation Mutation {
+          ExportEmployeeAsTemplate
+        }
+        `,
+        errorPolicy: 'all',
+      })
+  }
+
   GetAllApplicationFormsSelection(filter, sorting, pagination) {
     return this._apollo
       .query({
