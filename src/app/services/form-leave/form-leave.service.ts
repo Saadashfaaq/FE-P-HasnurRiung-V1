@@ -301,6 +301,13 @@ export class FormLeaveService {
                 lump_sump_amount
                 remaining_yearly_leaves
               }
+              approval {
+                approver_id {
+                  _id
+                }
+                approval_status
+                approval_index
+              }
               application_type
               leaves {
                 departure_off_day {
@@ -354,6 +361,7 @@ export class FormLeaveService {
               approval_input: $approval_input
             ) {
               _id
+              form_status
             }
           }
         `,
@@ -610,32 +618,30 @@ export class FormLeaveService {
   }
 
   ExportAppllicationForm(letterType) {
-    return this._apollo
-      .mutate({
-        mutation: gql`
+    return this._apollo.mutate({
+      mutation: gql`
           mutation ExportAppllicationForm(
             $letterType: LetterTypeEnum) {
             ExportAppllicationForm(
               letter_type: $letterType
           }
         `,
-        variables: {
-          letterType,
-        },
-        errorPolicy: 'all',
-      })
+      variables: {
+        letterType,
+      },
+      errorPolicy: 'all',
+    });
   }
 
   ExportEmployeeAsTemplate() {
-    return this._apollo
-      .mutate({
-        mutation: gql`
+    return this._apollo.mutate({
+      mutation: gql`
         mutation Mutation {
           ExportEmployeeAsTemplate
         }
-        `,
-        errorPolicy: 'all',
-      })
+      `,
+      errorPolicy: 'all',
+    });
   }
 
   GetAllNotifications(userId) {
@@ -705,6 +711,24 @@ export class FormLeaveService {
         errorPolicy: 'all',
       })
       .pipe(map((resp) => resp?.data['UpdateNotification']));
+  }
+
+  RejectApplicationForm(formId: string) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation RejectApplicationForm($formId: ID) {
+            RejectApplicationForm(form_id: $formId) {
+              form_status
+            }
+          }
+        `,
+        variables: {
+          formId
+        },
+        errorPolicy: 'all',
+      })
+      .pipe(map((resp) => resp?.data['RejectApplicationForm']));
   }
 
   getOneFormUserBarcode(payload) {

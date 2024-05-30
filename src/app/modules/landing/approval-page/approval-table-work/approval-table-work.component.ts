@@ -17,6 +17,7 @@ import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.c
 import { FormPermitService } from 'src/app/services/form-permit/form-permit.services';
 import Swal from 'sweetalert2';
 import * as _ from 'lodash';
+import { ApprovalTableDialogComponent } from '../approval-table-dialog/approval-table-dialog.component';
 
 @Component({
   selector: 'app-approval-table-work',
@@ -52,6 +53,10 @@ export class ApprovalTableWorkComponent {
   allStudentsData = [];
   allStudentsEmail = [];
   pageSelected = [];
+
+  isRejectFromTable: boolean[];
+
+  isAdmin: boolean = false;
 
   constructor(
     private formPermitService: FormPermitService,
@@ -201,6 +206,7 @@ export class ApprovalTableWorkComponent {
 
   ngOnInit(): void {
     this.employeeId = localStorage.getItem('userProfile');
+    this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
     this.token = localStorage.getItem('token');
     this.GetAllApplicationForms();
     this.initFilter();
@@ -244,9 +250,16 @@ export class ApprovalTableWorkComponent {
       .subscribe(
         (resp) => {
           if (resp && resp.length) {
-            this.dataSource.data = resp;
-            this.paginator.length = resp[0].count_document;
-            this.dataCount = resp[0]?.count_document;
+            const formList = _.cloneDeep(resp);
+            this.dataSource.data = formList;
+            this.paginator.length = formList[0].count_document;
+            this.dataCount = formList[0]?.count_document;
+            this.isRejectFromTable = formList?.map((forms) => {
+              return (forms?.approval.some((approver) => {
+                return Number(approver?.approval_index) === (forms?.approval?.length - 1) && approver?.approval_status === "waiting_for_approval" && (approver?.approver_id?._id === this.employeeId || this.isAdmin )}))
+            })
+            console.log(this.isRejectFromTable);
+
           } else {
             this.dataSource.data = [];
             this.paginator.length = 0;
@@ -599,6 +612,30 @@ export class ApprovalTableWorkComponent {
               this.isWaitingForResponse = false;
             },
           });
+      }
+    });
+  }
+
+  rejectApplicationForm(_id: string, order: string, index: number) {
+    const dialogRef = this.dialog.open(ApprovalTableDialogComponent, {
+      data: {
+        order: order,
+        formID: _id,
+      },
+      width: '600px',
+      height: '340px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const formList = _.cloneDeep(this.dataSource?.data);
+
+        formList[index].form_status = result;
+
+        this.dataSource.data = formList;
+
+        this.isRejectFromTable[index] = false;
       }
     });
   }

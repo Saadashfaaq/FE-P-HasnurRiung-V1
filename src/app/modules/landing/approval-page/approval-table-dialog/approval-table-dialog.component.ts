@@ -65,7 +65,7 @@ export class ApprovalTableDialogComponent {
             allowOutsideClick: false,
             confirmButtonText:'Iya',
           }).then(()=>{
-            this.dialogRef.close();
+            this.dialogRef.close(resp?.form_status);
             this.router.navigate([this.previousPage]);
           })
         }

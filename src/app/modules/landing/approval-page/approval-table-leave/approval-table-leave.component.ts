@@ -16,6 +16,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _ from 'lodash';
 import Swal from 'sweetalert2';
+import { ApprovalTableDialogComponent } from '../approval-table-dialog/approval-table-dialog.component';
 
 @Component({
   selector: 'app-approval-table-leave',
@@ -42,9 +43,13 @@ export class ApprovalTableLeaveComponent {
   dataUnselect = [];
   dataSelected = [];
 
+  isRejectFromTable: [boolean];
+
   isWaitingForResponse: boolean = false;
 
   employeeData;
+
+  isAdmin: boolean;
 
   constructor(
     private _formLeaveService: FormLeaveService,
@@ -234,6 +239,7 @@ export class ApprovalTableLeaveComponent {
 
   ngOnInit(): void {
     this.employeeId = localStorage.getItem('userProfile');
+    this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
     this.token = localStorage.getItem('token');
     this.GetAllApplicationForms();
     this.initFilter();
@@ -284,9 +290,15 @@ export class ApprovalTableLeaveComponent {
         next: (resp) => {
           this.isWaitingForResponse = false;
           if (resp && resp.length) {
-            this.dataSource.data = resp;
-            this.paginator.length = resp[0].count_document;
-            this.dataCount = resp[0]?.count_document;
+            const formList = _.cloneDeep(resp);
+            this.dataSource.data = formList;
+            this.paginator.length = formList[0].count_document;
+            this.dataCount = formList[0]?.count_document;
+            this.isRejectFromTable = formList?.map((forms) => {
+              return (forms?.approval.some((approver) => {
+                return Number(approver?.approval_index) === (forms?.approval?.length - 1) && approver?.approval_status === "waiting_for_approval" && (approver?.approver_id?._id === this.employeeId || this.isAdmin)
+              }))
+            })
           } else {
             this.dataSource.data = [];
             this.paginator.length = 0;
@@ -583,6 +595,34 @@ export class ApprovalTableLeaveComponent {
       }
     });
   }
+
+  rejectApplicationForm(_id: string, order: string, index: number) {
+    const dialogRef = this.dialog.open(ApprovalTableDialogComponent, {
+      data: {
+        order: order,
+        formID: _id,
+      },
+      width: '600px',
+      height: '340px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      const formList = _.cloneDeep(this.dataSource?.data);
+
+      formList[index].form_status = result;
+      console.log(result);
+
+
+      this.dataSource.data = formList;
+
+      this.isRejectFromTable[index] = false;
+    });
+  }
+
+  /**
+   * Export Functionality Start Here
+   */
 
   exportAppllicationForm() {
     this.subs.sink = this._formLeaveService

@@ -84,7 +84,6 @@ export class FormPermitService {
       .pipe(map((resp) => resp?.data['CreateApplicationForm']));
   }
 
-
   GetAllApplicationFormsEmployee(filter, sorting, pagination) {
     return this._apollo
       .query({
@@ -238,6 +237,13 @@ export class FormPermitService {
               work_letter_approval {
                 approval_status
               }
+              approval {
+                approver_id {
+                  _id
+                }
+                approval_status
+                approval_index
+              }
               pdf_work_letter
               work_start_date
               work_letter_year
@@ -345,32 +351,30 @@ export class FormPermitService {
   }
 
   ExportAppllicationForm(letterType) {
-    return this._apollo
-      .mutate({
-        mutation: gql`
+    return this._apollo.mutate({
+      mutation: gql`
           mutation ExportAppllicationForm(
             $letterType: LetterTypeEnum) {
             ExportAppllicationForm(
               letter_type: $letterType
           }
         `,
-        variables: {
-          letterType,
-        },
-        errorPolicy: 'all',
-      })
+      variables: {
+        letterType,
+      },
+      errorPolicy: 'all',
+    });
   }
 
   ExportEmployeeAsTemplate() {
-    return this._apollo
-      .mutate({
-        mutation: gql`
+    return this._apollo.mutate({
+      mutation: gql`
         mutation Mutation {
           ExportEmployeeAsTemplate
         }
-        `,
-        errorPolicy: 'all',
-      })
+      `,
+      errorPolicy: 'all',
+    });
   }
 
   GetAllApplicationFormsSelection(filter, sorting, pagination) {
@@ -469,20 +473,26 @@ export class FormPermitService {
       .pipe(map((resp) => resp.data['GetOneApplicationForm']));
   }
 
-  CheckEmployeeApplicationForm(_id , formType) {
+  CheckEmployeeApplicationForm(_id, formType) {
     return this._apollo
       .query({
         query: gql`
-          query CheckEmployeeApplicationForm ($employee_id: ID $letter_type: LetterTypeEnum) {
-            CheckEmployeeApplicationForm(employee_id: $employee_id  letter_type: $letter_type)
+          query CheckEmployeeApplicationForm(
+            $employee_id: ID
+            $letter_type: LetterTypeEnum
+          ) {
+            CheckEmployeeApplicationForm(
+              employee_id: $employee_id
+              letter_type: $letter_type
+            )
           }
         `,
         variables: {
           employee_id: _id,
-          letter_type: formType
+          letter_type: formType,
         },
         fetchPolicy: 'network-only',
       })
-      .pipe(map((resp : any) => resp.data.CheckEmployeeApplicationForm));
+      .pipe(map((resp: any) => resp.data.CheckEmployeeApplicationForm));
   }
 }
