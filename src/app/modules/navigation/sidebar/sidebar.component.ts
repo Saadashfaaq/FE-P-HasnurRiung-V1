@@ -1,90 +1,137 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { NavigationStart, Router, RouterModule } from '@angular/router';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [],
+  imports: [NgClass, NgIf, RouterModule, NgFor],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+  styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent {
-  title = 'STOPLESS';
-  showSideBar: boolean = true;
-  userName : string = ''
+export class SidebarComponent implements OnInit, AfterViewInit {
   @ViewChild('sidebar') sidebar: ElementRef | undefined;
-  subs: SubSink = new SubSink();
-  employeeId: string;
+  @ViewChild('iconButtonOpen') iconButtonOpen: ElementRef | undefined;
 
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(width: number) {
+    if (width < 1024) {
+      this.showMobile = true;
+    } else {
+      this.showMobile = false;
+    }
+  }
+  showMobile: boolean = false;
+
+  subs: SubSink = new SubSink();
+  currRoute: string;
+  isWaitingForResponse: boolean = false;
+
+  navigationMenu = [
+    {
+      _id: 'approval-group',
+      name: 'Approval Group',
+      link: '/approval-group',
+      icon: 'bx bxs-group',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: '',
+    },
+    {
+      _id: 'approval-table',
+      name: 'Approval ST Istirahat',
+      link: '/approval-table',
+      icon: 'bx bxs-badge-check',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: '',
+    },
+    {
+      _id: 'approval-table-work',
+      name: 'Approval ST Lapangan',
+      link: '/approval-table/work',
+      icon: 'bx bxs-badge-check',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: '',
+    },
+    {
+      _id: 'permit-leave',
+      name: 'Tugas Istirahat',
+      link: '/permit-leave',
+      icon: 'bx bx-calendar',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: '',
+    },
+    {
+      _id: 'permit-work',
+      name: 'Tugas Lapangan',
+      link: '/permit-work',
+      icon: 'bx bx-calendar',
+      textClass: 'links_name font-semibold',
+      tooltipClass: 'tooltip',
+      src: '',
+    },
+  ];
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private _formLeaveService : FormLeaveService) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        if (event.url.includes('auth')) {
-          this.showSideBar = false;
-        } else {
-          this.showSideBar = true;
-          this.userName =  localStorage.getItem('name')
-          setTimeout(() => {
-            this.Init()
-          }, 50);
+    private _navigation: NavigationService
+  ) {}
 
-        }
-      }
+  ngOnInit(): void {
+    this.subs.sink = this._navigation?.sidebarToggleListener$?.subscribe(() => {
+      this.toggleSidebar();
     });
   }
 
-  ngOnInit(): void {
-    this.employeeId = localStorage.getItem('userProfile');
-    this.getAllNotificationList()
-    this.userName =  localStorage.getItem('name')
-    if(this.showSideBar){
-      setTimeout(() => {
-        this.Init()
-      }, 50);
-    }
- }
-  getAllNotificationList() {
-    throw new Error('Method not implemented.');
-  }
-
   ngAfterViewInit() {
-    this.userName =  localStorage.getItem('name')
-    this.Init()
+    this.listenToRouteChanges();
+    if (window?.innerWidth < 1024) {
+      this.showMobile = true;
+    } else {
+      this.showMobile = false;
+    }
   }
 
-  Init(){
-    if (this.sidebar) {
-      const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
-      const searchBtn = this.sidebar.nativeElement.querySelector('.bx-search');
-
-      closeBtn.addEventListener('click', () => {
-        this.toggleSidebar();
-      });
-
-      searchBtn.addEventListener('click', () => {
-        this.toggleSidebar();
-      });
-    }
+  listenToRouteChanges() {
+    this.subs.sink = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.currRoute = event?.url;
+        this.isWaitingForResponse = false;
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
   toggleSidebar() {
     if (this.sidebar) {
       this.sidebar.nativeElement.classList.toggle('open');
+      if (this.showMobile) {
+        this.sidebar.nativeElement.classList.toggle('-ml-64');
+      }
       this.menuBtnChange();
     }
   }
-
   menuBtnChange() {
     if (this.sidebar && this.sidebar.nativeElement.classList.contains('open')) {
       const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
       closeBtn.classList.replace('bx-menu', 'bx-menu-alt-right');
-    } else if (this.sidebar) {
-      const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu-alt-right');
+    } else {
+      const closeBtn =
+        this.sidebar.nativeElement.querySelector('.bx-menu-alt-right');
       closeBtn.classList.replace('bx-menu-alt-right', 'bx-menu');
     }
   }
@@ -93,6 +140,6 @@ export class SidebarComponent {
     localStorage.removeItem('token');
     localStorage.removeItem('userProfile');
     localStorage.removeItem('name');
-    this.router.navigate(['/auth/login'])
+    this.router.navigate(['/auth/login']);
   }
 }

@@ -1,10 +1,76 @@
-<article id="form-card" class="flex flex-col gap-4 w-full">
-  <section id="profile-image">
-    <img src="" alt="">
-  </section>
-  <section id="card-content">
-    <strong id="employee-name">Bachrul Rasyid Zaini</strong>
-    <strong id="form-type">Lapangan</strong>
-    <p id="date-range">(06 Juni 2024 - 22 Juli 2024)</p>
-  </section>
+<article class="relative">
+  <article
+    id="form-card"
+    class="flex gap-6 w-full bg-primary-blue rounded-xl p-3 items-center justify-start z-50 relative"
+    (click)="this.isOpen = !this.isOpen"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 52 53"
+      fill="none"
+      class="rounded-full size-16" ><path d="M26 52.4997C40.3594 52.4997 52 40.8592 52 26.4998C52 12.1405 40.3594 0.5 26 0.5C11.6406 0.5 0 12.1405 0 26.4998C0 40.8592 11.6406 52.4997 26 52.4997Z" fill="#58B0E0" /><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5664 33.046L32.951 33.1478V44.0173L19.5664 43.9154V33.046Z" fill="#F9DCA4" /><path fill-rule="evenodd" clip-rule="evenodd" d="M36.9989 50.0638C33.5967 51.6484 29.8923 52.4792 26.1393 52.4995C22.3862 52.5199 18.6731 51.7292 15.2539 50.1816V41.239H36.9981L36.9989 50.0638Z" fill="#E6E6E6" /><path fill-rule="evenodd" clip-rule="evenodd" d="M28.1049 52.4157C27.4104 52.4712 26.7084 52.4993 25.9988 52.4998C25.4631 52.4998 24.9316 52.4838 24.4043 52.4519L25.271 44.8892H27.2988L28.1049 52.4157Z" fill="#E9573E" /><path fill-rule="evenodd" clip-rule="evenodd" d="M21.5885 52.1061C18.7218 51.5722 15.9533 50.6041 13.3787 49.2352C10.9057 47.859 8.67286 46.09 6.76758 43.9973L7.84797 41.3889L19.5648 36.162C19.5648 40.5475 21.0045 47.5052 21.5885 52.1061Z" fill="#677079" /><path opacity="0.11" fill-rule="evenodd" clip-rule="evenodd" d="M32.9547 33.1125V35.8311C28.9731 40.4817 21.3657 39.8237 19.6602 32.9602L32.9547 33.1125Z" fill="black" /><path fill-rule="evenodd" clip-rule="evenodd" d="M26.196 7.59515C44.1024 7.59515 37.1236 37.2687 26.196 37.2687C15.8742 37.2687 8.28961 7.59515 26.196 7.59515Z" fill="#FFE8BE" /><path fill-rule="evenodd" clip-rule="evenodd" d="M15.4519 20.7329C12.8687 21.8596 15.0649 27.2001 16.6905 27.1765C16.0162 25.0869 15.6002 22.9235 15.4519 20.7329Z" fill="#F9DCA4" /><path fill-rule="evenodd" clip-rule="evenodd" d="M37.142 20.7321C39.7252 21.8587 37.5291 27.2001 35.9043 27.1757C36.5781 25.0863 36.9937 22.9224 37.142 20.7321Z" fill="#F9DCA4" /><path fill-rule="evenodd" clip-rule="evenodd" d="M18.4524 12.556C15.6471 15.4657 16.6341 23.5197 16.6341 23.5197L15.7506 23.1032C10.2359 1.73619 42.3683 1.73535 36.8225 23.1032L35.939 23.5197C35.939 23.5197 36.9268 15.4657 34.1215 12.556C30.6556 15.9175 21.8989 15.8998 18.4524 12.556Z" fill="#464449" /><path fill-rule="evenodd" clip-rule="evenodd" d="M30.9375 52.0309C36.6233 50.9329 41.7789 47.9659 45.5851 43.6016L44.6679 41.3878L32.9519 36.1609C32.9519 40.5464 31.5215 47.43 30.9375 52.0309Z" fill="#677079" /><path fill-rule="evenodd" clip-rule="evenodd" d="M32.9523 35.8227L26.2832 41.2625L31.8139 46.2378C31.8139 46.2378 33.2881 38.0727 32.9523 35.8227Z" fill="white" /><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5662 35.8227L26.2884 41.2625L20.6971 46.2378C20.6971 46.2378 19.2279 38.0727 19.5662 35.8227Z" fill="white" /><path fill-rule="evenodd" clip-rule="evenodd" d="M23.6543 43.6035L26.2939 41.2324L28.9334 43.6035L26.2939 45.9738L23.6543 43.6035Z" fill="#E9573E" /><path fill-rule="evenodd" clip-rule="evenodd" d="M21.6816 52.1408C20.6071 51.961 19.5451 51.7137 18.5018 51.4003C18.4691 51.3751 18.4371 51.349 18.4059 51.3221L15.4314 45.9454L19.2524 43.2023H15.2539L16.1096 37.4378L19.5679 35.2509C19.7177 41.4522 21.048 48.4242 21.6816 52.1408Z" fill="#434955" /><path fill-rule="evenodd" clip-rule="evenodd" d="M30.8359 52.0507C31.3307 51.9683 31.8204 51.8538 32.3059 51.7276C32.8798 51.5787 33.4502 51.4104 34.0174 51.2404L34.1301 51.2043L37.0844 45.8907L33.2635 43.1628H37.2619L36.4062 37.4268L32.9479 35.2509C32.7981 41.4202 31.4687 48.3527 30.8359 52.0507Z" fill="#434955"
+      />
+    </svg>
+    <span
+      class="size-4 rounded-full absolute bottom-4 left-11"
+      [ngStyle]="{ 'background-color': statusColor }"
+    >
+    </span>
+    <section id="card-content" class="flex justify-between w-full items-center">
+      <section id="card-title" class="flex flex-col gap-1 justify-between">
+        <strong id="employee-name" class="text-white text-sm">
+          {{ from === "approval" ? employee_id?.number + " - " + " " : ""
+          }}{{
+            from === "approval" ? employee_id?.name : application_type
+          }}</strong
+        >
+        <p
+          id="form-type"
+          class="text-white text-xs font-semibold"
+          *ngIf="from === 'approval'"
+        >
+          {{ application_type }}
+        </p>
+        <p id="date-range" class="text-white text-sm">
+          {{ range_date }}
+        </p>
+      </section>
+      <mat-icon class="text-4xl flex justify-center items-center text-white"
+        >keyboard_arrow_down</mat-icon
+      >
+    </section>
+  </article>
+  <article
+    class="border-primary-blue rounded-b-xl border-4 transition-all w-full flex justify-around py-4 pt-6"
+    [ngClass]="isOpen ? '-mt-3' : '-mt-22 rounded-t-xl'"
+  >
+    <article
+      class="size-fit"
+      *ngIf="
+        form_status === 'waiting_for_approval_4' ||
+        form_status === 'completed' ||
+        form_status === 'approved'
+      "
+      (click)="openPDF(pdf_application_form)"
+    >
+      <mat-icon class="text-green-500 text-3xl size-fit"
+        >picture_as_pdf</mat-icon
+      >
+    </article>
+    <article
+      class="size-fit"
+      *ngIf="
+        (form_status === 'completed' || form_status === 'approved') &&
+        pdf_work_letter
+      "
+      (click)="openPDF(pdf_work_letter)"
+    >
+      <mat-icon class="text-primary-blue text-3xl size-fit"
+        >picture_as_pdf</mat-icon
+      >
+    </article>
+    <article class="size-fit" (click)="OpenFormToPreview(_id, employee_id._id, from)">
+      <mat-icon class="text-3xl size-fit">remove_red_eye</mat-icon>
+    </article>
+  </article>
 </article>

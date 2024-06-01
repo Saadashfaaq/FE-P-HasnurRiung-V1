@@ -85,7 +85,7 @@ export class FormPermitService {
   }
 
 
-  GetAllApplicationFormsEmployee(filter, sorting, pagination) {
+  GetAllApplicationFormsEmployee(filter, sorting, pagination?) {
     return this._apollo
       .query({
         query: gql`
@@ -110,6 +110,7 @@ export class FormPermitService {
               count_document
               employee_id {
                 employee_number
+                name
                 _id
               }
               _id
@@ -203,7 +204,7 @@ export class FormPermitService {
       .pipe(map((resp) => resp?.data['UpdateApplicationForm']));
   }
 
-  GetAllApplicationForms(filter, sorting, pagination) {
+  GetAllApplicationForms(filter, sorting, pagination?) {
     return this._apollo
       .query({
         query: gql`
@@ -228,6 +229,7 @@ export class FormPermitService {
                 }
                 _id
                 name
+                employee_number
                 position {
                   type
                   position

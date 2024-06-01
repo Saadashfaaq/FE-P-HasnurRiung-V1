@@ -1,1 +1,17 @@
-<app-user-card></app-user-card>
+<ng-container *ngFor="let form of this.dataSource?.data">
+  <app-user-card
+  [from]="'work'"
+  [end_date]="form?.work_end_date"
+  [start_date]="form?.work_start_date"
+  [form_status]="form?.form_status"
+  [_id]="form?._id"
+  [pdf_work_letter]="form?.pdf_work_letter"
+  [application_type]="'Dinas'"
+  [employee_id]="{
+    name: form?.employee_id?.name,
+    number: form?.employee_id?.employee_number,
+    _id: form?.employee_id?._id,
+  }"
+  ></app-user-card>
+</ng-container>
+

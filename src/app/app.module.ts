@@ -17,6 +17,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarComponent } from './modules/navigation/navbar/navbar.component';
+import { SidebarComponent } from './modules/navigation/sidebar/sidebar.component';
 
 // Fungsi untuk membuat ApolloClientOptions dengan otorisasi
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
@@ -62,7 +63,8 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     BrowserAnimationsModule,
     SidenavListComponent,
     ToolbarComponent,
-    NavbarComponent
+    NavbarComponent,
+    SidebarComponent
   ],
   providers: [
     {

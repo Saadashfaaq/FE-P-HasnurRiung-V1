@@ -1,0 +1,18 @@
+<section class="flex flex-col gap-4">
+  <ng-container *ngFor="let form of dataSource?.data">
+    <app-user-card
+    [from]="'approval'"
+    [end_date]="form?.end_date"
+    [start_date]="form?.is_ticket_supported ?  form?.leaves?.travel_date : form?.start_date"
+    [form_status]="form?.form_status"
+    [_id]="form?._id"
+    [pdf_work_letter]="form?.pdf_leave_letter"
+    [application_type]="form?.application_type === 'cuti' ? (form?.yearly_leave_duration ? 'Tahunan' : 'Lapangan') : (form?.permission_category === 'pp' ? 'Ijin PP' : 'Ijin Luar PP')"
+    [employee_id]="{
+      name: form?.employee_id?.name,
+      number: form?.employee_id?.employee_number,
+      _id: form?.employee_id?._id,
+    }"
+    ></app-user-card>
+  </ng-container>
+</section>

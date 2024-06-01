@@ -1,0 +1,18 @@
+<section class="flex flex-col gap-4">
+  <ng-container *ngFor="let form of formList">
+    <app-user-card
+    [from]="'approval'"
+    [end_date]="form?.work_end_date"
+    [start_date]="form?.work_start_date"
+    [form_status]="form?.form_status"
+    [_id]="form?._id"
+    [pdf_work_letter]="form?.pdf_work_letter"
+    [application_type]="'Dinas'"
+    [employee_id]="{
+      name: form?.employee_id?.name,
+      number: form?.employee_id?.employee_number,
+      _id: form?.employee_id?._id,
+    }"
+    ></app-user-card>
+  </ng-container>
+</section>
