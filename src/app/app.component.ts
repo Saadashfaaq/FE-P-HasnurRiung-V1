@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -24,11 +25,19 @@ import { SubSink } from 'subsink';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(width: number) {
+    if (width < 1024) {
+      this.showMobile = true;
+    } else {
+      this.showMobile = false;
+    }
+  }
+
   title = 'STOPLESS';
   showSideBar: boolean = true;
+  showMobile: boolean = false;
   userName: string = '';
-  @ViewChild('sidebar') sidebar: ElementRef | undefined;
-  @ViewChild('iconButtonOpen') iconButtonOpen: ElementRef | undefined;
 
   subs: SubSink = new SubSink();
   firstTime: boolean = true;
@@ -112,50 +121,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.changeDetectorRef.detectChanges();
         }
         this.isWaitingForResponse = false;
-        this.sideBarInitialization();
+
+        if (window?.innerWidth < 1024) {
+          this.showMobile = true;
+        } else {
+          this.showMobile = false;
+        }
+        this.changeDetectorRef.detectChanges();
       }
     });
-  }
-
-  private sidebarClickHandler(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (target && target.classList.contains('bx-menu')) {
-      this.toggleSidebar();
-    } else {
-      this.toggleSidebar();
-    }
-  }
-
-  sideBarInitialization() {
-    if (this.sidebar) {
-      this.iconButtonOpen.nativeElement.removeEventListener(
-        'click',
-        this.sidebarClickHandler
-      );
-      this.sidebarClickHandler = this.sidebarClickHandler.bind(this);
-      this.iconButtonOpen.nativeElement.addEventListener(
-        'click',
-        this.sidebarClickHandler
-      );
-    }
-  }
-
-  toggleSidebar() {
-    if (this.sidebar) {
-      this.sidebar.nativeElement.classList.toggle('open');
-      this.menuBtnChange();
-    }
-  }
-
-  menuBtnChange() {
-    if (this.sidebar && this.sidebar.nativeElement.classList.contains('open')) {
-      const closeBtn = this.sidebar.nativeElement.querySelector('.bx-menu');
-      closeBtn.classList.replace('bx-menu', 'bx-menu-alt-right');
-    } else {
-      const closeBtn =
-        this.sidebar.nativeElement.querySelector('.bx-menu-alt-right');
-      closeBtn.classList.replace('bx-menu-alt-right', 'bx-menu');
-    }
   }
 
   notifList;

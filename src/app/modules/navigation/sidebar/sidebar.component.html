@@ -1,48 +1,45 @@
-<div *ngIf="showSideBar" #sidebar class="sidebar">
-    <div class="logo-details mt-2 mb-10 flex flex-col">
-      <div class="my-2 text-center logo_name">
-        <img class="w-20 h-20" src="assets/images/LOGO.ico" alt="Deskripsi Gambar">
+<nav #sidebar class="sidebar" [ngClass]="showMobile ? '-ml-80 open' : ''">
+  <div #iconButtonOpen class="logo-details mt-10 mb-10 flex flex-col">
+    <div class="my-2 text-center logo_name">
+      <img
+        class="size-32 logo-image"
+        src="assets/images/LOGO.ico"
+        alt="Deskripsi Gambar"
+      />
     </div>
-    <i class="bx bx-menu" id="btn"></i>
-    </div>
-    <br>
-    <ul class="nav-list">
-      <li>
-        <a href="/approval-group">
-          <i class='bx bxs-group'></i>
-          <span class="links_name">Approval Group</span>
-        </a>
-        <span class="tooltip">Approval Group</span>
-      </li>
-      <li>
-        <a href="/approval">
-          <i class='bx bxs-badge-check'></i>
-          <span class="links_name">Approval</span>
-        </a>
-        <span class="tooltip">Approval</span>
-      </li>
-      <li>
-        <a href="/permit-leave">
-          <i class='bx bx-calendar' ></i>
-          <span class="links_name">Tugas Istirahat</span>
-        </a>
-        <span class="tooltip">Tugas Istirahat</span>
-      </li>
-      <li>
-        <a href="#">
-          <i class='bx bx-calendar' ></i>
-          <span class="links_name">Tugas Lapangan</span>
-        </a>
-        <span class="tooltip">Tugas Lapangan</span>
-      </li>
-      <li class="profile flex flex-row items-center">
-        <div class="profile-details">
-          <div class="name_job">
-            <div class="name">Logout</div>
-            <!-- <div class="job">Web designer</div> -->
-          </div>
-        </div>
-        <i (click)="TemporaryLogout()" class="button-logout bx bx-log-out" id="log_out"></i>
-      </li>
-    </ul>
+    <i class="bx bx-menu lg:block hidden" id="btn" (click)="toggleSidebar()"></i>
   </div>
+  <br />
+  <ul class="nav-list">
+
+    <!-- Navigation Menu Start Here -->
+    <ng-container *ngFor="let nav of navigationMenu">
+      <li [id]="nav?._id">
+        <a [routerLink]="[nav?.link]" [routerLinkActive]="'active'">
+          <i [ngClass]="nav?.icon"></i>
+          <span [ngClass]="nav?.textClass">{{nav?.name}}</span>
+        </a>
+        <span [ngClass]="nav?.tooltipClass">{{nav?.name}}</span>
+      </li>
+    </ng-container>
+    <!-- Navigation Menu Start Here -->
+
+    <!-- Logout Button Start Here -->
+    <li class="profile flex flex-row items-center cursor-pointer" (click)="TemporaryLogout()">
+      <span class="tooltip">Logout</span>
+      <div class="profile-details">
+        <div class="name_job">
+          <div class="name">Logout</div>
+        </div>
+      </div>
+      <i
+        class="button-logout bx bx-log-out"
+        id="log_out"
+      ></i>
+    </li>
+    <!-- Logout Button Start Here -->
+
+  </ul>
+</nav>
+
+<span class="h-screen w-screen bg-black opacity-30 absolute z-[98]" [ngClass]="isOpen ? 'block' : 'hidden'" (click)="toggleSidebar()"></span>

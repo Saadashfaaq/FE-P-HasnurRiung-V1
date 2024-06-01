@@ -274,7 +274,7 @@ export class FormLeaveService {
       .pipe(map((resp) => resp.data['GetAllApprovalGroups']));
   }
 
-  GetAllApplicationForms(filter, sorting, pagination) {
+  GetAllApplicationForms(filter, sorting, pagination?) {
     return this._apollo
       .query({
         query: gql`
@@ -374,7 +374,7 @@ export class FormLeaveService {
       .pipe(map((resp) => resp?.data['UpdateApprovalApplicationForm']));
   }
 
-  GetAllApplicationFormsEmployee(filter, sorting, pagination) {
+  GetAllApplicationFormsEmployee(filter, sorting?, pagination?) {
     return this._apollo
       .query({
         query: gql`
@@ -410,7 +410,10 @@ export class FormLeaveService {
               pdf_application_form
               pdf_leave_letter
               count_document
+              permission_category
               employee_id {
+                name
+                employee_number
                 _id
               }
               _id

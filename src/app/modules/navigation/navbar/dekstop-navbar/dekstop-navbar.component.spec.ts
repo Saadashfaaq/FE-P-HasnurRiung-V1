@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SidenavListComponent } from './sidenav-list.component';
+import { DekstopNavbarComponent } from './dekstop-navbar.component';
 
-describe('SidenavListComponent', () => {
-  let component: SidenavListComponent;
-  let fixture: ComponentFixture<SidenavListComponent>;
+describe('DekstopNavbarComponent', () => {
+  let component: DekstopNavbarComponent;
+  let fixture: ComponentFixture<DekstopNavbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SidenavListComponent]
+      imports: [DekstopNavbarComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SidenavListComponent);
+    fixture = TestBed.createComponent(DekstopNavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

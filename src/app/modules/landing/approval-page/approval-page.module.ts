@@ -4,11 +4,11 @@ import { ApprovalTableParentComponent } from './approval-table-parent/approval-t
 import { RouterModule, Routes } from '@angular/router';
 import { ApprovalTableWorkComponent } from './approval-table-work/approval-table-work.component';
 
-const routes : Routes = [
-  {path: '', component:ApprovalTableParentComponent},
-  {path: 'work', component:ApprovalTableWorkComponent},
-
-]
+const routes: Routes = [
+  { path: 'leave', component: ApprovalTableParentComponent },
+  { path: 'work', component: ApprovalTableWorkComponent },
+  { path: '**', redirectTo: 'leave', pathMatch: 'full' },
+];
 
 @NgModule({
   declarations: [],
@@ -16,6 +16,6 @@ const routes : Routes = [
     CommonModule,
     ApprovalTableParentComponent,
     RouterModule.forChild(routes),
-  ]
+  ],
 })
-export class ApprovalPageModule { }
+export class ApprovalPageModule {}

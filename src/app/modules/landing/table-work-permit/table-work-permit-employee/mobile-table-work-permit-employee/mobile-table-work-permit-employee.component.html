@@ -1,0 +1,33 @@
+<strong class="w-screen justify-center items-center text-center block mt-4 text-xl">ST Dinas</strong>
+
+<section class="flex flex-col justify-between p-4 w-screen h-full">
+  <section class="flex flex-col gap-4">
+    <mat-form-field appearance="outline"  class="w-full mx-auto" >
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [formControl]="startDateCtrl" placeholder="Start date">
+        <input matEndDate [formControl]="endDateCtrl" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <ng-container *ngFor="let form of formList">
+      <app-user-card
+        [from]="'work'"
+        [end_date]="form?.work_end_date"
+        [start_date]="form?.work_start_date"
+        [form_status]="form?.form_status"
+        [_id]="form?._id"
+        [pdf_work_letter]="form?.pdf_work_letter"
+        [application_type]="'Dinas'"
+        [employee_id]="{
+        name: form?.employee_id?.name,
+        number: form?.employee_id?.employee_number,
+        _id: form?.employee_id?._id,
+      }"
+      ></app-user-card>
+    </ng-container>
+  </section>
+  <article class="w-full flex justify-center items-center bg-primary-yellow rounded-xl py-4 cursor-pointer shadow-lg" (click)="OpenFormToCreate()">
+    + Ajukan Permohonan
+  </article>
+</section>

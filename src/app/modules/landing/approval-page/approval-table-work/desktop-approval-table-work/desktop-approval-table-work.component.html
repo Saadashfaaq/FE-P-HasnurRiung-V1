@@ -1,0 +1,630 @@
+<div *ngIf="isWaitingForResponse" class="inner-loading-indicator">
+  <mat-spinner color="primary" [diameter]="100"></mat-spinner>
+</div>
+<div class="p-2">
+  <div class="flex flex-row justify-between mb-2">
+    <div class="flex flex-row">
+      <button
+        color="warn"
+        mat-raised-button
+        (click)="deleteApproval()"
+        [disabled]="
+          !(dataSelected?.length || selection?.selected?.length) &&
+          !isCheckedAll
+        "
+      >
+        Hapus Permohonan
+      </button>
+    </div>
+    <div class="flex flex-row">
+      <div>
+        <button color="none" (click)="resetTable('table')" mat-raised-button>
+          <mat-icon>refresh</mat-icon>
+          <span>Reset</span>
+        </button>
+      </div>
+      <div class="ml-1">
+        <button
+          mat-raised-button
+          color="primary"
+          [matMenuTriggerFor]="actions"
+          matTooltip="{{ 'Export' }}"
+          matTooltipPosition="above"
+          [disabled]="isWaitingForResponse"
+        >
+          <p class="order-2 mr-1">
+            Export
+          </p>
+          <mat-icon class="order-1 mr-0">expand_more</mat-icon>
+        </button>
+        <mat-menu #actions="matMenu" class="export-menu">
+          <!--  [ngClass]="{hide: testData?.correction_type === 'student'}" original condition div above 07/05/2021 11:31 -->
+          <button
+            data-cy="btn-template-mark-entry"
+            mat-menu-item
+            color="accent"
+            class="border-button"
+            (click)="exportAppllicationForm()"
+          >
+            Export Tabel
+          </button>
+          <button
+            data-cy="btn-template-mark-entry"
+            mat-menu-item
+            color="accent"
+            class="border-button"
+            (click)="exportEmployeeAsTemplate()"
+          >
+            Export Karyawan
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  <div class="mat-elevation-z8 horizontal">
+    <table
+      matSort
+      (matSortChange)="onSort($event)"
+      class="mat-elevation-z8"
+      mat-table
+      [dataSource]="dataSource"
+    >
+      <ng-container
+        class="leftBottom sticky"
+        matColumnDef="checkbox_filter"
+        sticky
+      >
+        <th mat-header-cell *matHeaderCellDef></th>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_number_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.work_letter_number_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_month_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.work_letter_month_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_year_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.work_letter_year_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="employee_number_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.employee_number_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="employee_name_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.employee_name_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="position_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.work_letter_month_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="position_type_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <ng-select
+            class="mx-auto"
+            appendTo="body"
+            [items]="positionType"
+            bindLabel="name"
+            bindValue="value"
+            placeholder="Filter Kolom"
+            [formControl]="formControls.position_type_ctrl"
+          >
+          </ng-select>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="department_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Cari"
+              matInput
+              [formControl]="formControls.department_ctrl"
+            />
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="family_status_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <ng-select
+            class="mx-auto"
+            appendTo="body"
+            [items]="familyStatus"
+            bindLabel="name"
+            bindValue="value"
+            placeholder="Filter Kolom"
+            [formControl]="formControls.family_status_ctrl"
+          >
+          </ng-select>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="registration_date_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Tanggal"
+              matInput
+              [formControl]="formControls.registration_date_ctrl"
+              [matDatepicker]="registration_date_filter"
+              [readonly]="true"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="registration_date_filter"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #registration_date_filter></mat-datepicker>
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="work_start_date_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Tanggal"
+              matInput
+              [formControl]="formControls.work_start_date_ctrl"
+              [matDatepicker]="work_start_date_filter"
+              [readonly]="true"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="work_start_date_filter"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #work_start_date_filter></mat-datepicker>
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="work_duration_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <ng-select
+            class="mx-auto"
+            appendTo="body"
+            [items]="workDuration"
+            bindLabel="name"
+            bindValue="value"
+            placeholder="Filter Kolom"
+            [formControl]="formControls.work_duration_ctrl"
+          >
+          </ng-select>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="work_end_date_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Tanggal"
+              matInput
+              [formControl]="formControls.work_end_date_ctrl"
+              [matDatepicker]="work_end_date_filter"
+              [readonly]="true"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="work_end_date_filter"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #work_end_date_filter></mat-datepicker>
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="leave_eligible_date_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Tanggal"
+              matInput
+              [formControl]="formControls.leave_eligible_date_ctrl"
+              [matDatepicker]="leave_eligible_date_filter"
+              [readonly]="true"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="leave_eligible_date_filter"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #leave_eligible_date_filter></mat-datepicker>
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_date_of_approval_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" class="w-full w-full mx-auto">
+            <input
+              placeholder="Tanggal"
+              matInput
+              [formControl]="formControls.work_letter_date_of_approval_ctrl"
+              [matDatepicker]="work_letter_date_of_approval_filter"
+              [readonly]="true"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="work_letter_date_of_approval_filter"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+              #work_letter_date_of_approval_filter
+            ></mat-datepicker>
+          </mat-form-field>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="form_status_filter">
+        <th mat-header-cell *matHeaderCellDef>
+          <ng-select
+            class="mx-auto"
+            appendTo="body"
+            [items]="formStatusList"
+            bindLabel="name"
+            bindValue="value"
+            placeholder="Filter Kolom"
+            [formControl]="formControls.form_status_ctrl"
+          >
+          </ng-select>
+        </th>
+      </ng-container>
+
+      <ng-container class="rightBottom" matColumnDef="action_filter" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef></th>
+      </ng-container>
+
+      <ng-container class="leftTop sticky" matColumnDef="checkbox" sticky>
+        <th mat-header-cell *matHeaderCellDef class="overflow-visible">
+          <mat-checkbox
+            class="label-header-checkbox"
+            (change)="$event ? masterToggle() : null; showOptions('')"
+            [checked]="
+              ((selection.hasValue() && isAllSelected()) || isCheckedAll) &&
+              dataUnselect?.length !== dataCount
+            "
+            [indeterminate]="
+              selection.hasValue() &&
+              (dataUnselect?.length > 0 || !isAllSelected()) &&
+              dataUnselect?.length !== dataCount
+            "
+            [aria-label]="checkboxLabel()"
+            [attr.data-cy]="'checkbox-all'"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="
+              $event ? selection.toggle(element._id) : null;
+              showOptions(element)
+            "
+            [checked]="
+              selection.isSelected(element._id) ||
+              (isCheckedAll && !dataUnselect?.includes(element?._id))
+            "
+            [aria-label]="checkboxLabel(element)"
+            [attr.data-cy]="'checkbox-one'"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_number">
+        <th
+          mat-sort-header="work_letter_number"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          No Surat
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.work_letter_number }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_month">
+        <th
+          mat-sort-header="work_letter_month"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Bulan Surat
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.work_letter_month }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_year">
+        <th
+          mat-sort-header="work_letter_year"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tahun Surat
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.work_letter_year }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="employee_name">
+        <th mat-sort-header="employee_name" mat-header-cell *matHeaderCellDef>
+          Nama
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.employee_id.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="employee_number">
+        <th mat-sort-header="employee_number" mat-header-cell *matHeaderCellDef>
+          NRP
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.employee_id.employee_number }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="position">
+        <th mat-sort-header="position" mat-header-cell *matHeaderCellDef>
+          Jabatan
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.employee_id.position.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="position_type">
+        <th mat-sort-header="position_type" mat-header-cell *matHeaderCellDef>
+          Tipe Jabatan
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{
+            element?.employee_id.position.type === "staff"
+              ? "Staff"
+              : "Non Staf"
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="department">
+        <th mat-sort-header="department" mat-header-cell *matHeaderCellDef>
+          Dept
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.employee_id?.position?.department }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="family_status">
+        <th mat-sort-header="family_status" mat-header-cell *matHeaderCellDef>
+          Status Pernikahan
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.employee_id?.family_status }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="registration_date">
+        <th
+          mat-sort-header="registration_date"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tanggal Perekrutan
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.employee_id?.date_of_registration.date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="work_start_date">
+        <th mat-sort-header="work_start_date" mat-header-cell *matHeaderCellDef>
+          Awal Dinas
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.work_start_date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="work_duration">
+        <th mat-sort-header="work_duration" mat-header-cell *matHeaderCellDef>
+          Durasi Kerja
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element?.work_duration }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="work_end_date">
+        <th mat-sort-header="work_end_date" mat-header-cell *matHeaderCellDef>
+          Akhir Kerja
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element?.work_end_date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="leave_eligible_date">
+        <th
+          mat-sort-header="leave_eligible_date"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Matang Cuti
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.date_of_eligible_for_leave }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="work_letter_date_of_approval">
+        <th
+          mat-sort-header="work_letter_date_of_approval"
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          Tanggal ST Dinas
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element?.work_letter_date_of_approval }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="form_status">
+        <th mat-sort-header="form_status" mat-header-cell *matHeaderCellDef>
+          Status Permohonan
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            (click)="OpenDialogTimeline(element?._id)"
+            [matTooltip]="getStatusTooltip(element?.form_status)"
+            mat-icon-button
+            [ngStyle]="{ color: getStatusColor(element?.form_status) }"
+          >
+            <mat-icon>lens</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container class="rightTop" matColumnDef="action" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            style="justify-content: center !important"
+            class="flex flex-row jusify-center align-center gap-1"
+          >
+            <div>
+              <button
+                (click)="
+                  OpenFormToPreview(element?._id, element.employee_id._id)
+                "
+                mat-icon-button
+              >
+                <mat-icon class="cursor-pointer">remove_red_eye</mat-icon>
+              </button>
+            </div>
+            <div>
+              <button
+                *ngIf="element.form_status === 'completed'"
+                (click)="OpenPDFLeaveLetter(element?.pdf_work_letter)"
+                mat-icon-button
+              >
+                <mat-icon class="cursor-pointer text-indigo-900"
+                  >picture_as_pdf</mat-icon
+                >
+              </button>
+            </div>
+            <div>
+              <button
+                (click)="deleteApproval(element, 'table')"
+                mat-icon-button
+                color="warn"
+                [disabled]="
+                  dataSelected?.length ||
+                  selection?.selected?.length ||
+                  isCheckedAll
+                "
+              >
+                <mat-icon class="cursor-pointer">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <!-- loading spinner -->
+      <ng-container matColumnDef="loading">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          colspan="100%"
+          class="text-center w-full"
+        >
+          <div class="center-spinner w-full flex justify-center align-center">
+            <mat-spinner color="accent"></mat-spinner>
+          </div>
+        </th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="filterCols"></tr>
+      <tr
+        [hidden]="isWaitingForResponse"
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+      <tr
+        [hidden]="!isWaitingForResponse"
+        mat-row
+        *matHeaderRowDef="['loading']"
+      ></tr>
+    </table>
+  </div>
+
+  <div
+    style="text-align: center !important; margin: 20px !important"
+    class="my-10 text-center w-full"
+    *ngIf="noData | async"
+    class="no-records"
+  >
+    <span class="text-md text-center text-gray-700 font-semibold"
+      >Data Tidak Ditemukan</span
+    >
+  </div>
+  <div [ngClass]="{ hidden: noData | async }">
+    <mat-paginator
+      [ngClass]="{ 'hide-pagination-buttons': paginator.length <= 10 }"
+      [length]="dataCount"
+      [hidePageSize]="true"
+      [pageSize]="10"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>
