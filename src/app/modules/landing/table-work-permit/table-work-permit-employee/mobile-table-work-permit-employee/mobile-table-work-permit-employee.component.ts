@@ -1,6 +1,6 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
-import { UntypedFormControl } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,62 +14,27 @@ import Swal from 'sweetalert2';
 import { TimelineDialogComponent } from '../../../timeline-dialog/timeline-dialog.component';
 import { UserCardComponent } from 'src/app/modules/shared/user-card/user-card.component';
 import { NgFor } from '@angular/common';
+import * as _ from 'lodash';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 @Component({
     selector: 'app-mobile-table-work-permit-employee',
     standalone: true,
     templateUrl: './mobile-table-work-permit-employee.component.html',
     styleUrl: './mobile-table-work-permit-employee.component.scss',
-    imports: [UserCardComponent, NgFor]
+    imports: [UserCardComponent, NgFor, MatFormFieldModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule]
 })
-export class MobileTableWorkPermitEmployeeComponent {
+export class MobileTableWorkPermitEmployeeComponent implements OnInit {
   private subs = new SubSink();
   employeeId: any;
-  token: any;
-  dataSource = new MatTableDataSource([]);
-  selection = new SelectionModel<any>(true, []);
-  noData: any;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  sortValue = null;
-  dataCount = 0;
   isReset = false;
-  dataLoaded = false;
   isWaitingForResponse = false;
 
-  formStatusList = [
-    {
-      name: 'Menunggu Persetujuan 1',
-      value: 'waiting_for_approval_1',
-    },
-    {
-      name: 'Menunggu Persetujuan 2',
-      value: 'waiting_for_approval_2',
-    },
-    {
-      name: 'Menunggu Persetujuan 3',
-      value: 'waiting_for_approval_3',
-    },
-    {
-      name: 'Menunggu Persetujuan 4',
-      value: 'waiting_for_approval_4',
-    },
-    {
-      name: 'Menunggu Persetujuan 5',
-      value: 'waiting_for_approval_5',
-    },
-    {
-      name: 'Ditolak',
-      value: 'rejected',
-    },
-    {
-      name: 'Disetujui',
-      value: 'completed',
-    },
-    {
-      name: 'Revisi',
-      value: 'revision',
-    },
-  ];
+  formList;
+
+  startDateCtrl: UntypedFormControl;
+  endDateCtrl: UntypedFormControl;
 
   constructor(
     private router: Router,
@@ -78,9 +43,9 @@ export class MobileTableWorkPermitEmployeeComponent {
     private _adapter: DateAdapter<any>,
     private formPermitService: FormPermitService
   ) {}
+
   ngOnInit(): void {
     this.employeeId = localStorage.getItem('userProfile');
-    this.token = localStorage.getItem('token');
     this.GetAllApplicationFormsEmployee();
     this.initFilter();
     this.SetDatePickerFormat();
@@ -98,21 +63,13 @@ export class MobileTableWorkPermitEmployeeComponent {
   ];
   filterCols: string[] = this.displayedColumns.map((col) => `${col}_filter`);
   formControls = {
-    work_letter_number_ctrl: new UntypedFormControl(null),
-    work_letter_month_ctrl: new UntypedFormControl(null),
-    work_letter_year_ctrl: new UntypedFormControl(null),
     work_start_date_ctrl: new UntypedFormControl(null),
     work_end_date_ctrl: new UntypedFormControl(null),
-    form_status_ctrl: new UntypedFormControl(null),
   };
 
   filteredValue = {
-    work_letter_number: null,
-    work_letter_month: null,
-    work_letter_year: null,
     work_start_date: null,
     work_end_date: null,
-    form_status: null,
   };
 
   SetDatePickerFormat() {
@@ -121,29 +78,7 @@ export class MobileTableWorkPermitEmployeeComponent {
   }
 
   initFilter() {
-    Object.keys(this.formControls).forEach((key: string) => {
-      const control = this.formControls[key];
-      const filteredKey = key.replace('_ctrl', '');
-
-      control.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
-        if (
-          key!.toLowerCase().includes('date') ||
-          key!.toLowerCase().includes('departure')
-        ) {
-          this.filteredValue[filteredKey] = value
-            ? new Date(value).toISOString()
-            : null;
-        } else {
-          this.filteredValue[filteredKey] = value ? value : null;
-        }
-
-        this.paginator.firstPage();
-
-        if (!this.isReset) {
-          this.GetAllApplicationFormsEmployee();
-        }
-      });
-    });
+    this
   }
 
   GetAllApplicationFormsEmployee() {
@@ -156,23 +91,16 @@ export class MobileTableWorkPermitEmployeeComponent {
     };
 
     this.subs.sink = this.formPermitService
-      .GetAllApplicationFormsEmployee(filter, this.sortValue)
+      .GetAllApplicationFormsEmployee(filter)
       .subscribe(
         (resp) => {
           if (resp && resp.length) {
-            this.dataSource.data = resp;
-            this.paginator.length = resp[0].count_document;
-            this.dataCount = resp[0]?.count_document;
+            this.formList = _.cloneDeep(resp);
             this.isWaitingForResponse = false;
           } else {
-            this.dataSource.data = [];
-            this.paginator.length = 0;
-            this.dataCount = 0;
+            this.formList = [];
             this.isWaitingForResponse = false;
           }
-          this.noData = this.dataSource
-            .connect()
-            .pipe(map((dataa) => dataa.length === 0));
           this.isReset = false;
         },
         (err) => {
@@ -233,15 +161,6 @@ export class MobileTableWorkPermitEmployeeComponent {
     }
   }
 
-  // Regex Input For Numeric
-  preventNonNumericalInput(event) {
-    if (event && event.key) {
-      if (!event.key.match(/^[0-9]+$/)) {
-        event.preventDefault();
-      }
-    }
-  }
-
   resetTable() {
     // Loop through the keys in formControls object
     for (const key in this.formControls) {
@@ -251,20 +170,6 @@ export class MobileTableWorkPermitEmployeeComponent {
         this.formControls[key].setValue(null);
       }
     }
-  }
-
-  OpenFormToCreate() {
-    const formType = 'work';
-    this.subs.sink = this.formPermitService
-      .CheckEmployeeApplicationForm(this.employeeId, formType)
-      .subscribe((resp: any) => {
-        if (resp) {
-          localStorage.setItem('previousPage', '/permit-work');
-          this.router.navigate(['/form-permit']);
-        } else {
-          this.InvalidSwal();
-        }
-      });
   }
 
   InvalidSwal() {
@@ -306,32 +211,17 @@ export class MobileTableWorkPermitEmployeeComponent {
     this.router.navigate([`/form-permit/preview/${formId}/${employeeId}`]);
   }
 
-  // onSort(sort: Sort) {
-  //   this.sortValue = sort.active ? { [sort.active]: sort.direction ? sort.direction : 'asc' } : null;
-  //   if (this.dataLoaded) {
-  //     this.paginator.pageIndex = 0;
-  //     if (!this.isReset) {
-  //       this.GetAllApplicationFormsEmployee()
-  //     }
-  //   }
-  // }
-
-  onSort(sort: Sort) {
-    if (sort.active && sort.direction) {
-      if (this.sortValue && this.sortValue[sort.active] === sort.direction) {
-        this.sortValue[sort.active] = sort.direction === 'asc' ? 'desc' : 'asc';
-      } else {
-        this.sortValue = { [sort.active]: sort.direction };
-      }
-    } else {
-      this.sortValue = null;
-    }
-
-    if (this.dataLoaded) {
-      this.paginator.pageIndex = 0;
-      if (!this.isReset) {
-        this.GetAllApplicationFormsEmployee();
-      }
-    }
+  OpenFormToCreate() {
+    const formType = 'work';
+    this.subs.sink = this.formPermitService
+      .CheckEmployeeApplicationForm(this.employeeId, formType)
+      .subscribe((resp: any) => {
+        if (resp) {
+          localStorage.setItem('previousPage', '/permit-work');
+          this.router.navigate(['/form-permit']);
+        } else {
+          this.InvalidSwal();
+        }
+      });
   }
 }

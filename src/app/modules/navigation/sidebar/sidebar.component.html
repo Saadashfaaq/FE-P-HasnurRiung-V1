@@ -1,4 +1,4 @@
-<nav #sidebar class="sidebar" [ngClass]="showMobile ? '-ml-64' : ''">
+<nav #sidebar class="sidebar" [ngClass]="showMobile ? '-ml-80 open' : ''">
   <div #iconButtonOpen class="logo-details mt-10 mb-10 flex flex-col">
     <div class="my-2 text-center logo_name">
       <img
@@ -7,7 +7,7 @@
         alt="Deskripsi Gambar"
       />
     </div>
-    <i class="bx bx-menu" id="btn" (click)="toggleSidebar()"></i>
+    <i class="bx bx-menu lg:block hidden" id="btn" (click)="toggleSidebar()"></i>
   </div>
   <br />
   <ul class="nav-list">
@@ -15,7 +15,7 @@
     <!-- Navigation Menu Start Here -->
     <ng-container *ngFor="let nav of navigationMenu">
       <li [id]="nav?._id">
-        <a [routerLink]="[nav?.link]" [ngClass]="currRoute === nav?.link ? 'active' : ''">
+        <a [routerLink]="[nav?.link]" [routerLinkActive]="'active'">
           <i [ngClass]="nav?.icon"></i>
           <span [ngClass]="nav?.textClass">{{nav?.name}}</span>
         </a>
@@ -41,3 +41,5 @@
 
   </ul>
 </nav>
+
+<span class="h-screen w-screen bg-black opacity-30 absolute z-[98]" [ngClass]="isOpen ? 'block' : 'hidden'" (click)="toggleSidebar()"></span>

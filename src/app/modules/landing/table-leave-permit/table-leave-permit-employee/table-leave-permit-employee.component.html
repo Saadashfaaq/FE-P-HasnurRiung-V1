@@ -1,7 +1,7 @@
 <ng-container *ngIf="isShowMobile; then mobile; else desktop;"></ng-container>
 
 <ng-template #mobile>
-  <app-mobile-table-leave-permit-employee></app-mobile-table-leave-permit-employee>
+  <app-mobile-table-leave-permit-employee class="h-full flex flex-col"></app-mobile-table-leave-permit-employee>
 </ng-template>
 <ng-template #desktop>
   <app-desktop-table-leave-permit-employee></app-desktop-table-leave-permit-employee>

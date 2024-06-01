@@ -11,8 +11,6 @@ import extractFiles from 'extract-files/extractFiles.mjs';
 import isExtractableFile from 'extract-files/isExtractableFile.mjs';
 import { environment } from 'src/environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
-import { ToolbarComponent } from './navigation/toolbar/toolbar.component';
 import { SharedModule } from './modules/shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -61,8 +59,6 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     ApolloModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    SidenavListComponent,
-    ToolbarComponent,
     NavbarComponent,
     SidebarComponent
   ],

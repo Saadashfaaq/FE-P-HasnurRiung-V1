@@ -1,0 +1,521 @@
+table{
+  padding: 10px;
+  background-color: #f2f2f2  ;
+  border-radius: 8px;
+}
+
+:host ::ng-deep table {
+  position: relative;
+  tr {
+    td,
+    th {
+      &:nth-child(1) {
+        width: 5%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 50px;
+        max-width: 50px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+
+      &:nth-child(2) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(3) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(4) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(5) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(6) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(7) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(8) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(9) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(9) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(10) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(11) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(12) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(13) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(14) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(15) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(16) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(17) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(18) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(19) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(20) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(21) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(22) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(23) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(24) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(25) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(26) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(27) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(28) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(29) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+      &:nth-child(30) {
+        width: 17%;
+        padding-left: 0px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+        min-width: 170px;
+        max-width: 170px;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+    }
+
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 0;
+      white-space: nowrap;
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+      padding-top: 0px !important;
+      padding-bottom: 0px !important;
+    }
+
+    th {
+      vertical-align: top;
+
+      .mat-form-field-infix {
+        width: unset !important;
+      }
+    }
+    &:nth-child(1) {
+      th {
+        padding-top: 0.9em;
+      }
+    }
+  }
+
+  thead tr {
+    &:nth-child(1) {
+      height: 20px;
+    }
+    &:nth-child(2) {
+      height: 20px;
+    }
+
+  }
+
+  tr {
+    td,
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 0;
+      white-space: nowrap;
+      padding: 0.5em;
+    }
+
+    th {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      font-weight: bold !important;
+      vertical-align: top;
+      padding-left: 1rem;
+    }
+  }
+
+  thead {
+    background: #015BAB;
+  }
+}
+
+.mat-mdc-header-row{
+  color: #f2f2f2;
+}
+
+.mat-mdc-header-cell.mat-column-checkbox {
+border-top-left-radius: 8px;
+}
+.mat-mdc-header-cell.mat-column-checkbox_filter {
+  border-bottom-left-radius: 8px;
+
+}
+.mat-mdc-header-cell.mat-column-action {
+  border-top-right-radius: 8px;
+
+}
+.mat-mdc-header-cell.mat-column-action_filter {
+  border-bottom-right-radius: 8px;
+}
+
+.mat-mdc-header-cell {
+  border: 0px solid #ffffff;
+}
+
+.mat-mdc-cell{
+  border: 0px solid #ffffff;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  --mdc-protected-button-container-color: #FFF138;
+  --mdc-protected-button-label-text-color: #000000;
+  --mat-protected-button-state-layer-color: #000000;
+  --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+}
+
+.mat-mdc-header-row{
+  color: #f2f2f2;
+}
+
+.mat-mdc-header-cell {
+  border: 0px solid #ffffff;
+}
+
+.mat-mdc-cell{
+  border: 0px solid #ffffff;
+}
+
+.horizontal {
+  overflow: auto;
+  overflow-y: hidden;
+}
+.horizontal::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: #eaa11c !important;
+}
+
+
+.ng-select {
+  width: 100%;
+
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex {
+position: relative;
+display: flex;
+align-items: stretch;
+border-radius: 6px;
+padding: 0 8px!important;
+}
+
+:host ::ng-deep .mdc-text-field {
+border-top-left-radius: 4px;
+border-top-left-radius: var(--mdc-shape-small, 4px);
+border-top-right-radius: 4px;
+border-top-right-radius: var(--mdc-shape-small, 4px);
+border-bottom-right-radius: 0;
+border-bottom-right-radius: 4px;
+border-bottom-left-radius: 4px;
+display: inline-flex;
+align-items: baseline;
+padding: 0 8px !important;
+position: relative;
+box-sizing: border-box;
+overflow: hidden;
+will-change: opacity, transform, color;
+background: white;
+}
+
+
+.mat-mdc-raised-button.mat-accent {
+--mdc-protected-button-container-color: #FFF138;
+--mdc-protected-button-label-text-color: #000000;
+--mat-protected-button-state-layer-color: #000000;
+--mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+font-weight: 600;
+}
+
+
+.mat-mdc-raised-button.mat-none {
+--mdc-protected-button-container-color: #888888;
+--mdc-protected-button-label-text-color: #ffffff;
+--mat-protected-button-state-layer-color: #ffffff;
+--mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
+font-weight: 600;
+}
+
+

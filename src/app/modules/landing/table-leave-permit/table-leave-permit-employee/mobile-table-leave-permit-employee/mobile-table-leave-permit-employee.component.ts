@@ -1,33 +1,42 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
-import { UserCardComponent } from "../../../../shared/user-card/user-card.component";
+import { UserCardComponent } from '../../../../shared/user-card/user-card.component';
+import Swal from 'sweetalert2';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
-    selector: 'app-mobile-table-leave-permit-employee',
-    standalone: true,
-    templateUrl: './mobile-table-leave-permit-employee.component.html',
-    styleUrl: './mobile-table-leave-permit-employee.component.scss',
-    imports: [NgFor, UserCardComponent]
+  selector: 'app-mobile-table-leave-permit-employee',
+  standalone: true,
+  templateUrl: './mobile-table-leave-permit-employee.component.html',
+  styleUrl: './mobile-table-leave-permit-employee.component.scss',
+  imports: [
+    NgFor,
+    UserCardComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+  ],
 })
 export class MobileTableLeavePermitEmployeeComponent {
   private subs = new SubSink();
   employeeId: any;
-  token: any;
-  noData: any;
-  sortValue = null;
-  dataCount = 0;
   isReset = false;
-  dataLoaded = false;
   isWaitingForResponse = false;
 
   formList: any;
+
+  startDateCtrl: UntypedFormControl;
+  endDateCtrl: UntypedFormControl;
 
   constructor(
     private _formLeaveService: FormLeaveService,
@@ -49,7 +58,6 @@ export class MobileTableLeavePermitEmployeeComponent {
 
   ngOnInit(): void {
     this.employeeId = localStorage.getItem('userProfile');
-    this.token = localStorage.getItem('token');
     this.GetAllApplicationFormsEmployee();
     this.SetDatePickerFormat();
   }
@@ -69,16 +77,14 @@ export class MobileTableLeavePermitEmployeeComponent {
     };
 
     this.subs.sink = this._formLeaveService
-      .GetAllApplicationFormsEmployee(filter, this.sortValue)
+      .GetAllApplicationFormsEmployee(filter)
       .subscribe(
         (resp) => {
           if (resp && resp.length) {
             this.formList = _.cloneDeep(resp);
-            this.dataCount = resp[0]?.count_document;
             this.isWaitingForResponse = false;
           } else {
             this.formList = _.cloneDeep(resp);
-            this.dataCount = 0;
             this.isWaitingForResponse = false;
           }
           this.isReset = false;
@@ -152,5 +158,32 @@ export class MobileTableLeavePermitEmployeeComponent {
       default:
         return 'Status Tidak Diketahui';
     }
+  }
+
+  OpenFormToCreate() {
+    const formType = 'leave';
+    this.subs.sink = this._formLeaveService
+      .CheckEmployeeApplicationForm(this.employeeId, formType)
+      .subscribe((resp: any) => {
+        if (resp) {
+          localStorage.setItem('previousPage', '/permit-leave');
+          this.router.navigate(['/form-leave']);
+        } else {
+          this.InvalidSwal();
+        }
+      });
+  }
+
+  InvalidSwal() {
+    Swal.fire({
+      title: 'Permohonan terakhir Anda saat ini sedang dalam proses pengajuan.',
+      html: 'Silakan selesaikan permohonan Anda terlebih dahulu.',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText: 'Saya Mengerti',
+    });
   }
 }

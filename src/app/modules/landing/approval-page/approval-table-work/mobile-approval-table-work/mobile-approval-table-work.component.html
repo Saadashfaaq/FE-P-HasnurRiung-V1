@@ -1,4 +1,14 @@
-<section class="flex flex-col gap-4">
+<strong class="w-screen justify-center items-center text-center block mt-4 text-xl">Approval ST Dinas</strong>
+
+<section class="flex flex-col gap-4 p-4 w-screen">
+  <mat-form-field appearance="outline"  class="w-full mx-auto" >
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate [formControl]="startDateCtrl" placeholder="Start date">
+      <input matEndDate [formControl]="endDateCtrl" placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
   <ng-container *ngFor="let form of formList">
     <app-user-card
     [from]="'approval'"

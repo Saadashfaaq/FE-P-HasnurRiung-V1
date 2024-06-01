@@ -1,9 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { AsyncPipe, NgClass, NgIf, NgStyle } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
@@ -14,8 +17,15 @@ import { SubSink } from 'subsink';
   selector: 'app-table-leave-permit-admin',
   standalone: true,
   imports: [
-    SharedModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatTooltipModule,
+    NgClass,
+    NgStyle,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    NgIf,
+    AsyncPipe,
   ],
   templateUrl: './table-leave-permit-admin.component.html',
   styleUrl: './table-leave-permit-admin.component.scss'

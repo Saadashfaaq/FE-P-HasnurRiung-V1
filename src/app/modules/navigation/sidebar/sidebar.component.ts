@@ -32,9 +32,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   }
   showMobile: boolean = false;
+  isOpen: boolean = false;
 
   subs: SubSink = new SubSink();
-  currRoute: string;
   isWaitingForResponse: boolean = false;
 
   navigationMenu = [
@@ -50,7 +50,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     {
       _id: 'approval-table',
       name: 'Approval ST Istirahat',
-      link: '/approval-table',
+      link: '/approval-table/leave',
       icon: 'bx bxs-badge-check',
       textClass: 'links_name font-semibold',
       tooltipClass: 'tooltip',
@@ -109,8 +109,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   listenToRouteChanges() {
     this.subs.sink = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        this.currRoute = event?.url;
         this.isWaitingForResponse = false;
+        this.toggleSidebar();
         this.changeDetectorRef.detectChanges();
       }
     });
@@ -118,9 +118,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   toggleSidebar() {
     if (this.sidebar) {
-      this.sidebar.nativeElement.classList.toggle('open');
       if (this.showMobile) {
-        this.sidebar.nativeElement.classList.toggle('-ml-64');
+        this.sidebar.nativeElement.classList.toggle('-ml-80');
+        this.isOpen = !this.isOpen;
+      } else {
+        this.sidebar.nativeElement.classList.toggle('open');
       }
       this.menuBtnChange();
     }

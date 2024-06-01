@@ -50,7 +50,6 @@ import {
     MAT_TOOLTIP_DEFAULT_OPTIONS,
 } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     AsyncPipe,

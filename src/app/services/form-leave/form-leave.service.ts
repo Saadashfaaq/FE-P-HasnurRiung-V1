@@ -366,7 +366,7 @@ export class FormLeaveService {
       .pipe(map((resp) => resp?.data['UpdateApprovalApplicationForm']));
   }
 
-  GetAllApplicationFormsEmployee(filter, sorting, pagination?) {
+  GetAllApplicationFormsEmployee(filter, sorting?, pagination?) {
     return this._apollo
       .query({
         query: gql`

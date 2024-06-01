@@ -85,7 +85,7 @@ export class FormPermitService {
   }
 
 
-  GetAllApplicationFormsEmployee(filter, sorting, pagination?) {
+  GetAllApplicationFormsEmployee(filter, sorting?, pagination?) {
     return this._apollo
       .query({
         query: gql`
@@ -204,7 +204,7 @@ export class FormPermitService {
       .pipe(map((resp) => resp?.data['UpdateApplicationForm']));
   }
 
-  GetAllApplicationForms(filter, sorting, pagination?) {
+  GetAllApplicationForms(filter, sorting?, pagination?) {
     return this._apollo
       .query({
         query: gql`

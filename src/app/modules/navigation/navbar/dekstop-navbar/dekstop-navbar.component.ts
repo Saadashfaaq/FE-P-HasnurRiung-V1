@@ -7,11 +7,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { UserService } from 'src/app/services/user/user.service';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-dekstop-navbar',
   standalone: true,
-  imports: [SharedModule, MatIconModule, MatButtonModule, MatDividerModule],
+  imports: [NgClass, MatIconModule, MatButtonModule, MatDividerModule, NgIf, MatMenuModule, MatTooltipModule, NgFor],
   templateUrl: './dekstop-navbar.component.html',
   styleUrl: './dekstop-navbar.component.scss'
 })

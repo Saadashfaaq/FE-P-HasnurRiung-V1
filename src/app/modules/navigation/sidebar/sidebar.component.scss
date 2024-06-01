@@ -23,7 +23,7 @@
   display: none; /* Tidak menampilkan elemen */
 }
 .sidebar.open {
-  width: 250px;
+  width: 320px;
 
   .logo-details {
     height: fit-content !important;
@@ -203,7 +203,7 @@
   overflow: visible;
 }
 .sidebar.open li.profile {
-  width: 250px;
+  width: 320px;
 }
 .sidebar li .profile-details {
   display: flex;
@@ -289,12 +289,12 @@
   }
 }
 
-.-ml-64 {
-  margin-left: -16rem;
+.-ml-80 {
+  margin-left: -20rem;
 }
 
-.sidebar.-ml-64 {
+.sidebar.-ml-80 {
   li.profile {
-    left: -16rem;
+    left: -20rem;
   }
 }

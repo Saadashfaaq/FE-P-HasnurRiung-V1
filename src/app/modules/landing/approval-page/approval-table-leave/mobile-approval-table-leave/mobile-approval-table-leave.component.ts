@@ -10,18 +10,27 @@ import { debounceTime, map, startWith, tap } from 'rxjs';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { FormLeaveService } from 'src/app/services/form-leave/form-leave.service';
 import { SubSink } from 'subsink';
-import { UntypedFormControl } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _ from 'lodash';
 import Swal from 'sweetalert2';
 import { TimelineDialogComponent } from '../../../timeline-dialog/timeline-dialog.component';
 import { UserCardComponent } from 'src/app/modules/shared/user-card/user-card.component';
+import { NgFor } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-mobile-approval-table-leave',
   standalone: true,
-  imports: [SharedModule, MatIconModule, NgSelectModule, UserCardComponent],
+  imports: [  NgFor,
+    UserCardComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,],
   templateUrl: './mobile-approval-table-leave.component.html',
   styleUrl: './mobile-approval-table-leave.component.scss'
 })
@@ -46,6 +55,9 @@ export class MobileApprovalTableLeaveComponent {
   isWaitingForResponse: boolean = false;
 
   employeeData;
+
+  startDateCtrl: UntypedFormControl;
+endDateCtrl: UntypedFormControl;
 
   constructor(
     private _formLeaveService: FormLeaveService,
