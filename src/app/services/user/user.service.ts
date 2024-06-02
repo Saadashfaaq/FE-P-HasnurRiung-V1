@@ -2,15 +2,11 @@ import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { map } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
-  constructor(
-    private _apollo: Apollo,
-  ) { }
+  constructor(private _apollo: Apollo) {}
 
   Login(employeeNumber, password) {
     return this._apollo
@@ -45,6 +41,24 @@ export class UserService {
       .pipe(map((resp) => resp?.data['Login'])); // Memetakan respons ke hasil login
   }
 
+  ResetPassword(employeeNumber, password) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation SetPassword($employeeNumber: String, $password: String) {
+            SetPassword(employee_number: $employeeNumber, password: $password) {
+              _id
+            }
+          }
+        `,
+        variables: {
+          employeeNumber: employeeNumber,
+          password: password,
+        },
+        errorPolicy: 'all',
+      })
+      .pipe(map((resp) => resp?.data['SetPassword'])); // Memetakan respons ke hasil login
+  }
 
   UpdateEmployee(payload, id) {
     return this._apollo
@@ -62,8 +76,22 @@ export class UserService {
         },
         errorPolicy: 'all',
       })
-      .pipe(map((resp) => resp?.data['UploadFile']))
+      .pipe(map((resp) => resp?.data['UploadFile']));
   }
 
-
+  ForgotPassword(employeeNumber, email) {
+    return this._apollo
+      .mutate({
+        mutation: gql`
+          mutation ForgotPassword($employeeNumber: String, $email: String) {
+            ForgotPassword(employee_number: $employeeNumber, email: $email)
+          }
+        `,
+        variables: {
+          employeeNumber: employeeNumber,
+          email: email,
+        }
+      })
+      .pipe(map((resp) => resp?.data['ForgotPassword']));
+  }
 }

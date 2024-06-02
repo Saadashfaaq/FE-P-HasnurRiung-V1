@@ -21,8 +21,8 @@
     <section class="auth-section h-screen flex justify-center">
       <app-sidebar *ngIf="showSideBar"></app-sidebar>
       <section class="flex flex-col">
-        <div class="z-20 sticky top-0 left-0 right-0 w-screen">
-          <app-navbar></app-navbar>
+        <div class="z-20 sticky top-0 left-0 right-0 w-screen" *ngIf="showSideBar">
+          <app-navbar *ngIf="showSideBar"></app-navbar>
         </div>
         <router-outlet></router-outlet>
       </section>

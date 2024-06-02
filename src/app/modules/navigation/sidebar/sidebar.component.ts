@@ -110,7 +110,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.subs.sink = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.isWaitingForResponse = false;
-        this.toggleSidebar();
+        if (this.showMobile) {
+          this.toggleSidebar();
+        }
         this.changeDetectorRef.detectChanges();
       }
     });

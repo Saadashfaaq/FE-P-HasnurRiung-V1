@@ -20,68 +20,231 @@
       STOPLESS
     </h2>
     <p class="mt-0 text-xs italic">Surat Tugas Online Paperless</p>
-    <form class="flex flex-col" [formGroup]="loginForm">
-      <!-- NRP -->
-      <div>
-        <div class="text-left ml-1">
-          <span>NRP*</span>
+    <form class="flex flex-col" [formGroup]="authForm">
+      <ng-container
+        *ngIf="formState === 'login'; then login; else otherAuth"
+      ></ng-container>
+
+      <ng-template #login>
+        <!-- NRP -->
+        <div>
+          <div class="text-left ml-1">
+            <span>NRP*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              [formControlName]="'employee_number'"
+              (keyup.enter)="Login()"
+            />
+            <button
+              class="cursor-default"
+              mat-icon-button
+              type="button"
+              matSuffix
+            >
+              <i class="bx bxs-user-circle"></i>
+            </button>
+            <mat-error> Kolom ini harus diisi </mat-error>
+          </mat-form-field>
         </div>
-        <mat-form-field appearance="outline" class="w-full">
-          <input
-            matInput
-            [formControlName]="'employee_number'"
-            (keyup.enter)="Login()"
-          />
-          <button
-            class="cursor-default"
-            mat-icon-button
-            type="button"
-            matSuffix
-          >
-            <i class="bx bxs-user-circle"></i>
-          </button>
-          <mat-error> Kolom ini harus diisi </mat-error>
-        </mat-form-field>
-      </div>
-      <!-- Password field -->
-      <div>
-        <div class="text-left ml-1">
-          <span>Kata Sandi*</span>
+        <!-- Password field -->
+        <div>
+          <div class="text-left ml-1">
+            <span>Kata Sandi*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              id="password"
+              matInput
+              type="password"
+              [formControlName]="'password'"
+              #passwordField
+              (keyup.enter)="Login()"
+            />
+            <button
+              mat-icon-button
+              type="button"
+              (click)="
+                passwordField.type === 'password'
+                  ? (passwordField.type = 'text')
+                  : (passwordField.type = 'password')
+              "
+              matSuffix
+            >
+              <i
+                *ngIf="passwordField.type === 'password'"
+                class="bx bxs-show"
+              ></i>
+              <i *ngIf="passwordField.type === 'text'" class="bx bxs-hide"></i>
+            </button>
+            <mat-error> Kolom ini harus diisi </mat-error>
+          </mat-form-field>
         </div>
-        <mat-form-field appearance="outline" class="w-full">
-          <input
-            id="password"
-            matInput
-            type="password"
-            [formControlName]="'password'"
-            #passwordField
-            (keyup.enter)="Login()"
-          />
-          <button
-            mat-icon-button
-            type="button"
-            (click)="
-              passwordField.type === 'password'
-                ? (passwordField.type = 'text')
-                : (passwordField.type = 'password')
-            "
-            matSuffix
-          >
-            <i
-              *ngIf="passwordField.type === 'password'"
-              class="bx bxs-show"
-            ></i>
-            <i *ngIf="passwordField.type === 'text'" class="bx bxs-hide"></i>
-          </button>
-          <mat-error> Kolom ini harus diisi </mat-error>
-        </mat-form-field>
-      </div>
+      </ng-template>
+      <ng-template #otherAuth>
+        <ng-container
+          *ngIf="formState === 'reset'; then reset; else forgot"
+        ></ng-container>
+      </ng-template>
+      <ng-template #reset>
+        <div>
+          <div class="text-left ml-1">
+            <span>Password*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              type="password"
+              [formControlName]="'password'"
+              (keyup.enter)="resetPassword()"
+              #passwordField
+            />
+            <button
+              mat-icon-button
+              type="button"
+              (click)="
+                passwordField.type === 'password'
+                  ? (passwordField.type = 'text')
+                  : (passwordField.type = 'password')
+              "
+              matSuffix
+            >
+              <i
+                *ngIf="passwordField.type === 'password'"
+                class="bx bxs-show"
+              ></i>
+              <i *ngIf="passwordField.type === 'text'" class="bx bxs-hide"></i>
+            </button>
+            <mat-error> Kolom ini harus diisi </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <div class="text-left ml-1">
+            <span>Konfirmasi Password*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              id="password"
+              matInput
+              type="password"
+              [formControlName]="'confirm_password'"
+              #confirmPasswordField
+              (keyup.enter)="resetPassword()"
+            />
+            <button
+              mat-icon-button
+              type="button"
+              (click)="
+                confirmPasswordField.type === 'password'
+                  ? (confirmPasswordField.type = 'text')
+                  : (confirmPasswordField.type = 'password')
+              "
+              matSuffix
+            >
+              <i
+                *ngIf="confirmPasswordField.type === 'password'"
+                class="bx bxs-show"
+              ></i>
+              <i
+                *ngIf="confirmPasswordField.type === 'text'"
+                class="bx bxs-hide"
+              ></i>
+            </button>
+            <mat-error> Kolom ini harus diisi </mat-error>
+          </mat-form-field>
+        </div>
+      </ng-template>
+      <ng-template #forgot>
+        <!-- NRP -->
+        <div>
+          <div class="text-left ml-1">
+            <span>NRP*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              [formControlName]="'employee_number'"
+              (keyup.enter)="forgotPassword()"
+            />
+            <button
+              class="cursor-default"
+              mat-icon-button
+              type="button"
+              matSuffix
+            >
+              <i class="bx bxs-user-circle"></i>
+            </button>
+            <mat-error> Kolom ini harus diisi </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <div class="text-left ml-1">
+            <span>Email*</span>
+          </div>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              type="email"
+              [formControlName]="'email'"
+              (keyup.enter)="forgotPassword()"
+            />
+            <button
+              class="cursor-default"
+              mat-icon-button
+              type="button"
+              matSuffix
+            >
+              <i class="bx bxs-envelope"></i>
+            </button>
+            <mat-error *ngIf="authForm?.get('email')?.errors?.['required'] && authForm.invalid"> Kolom ini harus diisi </mat-error>
+            <mat-error *ngIf="authForm?.get('email')?.errors?.['email'] && authForm.invalid"> Email tidak valid </mat-error>
+          </mat-form-field>
+        </div>
+      </ng-template>
     </form>
-    <div class="text-right relative -top-4">
-      <a class="text-xs cursor-pointer underline text-blue-600"> Lupa Kata Sandi? </a>
+    <div class="text-right relative -top-4" *ngIf="formState === 'login'">
+      <a
+        class="text-xs cursor-pointer underline text-blue-600"
+        (click)="openForgotPassword()"
+      >
+        Lupa Kata Sandi?
+      </a>
     </div>
-    <div class="mt-4">
-      <button (click)="Login()" color="primary" mat-raised-button class="text-base">Masuk</button>
+    <div class="mt-4 relative">
+      <button
+        *ngIf="formState === 'login'"
+        (click)="Login()"
+        color="primary"
+        mat-raised-button
+        class="text-base"
+      >
+        Masuk
+      </button>
+      <button
+        *ngIf="formState === 'reset'"
+        (click)="resetPassword()"
+        color="primary"
+        mat-raised-button
+        class="text-base"
+      >
+        Ganti password
+      </button>
+      <button
+        *ngIf="formState === 'forgot'"
+        (click)="forgotPassword()"
+        color="primary"
+        mat-raised-button
+        class="text-base"
+      >
+        Kirim tautan ganti password
+      </button>
+      <span
+        [class.hidden]="isPasswordMatch"
+        class="absolute text-error w-full left-0 -top-9 text-xs text-left"
+        >Kata Sandi dan Konfirmasi Kata Sandi yang Anda masukkan tidak
+        cocok.</span
+      >
     </div>
   </mat-card>
 </div>
