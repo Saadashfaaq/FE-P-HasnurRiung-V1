@@ -635,7 +635,7 @@
         <td mat-cell *matCellDef="let element">
           <button
             (click)="OpenPdfApplicationForm(element?.pdf_application_form)"
-            *ngIf="element.pdf_application_form"
+            *ngIf="element.pdf_application_form && (element.pdf_application_form !== 'waiting')"
             mat-icon-button
           >
             <mat-icon class="cursor-pointer" class="text-green-700"
@@ -644,6 +644,9 @@
           </button>
           <button *ngIf="!element.pdf_application_form" mat-icon-button>
             <mat-icon class="text-red-700">picture_as_pdf</mat-icon>
+          </button>
+          <button (click)="InvalidSwal()" *ngIf="element.pdf_application_form === 'waiting'" mat-icon-button>
+            <mat-icon class="text-yellow-700">picture_as_pdf</mat-icon>
           </button>
         </td>
       </ng-container>

@@ -65,6 +65,7 @@ export class FormLeaveComponent implements OnInit {
   permissionType: string;
 
   remainingYearlyLeaves: number;
+  remainingMassiveLeaves: number;
 
   formType: string;
   isWaitingForResponse = false
@@ -477,6 +478,17 @@ export class FormLeaveComponent implements OnInit {
       compensation_start_date: [null],
       compensation_end_date: [null],
       leave_comment: [null],
+      is_massive_leave: [null, [Validators.required]],
+      massive_leave_start_date: [null],
+      massive_leave_end_date: [null],
+      massive_leave_duration:  [
+        null,
+        [
+          Validators.required,
+          Validators.pattern('^(0|[1-9]|1[0-9]|2[0-5])$'),
+          this.validateMassiveLeaveDuration.bind(this),
+        ],
+      ],
     });
 
     this.formLeaveDetailRequest
@@ -503,6 +515,15 @@ export class FormLeaveComponent implements OnInit {
   validateYearlyLeaveDuration(control: FormControl) {
     const selectedDuration = control.value;
     if (selectedDuration > this.remainingYearlyLeaves) {
+      return { exceedLimit: true };
+    } else {
+      return null;
+    }
+  }
+
+  validateMassiveLeaveDuration(control: FormControl) {
+    const selectedDuration = control.value;
+    if (selectedDuration > this.remainingMassiveLeaves) {
       return { exceedLimit: true };
     } else {
       return null;
@@ -745,12 +766,23 @@ export class FormLeaveComponent implements OnInit {
       this.openIdentity = false;
       this.openDetailRequest = true;
       this.openTicektApproval = false;
+      this.formLeaveDetailRequest.get('massive_leave_start_date').disable()
+      this.formLeaveDetailRequest.get('massive_leave_end_date').disable()
+      // this.formLeaveDetailRequest.get('massive_leave_duration').setValidators(        [
+      //   Validators.required,
+      //   Validators.pattern('^(0|[1-9]|1[0-9]|2[0-5])$'),
+      //   this.validateMassiveLeaveDuration.bind(this),
+      // ])
+      // this.formLeaveDetailRequest.get('is_massive_leave').setValidators([Validators.required])
+
       if (this.formLeaveIdentity.get('application_type').value === 'ijin') {
         if (this.formLeaveIdentity.get('permission_category').value === 'pp') {
           this.removeValidatorsForPermissionLeave();
         } else if (
           this.formLeaveIdentity.get('permission_category').value === 'non_pp'
         ) {
+          this.formLeaveDetailRequest.get('is_massive_leave').clearValidators();
+          this.formLeaveDetailRequest.get('massive_leave_duration').clearValidators();
           this.removeValidatorsForNonPermissionLeave();
         }
       }
@@ -1194,6 +1226,10 @@ export class FormLeaveComponent implements OnInit {
     this.formLeaveDetailRequest.get('compensation_duration').setValue(null);
     this.formLeaveDetailRequest.get('compensation_start_date').setValue(null);
     this.formLeaveDetailRequest.get('compensation_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
   }
 
   CalculateLeaveDate(step) {
@@ -1214,6 +1250,10 @@ export class FormLeaveComponent implements OnInit {
     this.formLeaveDetailRequest.get('compensation_duration').setValue(null);
     this.formLeaveDetailRequest.get('compensation_start_date').setValue(null);
     this.formLeaveDetailRequest.get('compensation_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
 
     const travelDate = this.formLeaveDetailRequest.get('travel_date').value;
     if (this.formLeaveIdentity.get('is_ticket_supported').value === true) {
@@ -1265,6 +1305,10 @@ export class FormLeaveComponent implements OnInit {
   CalculateYearlyLeaveDate() {
     this.formLeaveDetailRequest.get('yearly_leave_start_date').setValue(null);
     this.formLeaveDetailRequest.get('yearly_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
     if (this.permissionType !== 'pp') {
       this.formLeaveDetailRequest.get('is_permission').setValue(null);
       this.formLeaveDetailRequest.get('permission_type').setValue(null);
@@ -1324,6 +1368,100 @@ export class FormLeaveComponent implements OnInit {
     }
   }
 
+  CalculateMassiveLeaveDate() {
+    // this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+    // this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+    if (this.permissionType !== 'pp') {
+      this.formLeaveDetailRequest.get('is_permission').setValue(null);
+      this.formLeaveDetailRequest.get('permission_type').setValue(null);
+      this.formLeaveDetailRequest.get('permission_duration').setValue(null);
+      this.formLeaveDetailRequest.get('permission_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('permission_end_date').setValue(null);
+    }
+    this.formLeaveDetailRequest.get('is_compensation').setValue(null);
+    this.formLeaveDetailRequest.get('compensation_duration').setValue(null);
+    this.formLeaveDetailRequest.get('compensation_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('compensation_end_date').setValue(null);
+    const permissionEndDate = this.formLeaveDetailRequest.get(
+      'permission_end_date'
+    ).value;
+    const leaveStart = this.formLeaveDetailRequest.get(
+      'field_leave_end_date'
+    ).value;
+    const yearlyLeaveEnd = this.formLeaveDetailRequest.get(
+      'yearly_leave_end_date'
+    ).value;
+    const massiveDuration = this.formLeaveDetailRequest.get(
+      'massive_leave_duration'
+    ).value;
+    if (this.IsTypeIsLeave()) {
+      if (
+        !this.formLeaveDetailRequest.get('field_leave_duration').value  && !this.formLeaveDetailRequest.get('yearly_leave_duration').value
+      ) {
+        this.FillLeaveAmount();
+      } else if (
+        this.formLeaveDetailRequest.get('field_leave_duration').value && !this.formLeaveDetailRequest.get('yearly_leave_duration').value
+      ) {
+        if (massiveDuration) {
+          const resultStart = new Date(leaveStart);
+          resultStart.setDate(resultStart.getDate() + 1);
+          this.formLeaveDetailRequest
+            .get('massive_leave_start_date')
+            .setValue(resultStart);
+
+          const resultEnd = new Date(leaveStart);
+          resultEnd.setDate(resultEnd.getDate() + parseInt(massiveDuration));
+          this.formLeaveDetailRequest
+            .get('massive_leave_end_date')
+            .setValue(resultEnd);
+        }
+      } else if (
+       this.formLeaveDetailRequest.get('yearly_leave_duration').value
+      ){
+        const resultStart = new Date(yearlyLeaveEnd);
+        resultStart.setDate(resultStart.getDate() + 1);
+        this.formLeaveDetailRequest
+          .get('massive_leave_start_date')
+          .setValue(resultStart);
+
+        const resultEnd = new Date(yearlyLeaveEnd);
+        resultEnd.setDate(resultEnd.getDate() + parseInt(massiveDuration));
+        this.formLeaveDetailRequest
+          .get('massive_leave_end_date')
+          .setValue(resultEnd);
+      }
+    } else if (this.IsTypeIsLeave() === false) {
+      if(
+        !this.formLeaveDetailRequest.get('yearly_leave_duration').value
+      ){
+        const resultStart = new Date(permissionEndDate);
+        resultStart.setDate(resultStart.getDate() + 1);
+        this.formLeaveDetailRequest
+          .get('massive_leave_start_date')
+          .setValue(resultStart);
+
+        const resultEnd = new Date(permissionEndDate);
+        resultEnd.setDate(resultEnd.getDate() + parseInt(massiveDuration));
+        this.formLeaveDetailRequest
+          .get('massive_leave_end_date')
+          .setValue(resultEnd);
+      } else {
+        const resultStart = new Date(yearlyLeaveEnd);
+        resultStart.setDate(resultStart.getDate() + 1);
+        this.formLeaveDetailRequest
+          .get('massive_leave_start_date')
+          .setValue(resultStart);
+
+        const resultEnd = new Date(yearlyLeaveEnd);
+        resultEnd.setDate(resultEnd.getDate() + parseInt(massiveDuration));
+        this.formLeaveDetailRequest
+          .get('massive_leave_end_date')
+          .setValue(resultEnd);
+      }
+
+    }
+  }
+
   // Metode untuk menghapus validator pada izin cuti
   removeValidatorsForPermissionLeave() {
     this.formLeaveDetailRequest.get('travel_date').clearValidators();
@@ -1336,12 +1474,6 @@ export class FormLeaveComponent implements OnInit {
 
   // Metode untuk menghapus validator pada non izin cuti
   removeValidatorsForNonPermissionLeave() {
-    // this.formLeaveDetailRequest.get('departure_off_day').setValidators([Validators.required]);
-    // this.formLeaveDetailRequest.get('travel_date').setValidators([Validators.required]);
-    // this.formLeaveDetailRequest.get('field_leave_duration').setValidators([Validators.required]);
-    // this.formLeaveDetailRequest.get('is_permission').setValidators([Validators.required]);
-    // this.formLeaveDetailRequest.get('is_yearly_leave').clearValidators();
-    // this.formLeaveDetailRequest.get('is_compensation').setValidators([Validators.required]);
     this.formLeaveDetailRequest.get('departure_off_day').clearValidators();
     this.formLeaveDetailRequest.get('travel_date').clearValidators();
     this.formLeaveDetailRequest.get('field_leave_duration').clearValidators();
@@ -1357,6 +1489,16 @@ export class FormLeaveComponent implements OnInit {
   }
 
   CalculateEndYearlyLeaveDate() {
+    this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
+    this.formLeaveDetailRequest.get('is_permission').setValue(null);
+    this.formLeaveDetailRequest.get('permission_type').setValue(null);
+    this.formLeaveDetailRequest.get('permission_duration').setValue(null);
+    this.formLeaveDetailRequest.get('permission_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('permission_end_date').setValue(null);
+
     const yearlyLeaveStart = this.formLeaveDetailRequest.get(
       'yearly_leave_start_date'
     ).value;
@@ -1385,6 +1527,10 @@ export class FormLeaveComponent implements OnInit {
       this.formLeaveDetailRequest.get('yearly_leave_duration').setValue(null);
       this.formLeaveDetailRequest.get('yearly_leave_start_date').setValue(null);
       this.formLeaveDetailRequest.get('yearly_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
     }
     if (this.IsTypeIsLeave()) {
       this.formLeaveDetailRequest.get('permission_start_date').setValue(null);
@@ -1400,6 +1546,12 @@ export class FormLeaveComponent implements OnInit {
     ).value;
     const yearlyLeaveDuration = this.formLeaveDetailRequest.get(
       'yearly_leave_duration'
+    ).value;
+    const massiveLeaveDuration = this.formLeaveDetailRequest.get(
+      'massive_leave_duration'
+    ).value;
+    const massiveEndDate = this.formLeaveDetailRequest.get(
+      'massive_leave_end_date'
     ).value;
     const yearlyEndStartDate = this.formLeaveDetailRequest.get(
       'yearly_leave_start_date'
@@ -1424,7 +1576,7 @@ export class FormLeaveComponent implements OnInit {
 
     if (this.IsTypeIsLeave()) {
       if (leaveCategory === 'lapangan') {
-        if (leaveDuration && yearlyLeaveDuration) {
+        if (leaveDuration && yearlyLeaveDuration && !massiveLeaveDuration) {
           const resultStart = new Date(yearlyEndLeaveDate);
           resultStart.setDate(resultStart.getDate() + 1);
           this.formLeaveDetailRequest
@@ -1436,8 +1588,20 @@ export class FormLeaveComponent implements OnInit {
           this.formLeaveDetailRequest
             .get('permission_end_date')
             .setValue(resultEnd);
+        } else if ((leaveDuration && yearlyLeaveDuration && massiveLeaveDuration)||(leaveDuration && !yearlyLeaveDuration && massiveLeaveDuration)){
+          const resultStart = new Date(massiveEndDate);
+          resultStart.setDate(resultStart.getDate() + 1);
+          this.formLeaveDetailRequest
+            .get('permission_start_date')
+            .setValue(resultStart);
+
+          const resultEnd = new Date(massiveEndDate);
+          resultEnd.setDate(resultEnd.getDate() + parseInt(permissionDuration));
+          this.formLeaveDetailRequest
+            .get('permission_end_date')
+            .setValue(resultEnd);
         } else {
-          if (!isYearlyLeave) {
+          if (!isYearlyLeave && !massiveLeaveDuration) {
             const resultStart = new Date(leaveEndDate);
             resultStart.setDate(resultStart.getDate() + 1);
             this.formLeaveDetailRequest
@@ -1456,16 +1620,30 @@ export class FormLeaveComponent implements OnInit {
           }
         }
       } else if (leaveCategory === 'tahunan') {
-        if (!yearlyLeaveDuration || !yearlyEndStartDate) {
-          this.formLeaveDetailRequest.get('permission_duration').setValue(null);
-        } else {
-          const resultStart = new Date(yearlyEndLeaveDate);
+        if(!massiveLeaveDuration && !massiveEndDate){
+          if (!yearlyLeaveDuration || !yearlyEndStartDate) {
+            this.formLeaveDetailRequest.get('permission_duration').setValue(null);
+          } else {
+            const resultStart = new Date(yearlyEndLeaveDate);
+            resultStart.setDate(resultStart.getDate() + 1);
+            this.formLeaveDetailRequest
+              .get('permission_start_date')
+              .setValue(resultStart);
+
+            const resultEnd = new Date(yearlyEndLeaveDate);
+            resultEnd.setDate(resultEnd.getDate() + parseInt(permissionDuration));
+            this.formLeaveDetailRequest
+              .get('permission_end_date')
+              .setValue(resultEnd);
+          }
+        } else if (massiveLeaveDuration && yearlyLeaveDuration){
+          const resultStart = new Date(massiveEndDate);
           resultStart.setDate(resultStart.getDate() + 1);
           this.formLeaveDetailRequest
             .get('permission_start_date')
             .setValue(resultStart);
 
-          const resultEnd = new Date(yearlyEndLeaveDate);
+          const resultEnd = new Date(massiveEndDate);
           resultEnd.setDate(resultEnd.getDate() + parseInt(permissionDuration));
           this.formLeaveDetailRequest
             .get('permission_end_date')
@@ -1477,6 +1655,8 @@ export class FormLeaveComponent implements OnInit {
         const result = new Date(permissionStartDate);
         result.setDate(result.getDate() + parseInt(permissionDuration) - 1);
         this.formLeaveDetailRequest.get('permission_end_date').setValue(result);
+
+
       } else if (this.permissionType === 'non_pp') {
         const result = new Date(permissionStartDate);
         result.setDate(result.getDate() + parseInt(permissionDuration) - 1);
@@ -1492,6 +1672,10 @@ export class FormLeaveComponent implements OnInit {
     this.formLeaveDetailRequest.get('yearly_leave_duration').setValue(null);
     this.formLeaveDetailRequest.get('yearly_leave_start_date').setValue(null);
     this.formLeaveDetailRequest.get('yearly_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
   }
 
   CalculateCompensationLeaveDate() {
@@ -1525,8 +1709,14 @@ export class FormLeaveComponent implements OnInit {
     const compensationDuration = this.formLeaveDetailRequest.get(
       'compensation_duration'
     ).value;
+    const massiveDuration = this.formLeaveDetailRequest.get(
+      'massive_leave_duration'
+    ).value;
+    const massiveEndDate = this.formLeaveDetailRequest.get(
+      'massive_leave_end_date'
+    ).value;
 
-    if (leaveDuration && yearlyLeaveDuration && permissionDuration) {
+    if(permissionDuration){
       const resultStart = new Date(permissionEndDate);
       resultStart.setDate(resultStart.getDate() + 1);
       this.formLeaveDetailRequest
@@ -1538,19 +1728,19 @@ export class FormLeaveComponent implements OnInit {
       this.formLeaveDetailRequest
         .get('compensation_end_date')
         .setValue(resultEnd);
-    } else if (leaveDuration && !yearlyLeaveDuration && !permissionDuration) {
-      const resultStart = new Date(leaveEndDate);
+    } else if(massiveDuration){
+      const resultStart = new Date(massiveEndDate);
       resultStart.setDate(resultStart.getDate() + 1);
       this.formLeaveDetailRequest
         .get('compensation_start_date')
         .setValue(resultStart);
 
-      const resultEnd = new Date(leaveEndDate);
+      const resultEnd = new Date(massiveEndDate);
       resultEnd.setDate(resultEnd.getDate() + parseInt(compensationDuration));
       this.formLeaveDetailRequest
         .get('compensation_end_date')
         .setValue(resultEnd);
-    } else if (leaveDuration && yearlyLeaveDuration && !permissionDuration) {
+    } else if(yearlyLeaveDuration){
       const resultStart = new Date(yearlyEndLeaveDate);
       resultStart.setDate(resultStart.getDate() + 1);
       this.formLeaveDetailRequest
@@ -1562,25 +1752,76 @@ export class FormLeaveComponent implements OnInit {
       this.formLeaveDetailRequest
         .get('compensation_end_date')
         .setValue(resultEnd);
-    } else if (leaveDuration && !yearlyLeaveDuration && permissionDuration) {
-      const resultStart = new Date(permissionEndDate);
+    } else if(leaveDuration){
+      const resultStart = new Date(leaveEndDate);
       resultStart.setDate(resultStart.getDate() + 1);
       this.formLeaveDetailRequest
         .get('compensation_start_date')
         .setValue(resultStart);
 
-      const resultEnd = new Date(permissionEndDate);
+      const resultEnd = new Date(leaveEndDate);
       resultEnd.setDate(resultEnd.getDate() + parseInt(compensationDuration));
       this.formLeaveDetailRequest
         .get('compensation_end_date')
         .setValue(resultEnd);
     }
+
+    // if (leaveDuration && yearlyLeaveDuration && permissionDuration) {
+    //   const resultStart = new Date(permissionEndDate);
+    //   resultStart.setDate(resultStart.getDate() + 1);
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_start_date')
+    //     .setValue(resultStart);
+
+    //   const resultEnd = new Date(permissionEndDate);
+    //   resultEnd.setDate(resultEnd.getDate() + parseInt(compensationDuration));
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_end_date')
+    //     .setValue(resultEnd);
+    // } else if (leaveDuration && !yearlyLeaveDuration && !permissionDuration) {
+    //   const resultStart = new Date(leaveEndDate);
+    //   resultStart.setDate(resultStart.getDate() + 1);
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_start_date')
+    //     .setValue(resultStart);
+
+    //   const resultEnd = new Date(leaveEndDate);
+    //   resultEnd.setDate(resultEnd.getDate() + parseInt(compensationDuration));
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_end_date')
+    //     .setValue(resultEnd);
+    // } else if (leaveDuration && yearlyLeaveDuration && !permissionDuration) {
+    //   const resultStart = new Date(yearlyEndLeaveDate);
+    //   resultStart.setDate(resultStart.getDate() + 1);
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_start_date')
+    //     .setValue(resultStart);
+
+    //   const resultEnd = new Date(yearlyEndLeaveDate);
+    //   resultEnd.setDate(resultEnd.getDate() + parseInt(compensationDuration));
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_end_date')
+    //     .setValue(resultEnd);
+    // } else if (leaveDuration && !yearlyLeaveDuration && permissionDuration) {
+    //   const resultStart = new Date(permissionEndDate);
+    //   resultStart.setDate(resultStart.getDate() + 1);
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_start_date')
+    //     .setValue(resultStart);
+
+    //   const resultEnd = new Date(permissionEndDate);
+    //   resultEnd.setDate(resultEnd.getDate() + parseInt(compensationDuration));
+    //   this.formLeaveDetailRequest
+    //     .get('compensation_end_date')
+    //     .setValue(resultEnd);
+    // }
   }
 
   CalculateTotalLeaveAmount() {
     const leaveCategory = this.formLeaveIdentity.get('leave_category').value;
     const isYearlyLeave =
       this.formLeaveDetailRequest.get('is_yearly_leave').value;
+    const isMassiveLeave = this.formLeaveDetailRequest.get('is_massive_leave').value
     const isPermissionLeave =
       this.formLeaveDetailRequest.get('is_permission').value;
     const isCompensationLeave =
@@ -1606,21 +1847,28 @@ export class FormLeaveComponent implements OnInit {
     let leaveStartDate, leaveEndDate;
     if (this.IsTypeIsLeave()) {
       if (leaveCategory === 'tahunan') {
-        if (isPermissionLeave) {
-          leaveStartDate = new Date(
-            this.formLeaveDetailRequest.get('yearly_leave_start_date').value
-          );
-          leaveEndDate = new Date(
-            this.formLeaveDetailRequest.get('permission_end_date').value
-          );
-        } else {
-          leaveStartDate = new Date(
-            this.formLeaveDetailRequest.get('yearly_leave_start_date').value
-          );
-          leaveEndDate = new Date(
-            this.formLeaveDetailRequest.get('yearly_leave_end_date').value
-          );
-        }
+          if ((isPermissionLeave && !isMassiveLeave)||(isPermissionLeave && isMassiveLeave)) {
+            leaveStartDate = new Date(
+              this.formLeaveDetailRequest.get('yearly_leave_start_date').value
+            );
+            leaveEndDate = new Date(
+              this.formLeaveDetailRequest.get('permission_end_date').value
+            );
+          } else if(!isPermissionLeave && isMassiveLeave){
+            leaveStartDate = new Date(
+              this.formLeaveDetailRequest.get('yearly_leave_start_date').value
+            );
+            leaveEndDate = new Date(
+              this.formLeaveDetailRequest.get('massive_leave_end_date').value
+            );
+          } else {
+            leaveStartDate = new Date(
+              this.formLeaveDetailRequest.get('yearly_leave_start_date').value
+            );
+            leaveEndDate = new Date(
+              this.formLeaveDetailRequest.get('yearly_leave_end_date').value
+            );
+          }
       } else if (leaveCategory === 'lapangan') {
         leaveStartDate = isTicketSupported
           ? new Date(this.formLeaveDetailRequest.get('departure_off_day').value)
@@ -1635,7 +1883,9 @@ export class FormLeaveComponent implements OnInit {
           ? new Date(
               this.formLeaveDetailRequest.get('permission_end_date').value
             )
-          : isYearlyLeave
+          : isMassiveLeave ? new Date(
+            this.formLeaveDetailRequest.get('massive_leave_end_date').value
+          ) : isYearlyLeave
           ? new Date(
               this.formLeaveDetailRequest.get('yearly_leave_end_date').value
             )
@@ -1649,23 +1899,35 @@ export class FormLeaveComponent implements OnInit {
           this.formLeaveDetailRequest.get('departure_off_day').value
         );
         if (depatureDayOff.getTime() === permissionStartDate.getTime()) {
-          leaveEndDate = isYearlyLeave
-            ? new Date(
-                this.formLeaveDetailRequest.get('yearly_leave_end_date').value
-              )
-            : new Date(
-                this.formLeaveDetailRequest.get('permission_end_date').value
-              );
+          leaveEndDate = isPermissionLeave
+          ? new Date(
+              this.formLeaveDetailRequest.get('permission_end_date').value
+            )
+          : isMassiveLeave ? new Date(
+            this.formLeaveDetailRequest.get('massive_leave_end_date').value
+          ) : isYearlyLeave
+          ? new Date(
+              this.formLeaveDetailRequest.get('yearly_leave_end_date').value
+            )
+          : new Date(
+              this.formLeaveDetailRequest.get('field_leave_end_date').value
+            );
         } else {
-          if (isYearlyLeave) {
+          if (isYearlyLeave && !isMassiveLeave) {
             const result = new Date(
               this.formLeaveDetailRequest.get('yearly_leave_end_date').value
             );
             result.setDate(result.getDate() + 1);
             leaveEndDate = result;
-          } else {
+          } else if (!isYearlyLeave && !isMassiveLeave){
             const result = new Date(
               this.formLeaveDetailRequest.get('permission_end_date').value
+            );
+            result.setDate(result.getDate() + 1);
+            leaveEndDate = result;
+          } else if ((isYearlyLeave && isMassiveLeave)||(!isYearlyLeave && isMassiveLeave)) {
+            const result = new Date(
+              this.formLeaveDetailRequest.get('massive_leave_end_date').value
             );
             result.setDate(result.getDate() + 1);
             leaveEndDate = result;
@@ -1694,11 +1956,6 @@ export class FormLeaveComponent implements OnInit {
       if (leaveCategory === 'lapangan') {
         totalLeaveDays =
           Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) + 1;
-        // if(isTicketSupported){
-        //   totalLeaveDays = Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) + 1;
-        // } else {
-        //   totalLeaveDays = Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) + 1 ;
-        // }
       } else {
         totalLeaveDays =
           Math.ceil((leaveEndDate - leaveStartDate) / (1000 * 3600 * 24)) + 1;
@@ -1772,6 +2029,10 @@ export class FormLeaveComponent implements OnInit {
     this.formLeaveDetailRequest.get('compensation_duration').setValue(null);
     this.formLeaveDetailRequest.get('compensation_start_date').setValue(null);
     this.formLeaveDetailRequest.get('compensation_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+    this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
   }
 
   IsYearlySelected() {
@@ -1804,6 +2065,48 @@ export class FormLeaveComponent implements OnInit {
       return false;
     }
   }
+  IsMassiveSelected() {
+    if (this.IsTypeIsLeave()) {
+      if (this.formLeaveDetailRequest.get('is_massive_leave').value === true) {
+              this.formLeaveDetailRequest.get('massive_leave_duration').setValidators(        [
+        Validators.required,
+        Validators.pattern('^(0|[1-9]|1[0-9]|2[0-5])$'),
+        this.validateMassiveLeaveDuration.bind(this),
+      ])
+      this.formLeaveDetailRequest.get('is_massive_leave').setValidators([Validators.required])
+        return true;
+      } else {
+        this.formLeaveDetailRequest.get('is_massive_leave').clearValidators();
+        this.formLeaveDetailRequest.get('massive_leave_duration').clearValidators();
+        return false;
+      }
+    } else if (this.IsTypeIsLeave() === false) {
+      if (this.permissionType === 'pp') {
+        if (this.formLeaveDetailRequest.get('is_massive_leave').value === true) {
+          this.formLeaveDetailRequest.get('massive_leave_duration').setValidators(        [
+            Validators.required,
+            Validators.pattern('^(0|[1-9]|1[0-9]|2[0-5])$'),
+            this.validateMassiveLeaveDuration.bind(this),
+          ])
+          this.formLeaveDetailRequest.get('is_massive_leave').setValidators([Validators.required])
+          return true;
+        } else {
+          this.formLeaveDetailRequest.get('is_massive_leave').clearValidators();
+          this.formLeaveDetailRequest.get('massive_leave_duration').clearValidators();
+          return false;
+        }
+      } else {
+        this.formLeaveDetailRequest.get('is_massive_leave').clearValidators();
+        this.formLeaveDetailRequest.get('massive_leave_duration').clearValidators();
+        return false;
+      }
+    } else {
+      // Handle the case when IsTypeIsLeave() is true but no condition matches
+      this.formLeaveDetailRequest.get('is_massive_leave').clearValidators();
+      this.formLeaveDetailRequest.get('massive_leave_duration').clearValidators();
+      return false;
+    }
+  }
 
   SelectYealyLeave() {
     if (this.IsTypeIsLeave()) {
@@ -1819,10 +2122,46 @@ export class FormLeaveComponent implements OnInit {
       this.formLeaveDetailRequest.get('compensation_duration').setValue(null);
       this.formLeaveDetailRequest.get('compensation_start_date').setValue(null);
       this.formLeaveDetailRequest.get('compensation_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
     } else if (this.IsTypeIsLeave() === false) {
       this.formLeaveDetailRequest.get('yearly_leave_duration').setValue(null);
       this.formLeaveDetailRequest.get('yearly_leave_start_date').setValue(null);
       this.formLeaveDetailRequest.get('yearly_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('is_massive_leave').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
+    }
+  }
+
+  SelectMassiveLeave() {
+    if (this.IsTypeIsLeave()) {
+      // this.formLeaveDetailRequest.get('yearly_leave_duration').setValue(null);
+      // this.formLeaveDetailRequest.get('yearly_leave_start_date').setValue(null);
+      // this.formLeaveDetailRequest.get('yearly_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
+      this.formLeaveDetailRequest.get('is_permission').setValue(null);
+      this.formLeaveDetailRequest.get('permission_type').setValue(null);
+      this.formLeaveDetailRequest.get('permission_duration').setValue(null);
+      this.formLeaveDetailRequest.get('permission_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('permission_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('is_compensation').setValue(null);
+      this.formLeaveDetailRequest.get('compensation_duration').setValue(null);
+      this.formLeaveDetailRequest.get('compensation_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('compensation_end_date').setValue(null);
+    } else if (this.IsTypeIsLeave() === false) {
+      // this.formLeaveDetailRequest.get('yearly_leave_duration').setValue(null);
+      // this.formLeaveDetailRequest.get('yearly_leave_start_date').setValue(null);
+      // this.formLeaveDetailRequest.get('yearly_leave_end_date').setValue(null);
+
+      this.formLeaveDetailRequest.get('massive_leave_start_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_end_date').setValue(null);
+      this.formLeaveDetailRequest.get('massive_leave_duration').setValue(null);
     }
   }
 
@@ -1870,8 +2209,6 @@ export class FormLeaveComponent implements OnInit {
   // Mat Auto Complite Filter Section
 
   private _filterAirPortTo(value: string) {
-    // const filerValue = value.toLowerCase()
-    // return this.airPortList.filter(option => option.city.toLowerCase().includes(filerValue));
 
     const filterValue = value.toLowerCase();
     const results = this.airPortList.filter((option) =>
@@ -1881,9 +2218,6 @@ export class FormLeaveComponent implements OnInit {
   }
 
   private _filterAirPortFrom(value: string) {
-    // const filterValue = value.toLowerCase()
-    // return this.airPortList.filter(option => option.city.toLowerCase().includes(filterValue))
-
     const filterValue = value.toLowerCase();
     const results = this.airPortList.filter((option) =>
       option.city.toLowerCase().includes(filterValue)
@@ -1892,9 +2226,6 @@ export class FormLeaveComponent implements OnInit {
   }
 
   private _filterReasonPermission(value: string) {
-    // const filterValue = value.toLowerCase()
-    // return this.permissionList.filter(option => option.name.toLowerCase().includes(filterValue))
-
     const filterValue = value.toLowerCase();
     const results = this.permissionList.filter((option) =>
       option.name.toLowerCase().includes(filterValue)
@@ -1924,17 +2255,6 @@ export class FormLeaveComponent implements OnInit {
       );
   }
 
-  // filterSubituteOfficer(){
-  //   this.filteredSubtituteOfficer = this.formLeaveTicektApproval.get('substitute_officer').valueChanges.pipe(
-  //     startWith(''),
-  //     map(value=>{
-  //       const name = typeof value === 'string' ? value : value?.name;
-  //       const filteredOptions = this._filteredSubtituteOfficer(name as string);
-  //       // Jika input tidak ada, kembalikan semua opsi
-  //       return value ? filteredOptions : this.substituteOfficerList;
-  //     })
-  //   );
-  // }
 
   FilterPermission() {
     this.filteredPermission = this.formLeaveDetailRequest
@@ -1979,19 +2299,6 @@ export class FormLeaveComponent implements OnInit {
         })
       );
   }
-
-  // selectSubtituteOfficer(){
-  //  const subtituteOfficer = this.formLeaveTicektApproval.get('substitute_officer').value
-
-  //  this.substituteOfficerList.forEach((officer)=>{
-  //   if(officer.name === subtituteOfficer){
-  //     this.formLeaveTicektApproval.get('approval_id_1').setValue(officer.name)
-  //     return
-  //   }
-
-  //   // buat kondisi satu lagi setelah semua substituteOfficerList di cek, dan tidak ada data yang sesui disini
-  //  })
-  // }
 
   selectSubtituteOfficer() {
     const subtituteOfficer =
@@ -2194,6 +2501,16 @@ export class FormLeaveComponent implements OnInit {
       yearly_leave_end_date: data?.yearly_leave_end_date
         ? new Date(this.convertDateFormat(data.yearly_leave_end_date)).toISOString()
         : null,
+        is_massive_leave: data?.is_massive_leave,
+        massive_leave_duration: data?.massive_leave_duration
+        ? data.massive_leave_duration.toString()
+        : null,
+        massive_leave_start_date: data?.massive_leave_start_date
+        ? new Date(this.convertDateFormat(data.massive_leave_start_date)).toISOString()
+        : null,
+        massive_leave_end_date: data?.massive_leave_end_date
+        ? new Date(this.convertDateFormat(data.massive_leave_end_date)).toISOString()
+        : null,
       is_permission: data?.is_permission,
       permission_type: data?.permission_type || null,
       permission_duration: data?.permission_duration
@@ -2223,7 +2540,7 @@ export class FormLeaveComponent implements OnInit {
         : null,
     });
 
-    console.log("HALLOAAAAA", this.formLeaveDetailRequest.value)
+    console.log("WKWKWKKWW", this.formLeaveDetailRequest.value)
 
     const getParams = this.route.snapshot.params['mode'];
     if(getParams === 'preview'){
@@ -2297,6 +2614,7 @@ export class FormLeaveComponent implements OnInit {
           if (resp) {
             this.formData = resp;
             this.remainingYearlyLeaves = resp?.remaining_yearly_leaves;
+            this.remainingMassiveLeaves = resp?.remaining_massive_leaves
             this.getParamsId();
             this.OpenIdentity();
             this.InitFormLeaveIdentity();
@@ -2384,8 +2702,6 @@ export class FormLeaveComponent implements OnInit {
             ...emp, // salin semua properti asli
             displayName: `${emp.employee_number} - ${emp.name}`, // tambahkan displayName
           }));
-          // this.substituteOfficerList = resp;
-          // this.substituteOfficerListBackup = resp;
         }
       },
       (err) => {
@@ -2561,8 +2877,6 @@ export class FormLeaveComponent implements OnInit {
   }
 
   EditForm(){
-    // const url = `https://daunsalam.online/form-leave/edit/${this.formID}/${this.employeeId}`
-    // window.open(url, '_self');
     this.router.navigate([`/form-leave/edit/${this.formID}/${this.employeeId}`])
     setTimeout(() => {
       location.reload()

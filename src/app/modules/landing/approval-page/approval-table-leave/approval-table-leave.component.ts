@@ -14,6 +14,7 @@ import { TimelineDialogComponent } from '../../timeline-dialog/timeline-dialog.c
 import { UntypedFormControl } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-approval-table-leave',
@@ -463,6 +464,19 @@ onSort(sort: Sort) {
       this.GetAllApplicationForms()
     }
   }
+}
+
+InvalidSwal() {
+  Swal.fire({
+    title: 'PDF Permohonan sedang dalam proses',
+    html: 'Silakan untuk menunggu beberapa saat dan muat ulang halaman browser Anda',
+    icon: 'warning',
+    confirmButtonColor: '#3085d6',
+    allowEnterKey: false,
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    confirmButtonText: 'Oke',
+  });
 }
 
 }

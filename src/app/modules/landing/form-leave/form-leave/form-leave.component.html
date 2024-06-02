@@ -592,7 +592,7 @@
             class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
-              <span>Tanggal Ijin</span>
+              <span>Tanggal Ijin*</span>
             </div>
             <div class="flex flex-row items-baseline">
               <mat-form-field appearance="outline" class="testing">
@@ -636,7 +636,7 @@
             class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
-              <span>Perjalanan*</span>
+              <span>Tanggal Mulai Perjalanan*</span>
             </div>
             <div>
               <mat-form-field appearance="outline" class="testing">
@@ -872,6 +872,136 @@
             </div>
           </div>
           <div
+            *ngIf="
+              IsTypeIsLeave() ||
+              permissionType === 'pp'
+            "
+            class="flex flex-row h-10 mb-6 items-baseline "
+          >
+            <div class="w-70 text-left">
+              <span>Tambah Cuti Besar*</span>
+            </div>
+            <div class="w-90 text-left pl-1">
+              <mat-radio-group
+                (change)="SelectMassiveLeave()"
+                [formControlName]="'is_massive_leave'"
+                aria-label="Select an option"
+              >
+                <mat-radio-button [value]="true">Ya</mat-radio-button>
+                <mat-radio-button [value]="false">Tidak</mat-radio-button>
+              </mat-radio-group>
+              <mat-error
+                *ngIf="
+                  formLeaveDetailRequest
+                    .get('is_massive_leave')
+                    .hasError('required') && isSection2Submited
+                "
+              >
+                Kolom ini wajib diisi
+              </mat-error>
+            </div>
+          </div>
+          <div
+            *ngIf="IsMassiveSelected()"
+            class="flex flex-row h-10 mb-6 items-baseline "
+          >
+            <div class="w-70 text-left">
+              <span>Jumlah Hari Cuti Besar*</span>
+            </div>
+            <div class="flex flex-row items-baseline">
+              <mat-form-field appearance="outline" class="w-90">
+                <input
+                  (focusout)="CalculateMassiveLeaveDate()"
+                  (keypress)="preventNonNumericalInput($event)"
+                  matInput
+                  [formControlName]="'massive_leave_duration'"
+                />
+                <mat-error
+                  *ngIf="
+                    formLeaveDetailRequest
+                      .get('massive_leave_duration')
+                      .hasError('pattern')
+                  "
+                >
+                Tidak Boleh Melebihi Jumlah Sisa Cuti Besar
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    formLeaveDetailRequest
+                      .get('massive_leave_duration')
+                      .hasError('exceedLimit') &&
+                    !formLeaveDetailRequest
+                      .get('massive_leave_duration')
+                      .hasError('pattern')
+                  "
+                >
+                  Jumlah melebihi sisa cuti
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    formLeaveDetailRequest
+                      .get('massive_leave_duration')
+                      .hasError('required')
+                  "
+                >
+                  Kolom ini wajib diisi
+                </mat-error>
+              </mat-form-field>
+              <div class="rounded py-2 px-1 ml-2 primary w-48">
+                Sisa Cuti Besar: {{ remainingMassiveLeaves }}
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="IsMassiveSelected()"
+            class="flex flex-row h-10 mb-6 items-baseline "
+          >
+            <div class="w-70 text-left">
+              <span>Tanggal Cuti Besar</span>
+            </div>
+            <div class="flex flex-row items-baseline">
+              <mat-form-field appearance="outline" class="testing">
+                <input
+                  (dateInput)="CalculateMassiveLeaveDate()"
+                  matInput
+                  [formControlName]="'massive_leave_start_date'"
+                  [matDatepicker]="picker_massive_leave_start_date"
+                  [readonly]="true"
+                  [min]="minDate"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker_massive_leave_start_date"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker_massive_leave_start_date></mat-datepicker>
+                <mat-error
+                  *ngIf="
+                    formLeaveDetailRequest
+                      .get('massive_leave_start_date')
+                      .hasError('required')
+                  "
+                >
+                  Kolom ini wajib diisi
+                </mat-error>
+              </mat-form-field>
+              <span class="mx-1">s/d</span>
+              <mat-form-field appearance="outline" class="testing">
+                <input
+                  matInput
+                  [formControlName]="'massive_leave_end_date'"
+                  [matDatepicker]="picker_massive_leave_end_date"
+                  [readonly]="true"
+                  [min]="minDate"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker_massive_leave_end_date"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker_massive_leave_end_date></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div
             *ngIf="IsTypeIsLeave()"
             class="flex flex-row h-10 mb-6 items-baseline "
           >
@@ -1063,7 +1193,7 @@
             class="flex flex-row h-10 mb-6 items-baseline "
           >
             <div class="w-70 text-left">
-              <span>Tanggal Kompensasi*</span>
+              <span>Tanggal Kompensasi</span>
             </div>
             <div class="flex flex-row items-baseline">
               <mat-form-field class="w-44 min-w-44" appearance="outline" class="testing">
@@ -1135,7 +1265,7 @@
         <div class="mr-5">
           <div class="flex flex-row h-10 mb-6 items-baseline">
             <div class="w-70 text-left">
-              <span>Tanggal Cuti Total</span>
+              <span>Total (Tanggal)</span>
             </div>
             <div class="flex flex-row items-baseline">
               <mat-form-field appearance="outline" class="testing">

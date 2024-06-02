@@ -81,6 +81,10 @@ export class FormLeaveService {
               pdf_leave_letter
               pdf_application_form
               leaves {
+                is_massive_leave
+                massive_leave_start_date
+                massive_leave_end_date
+                massive_leave_duration
                 travel_date
                 permission_type
                 permission_start_date
@@ -214,6 +218,7 @@ export class FormLeaveService {
                 time
                 date
               }
+              remaining_massive_leaves
               _id
             }
           }

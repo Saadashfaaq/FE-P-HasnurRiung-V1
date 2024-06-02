@@ -253,18 +253,20 @@ export class TableLeavePermitEmployeeComponent {
   }
 
   OpenFormToCreate(){
-   const formType = 'leave'
-    this.subs.sink = this._formLeaveService.CheckEmployeeApplicationForm(this.employeeId,formType)
-    .subscribe(
-      (resp : any)=>{
-        if(resp){
-          localStorage.setItem("previousPage", '/permit-leave')
-          this.router.navigate(['/form-leave'])
-        } else {
-          this.InvalidSwal()
-        }
-      }
-    )
+  //  const formType = 'leave'
+  //   this.subs.sink = this._formLeaveService.CheckEmployeeApplicationForm(this.employeeId,formType)
+  //   .subscribe(
+  //     (resp : any)=>{
+  //       if(resp){
+  //         localStorage.setItem("previousPage", '/permit-leave')
+  //         this.router.navigate(['/form-leave'])
+  //       } else {
+  //         this.InvalidSwal()
+  //       }
+  //     }
+  //   )
+  localStorage.setItem("previousPage", '/permit-leave')
+  this.router.navigate(['/form-leave'])
   }
 
   InvalidSwal(){
@@ -433,6 +435,19 @@ export class TableLeavePermitEmployeeComponent {
         this.GetAllApplicationFormsEmployee()
       }
     }
+  }
+
+  InvalidSwalPdf() {
+    Swal.fire({
+      title: 'PDF Permohonan sedang dalam proses',
+      html: 'Silakan untuk menunggu beberapa saat dan muat ulang halaman browser Anda',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      confirmButtonText: 'Oke',
+    });
   }
 
 
