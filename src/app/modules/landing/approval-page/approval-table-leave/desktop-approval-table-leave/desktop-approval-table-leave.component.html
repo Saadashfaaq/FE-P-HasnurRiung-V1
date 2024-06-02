@@ -29,9 +29,7 @@
           matTooltipPosition="above"
           [disabled]="isWaitingForResponse"
         >
-        <p class="order-1 mr-1">
-          Export
-        </p>
+          <p class="order-1 mr-1">Export</p>
           <mat-icon class="order-1 mr-0">expand_more</mat-icon>
         </button>
         <mat-menu #actions="matMenu" class="export-menu">
@@ -521,6 +519,7 @@
           mat-sort-header="leave_letter_number"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'No Cuti'"
         >
           No Cuti
         </th>
@@ -534,6 +533,7 @@
           mat-sort-header="leave_letter_month"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Bulan Cuti'"
         >
           Bulan Cuti
         </th>
@@ -547,6 +547,7 @@
           mat-sort-header="leave_letter_year"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Tahun Surat Cuti'"
         >
           Tahun Surat Cuti
         </th>
@@ -556,7 +557,12 @@
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="employee_number">
-        <th mat-sort-header="employee_number" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="employee_number"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'NRP'"
+        >
           NRP
         </th>
         <td mat-cell *matCellDef="let element">
@@ -565,7 +571,12 @@
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="name">
-        <th mat-sort-header="employee_name" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="employee_name"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Nama'"
+        >
           Nama
         </th>
         <td mat-cell *matCellDef="let element">
@@ -574,7 +585,12 @@
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="position">
-        <th mat-sort-header="position" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="position"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Jabatan'"
+        >
           Jabatan
         </th>
         <td mat-cell *matCellDef="let element">
@@ -583,7 +599,12 @@
       </ng-container>
 
       <ng-container class="sticky" matColumnDef="department">
-        <th mat-sort-header="department" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="department"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Dept'"
+        >
           Dept
         </th>
         <td mat-cell *matCellDef="let element">
@@ -592,7 +613,12 @@
       </ng-container>
 
       <ng-container matColumnDef="poh_status">
-        <th mat-sort-header="poh_status" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="poh_status"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'POH'"
+        >
           POH
         </th>
         <td mat-cell *matCellDef="let element">
@@ -605,6 +631,7 @@
           mat-sort-header="application_type"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Jenis Permohonan'"
         >
           Jenis Permohonan
         </th>
@@ -618,6 +645,7 @@
           mat-sort-header="departure_off_day"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Tanggal Berangkat'"
         >
           Tanggal Berangkat
         </th>
@@ -631,7 +659,12 @@
       </ng-container>
 
       <ng-container matColumnDef="start_date">
-        <th mat-sort-header="start_date" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="start_date"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Awal Cuti'"
+        >
           Awal Cuti
         </th>
         <td mat-cell *matCellDef="let element">
@@ -648,6 +681,7 @@
           mat-sort-header="field_leave_duration"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Roster'"
         >
           Roster
         </th>
@@ -661,6 +695,7 @@
           mat-sort-header="annual_leave_duration"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Tahunan / Besar'"
         >
           Tahunan / Besar
         </th>
@@ -670,7 +705,12 @@
       </ng-container>
 
       <ng-container matColumnDef="travel_duration">
-        <th mat-sort-header="travel_duration" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="travel_duration"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Perjalanan'"
+        >
           Perjalanan
         </th>
         <td mat-cell *matCellDef="let element">
@@ -683,6 +723,7 @@
           mat-sort-header="permission_duration"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Ijin'"
         >
           Ijin
         </th>
@@ -696,6 +737,7 @@
           mat-sort-header="compensation_duration"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Kompensasi'"
         >
           Kompensasi
         </th>
@@ -705,14 +747,24 @@
       </ng-container>
 
       <ng-container matColumnDef="total_leaves">
-        <th mat-sort-header="total_leaves" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="total_leaves"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Total'"
+        >
           Total
         </th>
         <td mat-cell *matCellDef="let element">{{ element?.total_leaves }}</td>
       </ng-container>
 
       <ng-container matColumnDef="end_date">
-        <th mat-sort-header="end_date" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="end_date"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Akhir Cuti'"
+        >
           Akhir Cuti
         </th>
         <td mat-cell *matCellDef="let element">{{ element?.end_date }}</td>
@@ -723,6 +775,7 @@
           mat-sort-header="leave_destination_to"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Tujuan Cuti'"
         >
           Tujuan Cuti
         </th>
@@ -736,6 +789,7 @@
           mat-sort-header="leave_destination_from"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Kembali Dari'"
         >
           Kembali Dari
         </th>
@@ -745,7 +799,12 @@
       </ng-container>
 
       <ng-container matColumnDef="lump_sump">
-        <th mat-sort-header="lump_sump" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="lump_sump"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Lumpsump'"
+        >
           Lumpsump
         </th>
         <td mat-cell *matCellDef="let element">
@@ -758,6 +817,7 @@
           mat-sort-header="remaining_yearly_leaves"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Sisa Cuti Tahunan'"
         >
           Sisa Cuti Tahunan
         </th>
@@ -767,7 +827,12 @@
       </ng-container>
 
       <ng-container matColumnDef="work_start_date">
-        <th mat-sort-header="work_start_date" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="work_start_date"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Masuk Dinas'"
+        >
           Masuk Dinas
         </th>
         <td mat-cell *matCellDef="let element">
@@ -780,6 +845,7 @@
           mat-sort-header="created_date_submission"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Tanggal Pengajuan'"
         >
           Tanggal Pengajuan
         </th>
@@ -787,7 +853,12 @@
       </ng-container>
 
       <ng-container matColumnDef="leave_comment">
-        <th mat-sort-header="leave_comment" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="leave_comment"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Keterangan'"
+        >
           Keterangan
         </th>
         <td mat-cell *matCellDef="let element">
@@ -800,6 +871,7 @@
           mat-sort-header="leave_letter_date_of_approval"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Tanggal ST Cuti'"
         >
           Tanggal ST Cuti
         </th>
@@ -809,7 +881,12 @@
       </ng-container>
 
       <ng-container matColumnDef="form_status">
-        <th mat-sort-header="form_status" mat-header-cell *matHeaderCellDef>
+        <th
+          mat-sort-header="form_status"
+          mat-header-cell
+          *matHeaderCellDef
+          [matTooltip]="'Status Permohonan'"
+        >
           Status Permohonan
         </th>
         <td mat-cell *matCellDef="let element">
@@ -829,6 +906,7 @@
           mat-sort-header="created_date_form"
           mat-header-cell
           *matHeaderCellDef
+          [matTooltip]="'Formulir Permohonan'"
         >
           Formulir Permohonan
         </th>
@@ -849,8 +927,10 @@
       </ng-container>
 
       <ng-container class="rightTop" matColumnDef="action" stickyEnd>
-        <th mat-header-cell *matHeaderCellDef>Action</th>
-        <td mat-cell *matCellDef="let element">
+        <th mat-header-cell *matHeaderCellDef [matTooltip]="'Action'">
+          Action
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index">
           <div
             style="justify-content: center !important"
             class="flex flex-row jusify-center align-center gap-1"
@@ -878,10 +958,40 @@
             </div>
             <div>
               <button
+                *ngIf="isRejectFromTable[i]"
+                mat-icon-button
+                (click)="rejectApplicationForm(element?._id, 'cancel', i)"
+              >
+                <svg
+                  version="1.1"
+                  id="Capa_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 206.559 206.559"
+                  style="enable-background: new 0 0 206.559 206.559"
+                  xml:space="preserve"
+                >
+                  <path
+                    d="M0,103.279c0,56.948,46.331,103.279,103.279,103.279s103.279-46.331,103.279-103.279S160.228,0,103.279,0
+               S0,46.331,0,103.279z M170,103.279c0,36.79-29.931,66.721-66.721,66.721c-11.765,0-22.821-3.072-32.429-8.439L161.56,70.85
+               C166.927,80.458,170,91.514,170,103.279z M103.279,36.559c11.765,0,22.821,3.072,32.429,8.439l-90.709,90.711
+               c-5.368-9.608-8.44-20.664-8.44-32.43C36.559,66.489,66.489,36.559,103.279,36.559z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div>
+              <button
                 (click)="deleteApproval(element, 'table')"
                 mat-icon-button
                 color="warn"
-                [disabled]="dataSelected?.length || selection?.selected?.length || isCheckedAll"
+                [disabled]="
+                  dataSelected?.length ||
+                  selection?.selected?.length ||
+                  isCheckedAll
+                "
               >
                 <mat-icon class="cursor-pointer">delete</mat-icon>
               </button>
@@ -892,7 +1002,12 @@
 
       <!-- loading spinner -->
       <ng-container matColumnDef="loading">
-        <th mat-header-cell *matHeaderCellDef colspan="100%" class="text-center w-full">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          colspan="100%"
+          class="text-center w-full"
+        >
           <div class="center-spinner w-full flex justify-center align-center">
             <mat-spinner color="accent"></mat-spinner>
           </div>
